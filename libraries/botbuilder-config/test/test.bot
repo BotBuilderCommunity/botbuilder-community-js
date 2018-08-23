@@ -1,0 +1,24 @@
+{
+    "name": "test",
+    "description": "",
+    "secretKey": "e50cacfd13cbc8ba0911ada87d976f6ded802a56ddb4f92d77169991cf652eceb1153e8d81075baafa2de1a2e5b6cfcc",
+    "services": [
+        {
+            "type": "endpoint",
+            "name": "test",
+            "id": "http://localhost:3978/api/messages",
+            "appId": "",
+            "appPassword": "",
+            "endpoint": "http://localhost:3978/api/messages"
+        },
+        {
+            "type": "qna",
+            "id": "0ae6cee2-6978-4470-847f-2a500ee72eeb",
+            "name": "test-qna",
+            "kbId": "0ae6cee2-6978-4470-847f-2a500ee72eeb",
+            "subscriptionKey": "0404f54c998955dd35275d3bb82b804d3cd1393009245bd52a6e29f117cbed037e84271dd81d85b6b1e3dff2c75b35a1",
+            "endpointKey": "0ae6cee2-6978-4470-847f-2a500ee72123",
+            "hostname": "https://test-qna.azurewebsites.net/qnamaker"
+        }
+    ]
+}
