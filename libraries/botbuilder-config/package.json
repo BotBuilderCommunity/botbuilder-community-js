@@ -1,0 +1,39 @@
+{
+  "name": "botbuilder-config",
+  "version": "0.5.1",
+  "description": "Configuration helper for consuming and decrypting Microsoft Bot Framework bot files.",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "scripts": {
+    "postinstall": "./node_modules/.bin/tsc -p .",
+    "test": "./node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/szul/botbuilder-config.git"
+  },
+  "keywords": [
+    "botbuilder",
+    "botframework",
+    "bots",
+    "chatbots",
+    "config",
+    "configuration",
+    "msbot"
+  ],
+  "author": "Michael Szul <michael@szul.us>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/szul/botbuilder-config/issues"
+  },
+  "homepage": "https://github.com/szul/botbuilder-config#readme",
+  "dependencies": {
+    "@types/node": "^10.5.2",
+    "@types/shelljs": "^0.8.0",
+    "shelljs": "^0.8.2",
+    "typescript": "^2.9.2"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
+}
