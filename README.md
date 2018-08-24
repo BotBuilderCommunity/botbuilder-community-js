@@ -16,6 +16,6 @@ The following Bot Framework compatible packages are available to install within 
 
 | Name | Description | NPM |
 | ---- | ----------- |-------|
-| [botbuilder-azuretablestorage](libraries/botbuilder-azurestablestorage/README.md) | Use Azure Table Storage in your bot | ![NPM Version](https://img.shields.io/badge/npm-0.1.1-red.svg) |
+| [botbuilder-azuretablestorage](libraries/botbuilder-azuretablestorage) | Use Azure Table Storage in your bot | ![NPM Version](https://img.shields.io/badge/npm-0.1.1-red.svg) |
 
 > The Azure Table Storage package has been deprecated from Microsoft's `botbuilder-js` repository, and is being taken over by the community.
