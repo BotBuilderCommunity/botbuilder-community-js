@@ -6,6 +6,16 @@ This repository is part of the Bot Builder Community Project and contains Bot Bu
 
 The following Bot Framework compatible packages are available to install within your chatbot application.
 
-| Name | Description |
-| ---- | ----------- |
-| [botbuilder-config](libraries/botbuilder-config/README.md) | Consume/decrypt bot files |
+| Name | Description | NPM |
+| ---- | ----------- |-----|
+| [botbuilder-config](libraries/botbuilder-config/README.md) | Consume/decrypt bot files | ![NPM Version](https://img.shields.io/badge/npm-0.5.1-red.svg) |
+
+## Middleware
+
+The following Bot Framework compatible packages are available to install within your chatbot application as middleware.
+
+| Name | Description | NPM |
+| ---- | ----------- |-------|
+| [botbuilder-azuretablestorage](libraries/botbuilder-azurestablestorage/README.md) | Use Azure Table Storage in your bot | ![NPM Version](https://img.shields.io/badge/npm-0.1.1-red.svg) |
+
+> The Azure Table Storage package has been deprecated from Microsoft's `botbuilder-js` repository, and is being taken over by the community.
