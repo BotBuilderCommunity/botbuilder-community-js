@@ -1,4 +1,5 @@
 import { IAzureBlobStorageService, Service } from "./service";
+import { BlobStorageSettings } from "botbuilder-azure";
 
 /**
  * @module botbuilder-config
@@ -11,5 +12,8 @@ export class AzureBlobStorageService extends Service implements IAzureBlobStorag
     public connectionString: string;
     constructor() {
         super();
+    }
+    public getOptions(): BlobStorageSettings {
+        return null;
     }
 }

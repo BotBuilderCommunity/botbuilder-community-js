@@ -1,4 +1,5 @@
 import { IAzureTableStorageService, Service } from "./service";
+import { TableStorageSettings } from "botbuilder-azure";
 
 /**
  * @module botbuilder-config
@@ -11,5 +12,8 @@ export class AzureTableStorageService extends Service implements IAzureTableStor
     public connectionString: string;
     constructor() {
         super();
+    }
+    public getOptions(): TableStorageSettings {
+        return null;
     }
 }

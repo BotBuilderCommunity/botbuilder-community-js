@@ -22,8 +22,8 @@
     "msbot"
   ],
   "contributos": [
-      "Bot Builder Community",
-      "Michael Szul <michael@szul.us>"
+    "Bot Builder Community",
+    "Michael Szul <michael@szul.us>"
   ],
   "license": "MIT",
   "bugs": {
@@ -33,6 +33,9 @@
   "dependencies": {
     "@types/node": "^10.5.2",
     "@types/shelljs": "^0.8.0",
+    "botbuilder": "^4.0.0-preview1.2",
+    "botbuilder-ai": "^4.0.0-preview1.2",
+    "botbuilder-azure": "^4.0.0-preview1.2",
     "shelljs": "^0.8.2",
     "typescript": "^2.9.2"
   },
