@@ -1,6 +1,7 @@
 import { BotFrameworkAdapterSettings } from "botbuilder";
-import { QnAMakerOptions, LuisRecognizerSettings } from "botbuilder-ai";
-import { TableStorageSettings, BlobStorageSettings } from "botbuilder-azure";
+import { QnAMakerOptions, LuisApplication } from "botbuilder-ai";
+import { BlobStorageSettings } from "botbuilder-azure";
+import { TableStorageSettings } from "botbuilder-azuretablestorage";
 
 /**
  * @module botbuilder-config
@@ -62,7 +63,7 @@ export interface ILUISService extends IService {
     , authoringKey?: string
     , subscriptionKey?: string
     , endpointBasePath?: string
-    , getOptions: () => LuisRecognizerSettings
+    , getOptions: () => LuisApplication
 };
 
 export interface IQnAMakerService extends IService {
