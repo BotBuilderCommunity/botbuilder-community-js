@@ -10,4 +10,7 @@ export class EndpointService extends Service implements IEndpointService {
     constructor() {
         super();
     }
+    public getOptions(): any {
+        return null;
+    }
 }

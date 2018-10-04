@@ -1,4 +1,7 @@
-import * as crypto from "crypto";
+import { BotFrameworkAdapterSettings } from "botbuilder";
+import { QnAMakerOptions, LuisApplication } from "botbuilder-ai";
+import { BlobStorageSettings } from "botbuilder-azure";
+import { TableStorageSettings } from "botbuilder-azuretablestorage";
 
 /**
  * @module botbuilder-config
@@ -41,6 +44,7 @@ export interface IService extends IServiceBase {
 export interface IEndpointService extends IService {
     appId?: string
     , appPassword?: string
+    , getOptions: () => any
 };
 
 export interface IAzureBotService extends IService {
@@ -50,6 +54,7 @@ export interface IAzureBotService extends IService {
     , endpoint?: string
     , appId?: string
     , appPassword?: string
+    , getOptions: () => Partial<BotFrameworkAdapterSettings>
 };
 
 export interface ILUISService extends IService {
@@ -58,6 +63,7 @@ export interface ILUISService extends IService {
     , authoringKey?: string
     , subscriptionKey?: string
     , endpointBasePath?: string
+    , getOptions: () => LuisApplication
 };
 
 export interface IQnAMakerService extends IService {
@@ -65,6 +71,7 @@ export interface IQnAMakerService extends IService {
     , endpointKey?: string
     , kbId?: string
     , hostname?: string
+    , getOptions: () => QnAMakerOptions
 };
 
 export interface IDispatchService extends ILUISService {
@@ -75,6 +82,7 @@ export interface IAzureTableStorageService extends IService {
     , storageKey: string
     , storageName?: string
     , connectionString?: string
+    , getOptions: () => TableStorageSettings
 }
 
 
@@ -83,6 +91,7 @@ export interface IAzureBlobStorageService extends IService {
     , storageKey: string
     , storageName?: string
     , connectionString?: string
+    , getOptions: () => BlobStorageSettings
 }
 
 export class Service implements IService {

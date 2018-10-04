@@ -1,4 +1,5 @@
 import { IQnAMakerService, Service } from "./service";
+import { QnAMakerOptions } from "botbuilder-ai";
 
 /**
  * @module botbuilder-config
@@ -11,5 +12,8 @@ export class QnAMakerService extends Service implements IQnAMakerService {
     public hostname: string;
     constructor() {
         super();
+    }
+    public getOptions(): QnAMakerOptions {
+        return null;
     }
 }
