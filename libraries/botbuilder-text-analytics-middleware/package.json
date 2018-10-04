@@ -1,13 +1,14 @@
 {
-  "name": "@botbuildercommunity/sentiment-middleware",
-  "version": "0.1.1",
-  "description": "Bot Framework middleware component for sentiment analysis",
+  "name": "@botbuildercommunity/text-analytics-middleware",
+  "version": "0.1.2",
+  "description": "Bot Framework middleware component for the Cognitive Services Text Analytics API, including sentiment analysis, language detection, entity extraction, and keyword recognition.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
+    "postinstall": "tsc -p .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,16 +17,11 @@
   },
   "keywords": [
     "chatbots",
-    "bot",
-    "framework",
-    "bot",
-    "builder",
-    "sentiment",
-    "analysis",
-    "text",
-    "analytics",
-    "cognitive",
-    "services",
+    "bot framework",
+    "bot builder",
+    "sentiment analysis",
+    "text analytics",
+    "cognitive services",
     "middleware"
   ],
   "contributors": [

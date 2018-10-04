@@ -3,10 +3,10 @@ import { CognitiveServicesCredentials } from "ms-rest-azure";
 import { TextAnalyticsClient } from "azure-cognitiveservices-textanalytics";
 
 /**
- * @module botbuilder-sentiment-middleware
+ * @module botbuildercommunity/text-analytics
  */
 
-export class SentimentAnalysis implements Middleware {
+export class EntityExtraction implements Middleware {
     public credentials: CognitiveServicesCredentials;
     public client: TextAnalyticsClient;
     constructor(public serviceKey: string, public endpoint: string, public options?: any) {
@@ -24,12 +24,12 @@ export class SentimentAnalysis implements Middleware {
                 ]
             };
             try {
-                const result = await this.client.sentiment(input);
-                const s = result.documents[0].score;
-                context.turnState.set("sentimentScore", s);
+                const result = await this.client.entities(input);
+                const l = result.documents[0].entities;
+                context.turnState.set("textEntities", l);
             }
             catch(e) {
-                throw new Error(`Failed to process sentiment on ${context.activity.text}. Error: ${e}`);
+                throw new Error(`Failed to process entities on ${context.activity.text}. Error: ${e}`);
             }
         }
         await next();
