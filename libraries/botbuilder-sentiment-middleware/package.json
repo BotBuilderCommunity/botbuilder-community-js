@@ -1,6 +1,6 @@
 {
-  "name": "botbuilder-sentiment-middleware",
-  "version": "0.1.0",
+  "name": "@botbuildercommunity/sentiment-middleware",
+  "version": "0.1.1",
   "description": "Bot Framework middleware component for sentiment analysis",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
