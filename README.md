@@ -17,5 +17,6 @@ The following Bot Framework compatible packages are available to install within 
 | Name | Description | NPM |
 | ---- | ----------- |-------|
 | [botbuilder-azuretablestorage](libraries/botbuilder-azurestablestorage/README.md) | Use Azure Table Storage in your bot | ![NPM Version](https://img.shields.io/badge/npm-0.1.1-red.svg) |
+| [botbuilder-sentiment-middleware](libraries/botbuilder-sentiment-middleware/README.md) | Use Cogntive Services Text Analytics API for sentiment analysis | |
 
 > The Azure Table Storage package has been deprecated from Microsoft's `botbuilder-js` repository, and is being taken over by the community.
