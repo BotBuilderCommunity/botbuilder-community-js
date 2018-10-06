@@ -57,7 +57,7 @@ export class NumberWithUnitPrompt extends Prompt<NumberWithUnitResult> {
                 results = recognizers.recognizeTemperature(utterance, locale);
                 break;
         }
-        if (results.length > 0) {
+        if (results.length > 0 && results[0].resolution != null) {
             const resolvedUnit = results[0].resolution.unit;
             const resolvedValue = results[0].resolution.value;
             try {
