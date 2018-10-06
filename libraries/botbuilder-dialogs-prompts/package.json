@@ -1,0 +1,40 @@
+{
+  "name": "@botbuildercommunity/dialogs-prompts",
+  "version": "0.1.0",
+  "description": "",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "postinstall": "tsc -p .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "keywords": [
+    "chatbots",
+    "bot framework",
+    "bot builder",
+    "dialogs",
+    "prompts",
+    "recognizers"
+  ],
+  "contributors": [
+    "Bot Builder Community",
+    "Michael Szul <michael@szul.us>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
+  "dependencies": {
+    "@microsoft/recognizers-text-number-with-unit": "^1.1.3",
+    "botbuilder-core": "^4.0.6",
+    "botbuilder-dialogs": "^4.0.6"
+  }
+}
