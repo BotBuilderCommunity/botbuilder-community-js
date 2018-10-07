@@ -8,11 +8,11 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}\\libraries\\botbuilder-dialog-prompts\\test\\bot.js",
+            "program": "${workspaceFolder}\\libraries\\botbuilder-sentiment-middleware\\test\\bot.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
-            ]//,
-            //"envFile": "${workspaceFolder}\\libraries\\botbuilder-sentiment-middleware\\test\\.env"
+            ],
+            "envFile": "${workspaceFolder}\\libraries\\botbuilder-sentiment-middleware\\test\\.env"
         }
     ]
 }
