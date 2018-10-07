@@ -1,5 +1,5 @@
-import { IDispatchService, Service } from "./service";
-import { LuisRecognizerSettings } from "botbuilder-ai";
+import { LuisRecognizerSettings } from 'botbuilder-ai';
+import { IDispatchService, Service } from './service';
 
 /**
  * @module botbuilder-config

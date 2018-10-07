@@ -1,19 +1,17 @@
-import * as recognizers  from "@microsoft/recognizers-text-number-with-unit";
-import { Activity, InputHints, TurnContext } from "botbuilder-core";
-import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from "botbuilder-dialogs";
+import * as recognizers  from '@microsoft/recognizers-text-number-with-unit';
+import { Activity, InputHints, TurnContext } from 'botbuilder-core';
+import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from 'botbuilder-dialogs';
 
 /**
  * @module botbuildercommunity/dialog-prompts
  */
 
-export interface NumberWithUnitResult
-{
+export interface NumberWithUnitResult {
     unit: string
-    , value: any
+    ; value: any;
 }
 
-export enum NumberWithUnitPromptType
-{
+export enum NumberWithUnitPromptType {
     Currency = 0,
     Temperature = 1,
     Age = 2,
@@ -37,13 +35,12 @@ export class NumberWithUnitPrompt extends Prompt<NumberWithUnitResult> {
     }
     protected async onRecognize(context: TurnContext, state: any, options: PromptOptions): Promise<PromptRecognizerResult<NumberWithUnitResult>> {
         const result: PromptRecognizerResult<NumberWithUnitResult> = { succeeded: false };
-        var results: any;
+        let results: any;
         const activity: Activity = context.activity;
         const utterance: string = activity.text;
-        const locale: string = activity.locale || this.defaultLocale || "en-us";
-        
-        switch(this.promptType)
-        {
+        const locale: string = activity.locale || this.defaultLocale || 'en-us';
+
+        switch (this.promptType) {
             case NumberWithUnitPromptType.Currency:
                 results = recognizers.recognizeCurrency(utterance, locale);
                 break;
@@ -67,8 +64,7 @@ export class NumberWithUnitPrompt extends Prompt<NumberWithUnitResult> {
                     , value: resolvedValue
                 };
                 result.value = numberWithUnitResult;
-            }
-            catch(e) { }
+            } catch (e) { }
         }
         return result;
     }

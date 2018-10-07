@@ -1,5 +1,5 @@
-import { ILUISService, Service } from "./service";
-import { LuisRecognizerSettings } from "botbuilder-ai";
+import { LuisRecognizerSettings } from 'botbuilder-ai';
+import { ILUISService, Service } from './service';
 
 /**
  * @module botbuilder-config

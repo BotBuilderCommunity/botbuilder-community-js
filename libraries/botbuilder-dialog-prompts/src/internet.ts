@@ -1,13 +1,12 @@
-import * as recognizers  from "@microsoft/recognizers-text-sequence";
-import { Activity, InputHints, TurnContext } from "botbuilder-core";
-import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from "botbuilder-dialogs";
+import * as recognizers  from '@microsoft/recognizers-text-sequence';
+import { Activity, InputHints, TurnContext } from 'botbuilder-core';
+import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from 'botbuilder-dialogs';
 
 /**
  * @module botbuildercommunity/dialog-prompts
  */
 
-export enum InternetProtocolPromptType
-{
+export enum InternetProtocolPromptType {
     IPAddress = 0,
     URL = 1
 }
@@ -27,13 +26,12 @@ export class InternetProtocolPrompt extends Prompt<string> {
     }
     protected async onRecognize(context: TurnContext, state: any, options: PromptOptions): Promise<PromptRecognizerResult<string>> {
         const result: PromptRecognizerResult<string> = { succeeded: false };
-        var results: any;
+        let results: any;
         const activity: Activity = context.activity;
         const utterance: string = activity.text;
-        const locale: string = activity.locale || this.defaultLocale || "en-us";
+        const locale: string = activity.locale || this.defaultLocale || 'en-us';
 
-        switch(this.promptType)
-        {
+        switch (this.promptType) {
             case InternetProtocolPromptType.IPAddress:
                 results = recognizers.recognizeIpAddress(utterance, locale);
                 break;
@@ -45,8 +43,7 @@ export class InternetProtocolPrompt extends Prompt<string> {
             try {
                 result.succeeded = true;
                 result.value = results[0].resolution.value;
-            }
-            catch(e) { }
+            } catch (e) { }
         }
         return result;
     }

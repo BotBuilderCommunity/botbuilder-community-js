@@ -1,5 +1,5 @@
-import { IAzureBotService, Service } from "./service";
-import { BotFrameworkAdapterSettings } from "botbuilder";
+import { BotFrameworkAdapterSettings } from 'botbuilder';
+import { IAzureBotService, Service } from './service';
 
 /**
  * @module botbuilder-config

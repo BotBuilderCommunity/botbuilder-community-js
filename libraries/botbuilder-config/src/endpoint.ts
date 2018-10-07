@@ -1,4 +1,4 @@
-import { IEndpointService, Service } from "./service";
+import { IEndpointService, Service } from './service';
 
 /**
  * @module botbuilder-config

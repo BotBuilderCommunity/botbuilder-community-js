@@ -1,6 +1,6 @@
-import { Middleware, TurnContext, ActivityTypes } from "botbuilder";
-import { CognitiveServicesCredentials } from "ms-rest-azure";
-import { TextAnalyticsClient } from "azure-cognitiveservices-textanalytics";
+import { TextAnalyticsClient } from 'azure-cognitiveservices-textanalytics';
+import { ActivityTypes, Middleware, TurnContext } from 'botbuilder';
+import { CognitiveServicesCredentials } from 'ms-rest-azure';
 
 /**
  * @module botbuildercommunity/text-analytics
@@ -14,21 +14,20 @@ export class EntityExtraction implements Middleware {
         this.client = new TextAnalyticsClient(this.credentials, endpoint, options);
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>) {
-        if(context.activity.type === ActivityTypes.Message) {
+        if (context.activity.type === ActivityTypes.Message) {
             const input = {
                 documents: [
                     {
-                        "id": "1"
-                        , "text": context.activity.text
+                        id: '1'
+                        , text: context.activity.text
                     }
                 ]
             };
             try {
                 const result = await this.client.entities(input);
                 const l = result.documents[0].entities;
-                context.turnState.set("textEntities", l);
-            }
-            catch(e) {
+                context.turnState.set('textEntities', l);
+            } catch (e) {
                 throw new Error(`Failed to process entities on ${context.activity.text}. Error: ${e}`);
             }
         }

@@ -1,13 +1,12 @@
-import * as recognizers  from "@microsoft/recognizers-text-number";
-import { Activity, InputHints, TurnContext } from "botbuilder-core";
-import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from "botbuilder-dialogs";
+import * as recognizers  from '@microsoft/recognizers-text-number';
+import { Activity, InputHints, TurnContext } from 'botbuilder-core';
+import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from 'botbuilder-dialogs';
 
 /**
  * @module botbuildercommunity/dialog-prompts
  */
 
-export enum NumberWithTypePromptType
-{
+export enum NumberWithTypePromptType {
     Ordinal = 0,
     Percentage = 1
 }
@@ -28,13 +27,12 @@ export class NumberWithTypePrompt extends Prompt<NumberWithTypePromptType> {
     }
     protected async onRecognize(context: TurnContext, state: any, options: PromptOptions): Promise<PromptRecognizerResult<number>> {
         const result: PromptRecognizerResult<number> = { succeeded: false };
-        var results: any;
+        let results: any;
         const activity: Activity = context.activity;
         const utterance: string = activity.text;
-        const locale: string = activity.locale || this.defaultLocale || "en-us";
-        
-        switch(this.promptType)
-        {
+        const locale: string = activity.locale || this.defaultLocale || 'en-us';
+
+        switch (this.promptType) {
             case NumberWithTypePromptType.Ordinal:
                 results = recognizers.recognizeOrdinal(utterance, locale);
                 break;
@@ -46,8 +44,7 @@ export class NumberWithTypePrompt extends Prompt<NumberWithTypePromptType> {
             try {
                 result.succeeded = true;
                 result.value = parseFloat(results[0].resolution.value);
-            }
-            catch(e) { }
+            } catch (e) { }
         }
         return result;
     }

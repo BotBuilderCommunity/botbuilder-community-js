@@ -1,5 +1,5 @@
-import { IAzureBlobStorageService, Service } from "./service";
-import { BlobStorageSettings } from "botbuilder-azure";
+import { BlobStorageSettings } from 'botbuilder-azure';
+import { IAzureBlobStorageService, Service } from './service';
 
 /**
  * @module botbuilder-config

@@ -1,5 +1,5 @@
-import { IQnAMakerService, Service } from "./service";
-import { QnAMakerOptions } from "botbuilder-ai";
+import { QnAMakerOptions } from 'botbuilder-ai';
+import { IQnAMakerService, Service } from './service';
 
 /**
  * @module botbuilder-config
