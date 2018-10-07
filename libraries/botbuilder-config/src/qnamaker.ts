@@ -10,9 +10,11 @@ export class QnAMakerService extends Service implements IQnAMakerService {
     public endpointKey: string;
     public kbId: string;
     public hostname: string;
+    
     constructor() {
         super();
     }
+
     public getOptions(): QnAMakerOptions {
         return null;
     }

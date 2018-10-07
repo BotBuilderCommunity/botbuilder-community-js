@@ -25,6 +25,7 @@ export class BotConfig implements IBotConfiguration {
     public description: string;
     public secretKey: string;
     public services: IServiceBase[];
+
     private readonly _encryptedProperties = {
         endpoint: ['appPassword'],
         abs: ['appPassword'],
@@ -33,13 +34,16 @@ export class BotConfig implements IBotConfiguration {
         dispatch: ['authoringKey', 'subscriptionKey'],
         ats: ['storageKey']
     };
+
     private readonly _algorithm: string = 'aes192';
     private readonly _base64: crypto.HexBase64BinaryEncoding = 'hex';
     private readonly _ascii: crypto.Utf8AsciiBinaryEncoding = 'utf8';
+
     constructor(public options?: BotConfigurationOptions) {
         this.options = this.options || {};
         this.init();
     }
+
     public getService(type: string, name?: string): Service {
         switch (type.toLowerCase()) {
             case 'endpoint':
@@ -60,6 +64,7 @@ export class BotConfig implements IBotConfiguration {
                 throw new Error(`Error: Invalid Bot Service [${type}] specified.`);
         }
     }
+
     public decryptAll(): IBotConfiguration {
         const self = this;
         self.services.forEach((s: Service, idx: number) => {
@@ -72,6 +77,7 @@ export class BotConfig implements IBotConfiguration {
         });
         return self;
     }
+
     public encrypt(value: string): string {
         try {
             const c = crypto.createCipher(this._algorithm, this.options.secret);
@@ -82,6 +88,7 @@ export class BotConfig implements IBotConfiguration {
             console.log(`Error: Encryption of ${value} failed.`);
         }
     }
+
     public decrypt(value: string): string {
         try {
             const d = crypto.createDecipher(this._algorithm, this.options.secret);
@@ -92,27 +99,35 @@ export class BotConfig implements IBotConfiguration {
             console.log(`Error: Decryption for ${value} failed.`);
         }
     }
+
     public Endpoint(name?: string): EndpointService {
         return <EndpointService>this.parseService('endpoint', name);
     }
+
     public AzureBotService(name?: string): AzureBotService {
         return <AzureBotService>this.parseService('abs', name);
     }
+
     public LUIS(name?: string): LUISService {
         return <LUISService>this.parseService('luis', name);
     }
+
     public QnAMaker(name?: string): QnAMakerService {
         return <QnAMakerService>this.parseService('qna', name);
     }
+
     public Dispatch(name?: string): DispatchService {
         return <DispatchService>this.parseService('dispatch', name);
     }
+
     public AzureTableStorage(name?: string): AzureTableStorageService {
         return <AzureTableStorageService>this.parseService('ats', name);
     }
+
     public AzureBlobStorage(name?: string): AzureBlobStorageService {
         return <AzureBlobStorageService>this.parseService('blob', name);
     }
+
     private init(): BotConfig {
         const botFile = this.parseBotFile();
         for (const k in botFile) {
@@ -126,6 +141,7 @@ export class BotConfig implements IBotConfiguration {
         const botFile = (this.options.botFilePath !== null) ? this.options.botFilePath : this.getBotFileInDirectory();
         return this.parse(botFile);
     }
+
     private getBotFileInDirectory(): string {
         let botFile: string;
         const dir = shelljs.pwd().toString();
@@ -143,11 +159,13 @@ export class BotConfig implements IBotConfiguration {
         }
         return botFile;
     }
+
     private parse(botFile: string): IBotConfiguration {
         //Might need to account for other encodings.
         const f: string = fs.readFileSync(botFile, 'utf-8');
         return <IBotConfiguration>JSON.parse(f);
     }
+    
     private parseService(type: string, name?: string): Service {
         const services: IServiceBase[] = [];
         this.services.forEach((s: Service, idx: number) => {

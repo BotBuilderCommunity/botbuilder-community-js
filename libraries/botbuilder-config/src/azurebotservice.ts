@@ -12,9 +12,11 @@ export class AzureBotService extends Service implements IAzureBotService {
     public endpoint: string;
     public appId: string;
     public appPassword: string;
+
     constructor() {
         super();
     }
+    
     public getOptions(): Partial<BotFrameworkAdapterSettings> {
         return null;
     }

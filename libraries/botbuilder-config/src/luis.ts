@@ -11,9 +11,11 @@ export class LUISService extends Service implements ILUISService {
     public authoringKey: string;
     public subscriptionKey: string;
     public endpointBasePath: string;
+
     constructor() {
         super();
     }
+    
     public getOptions(): LuisRecognizerSettings {
         return null;
     }

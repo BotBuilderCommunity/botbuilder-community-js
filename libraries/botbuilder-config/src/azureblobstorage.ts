@@ -10,9 +10,11 @@ export class AzureBlobStorageService extends Service implements IAzureBlobStorag
     public storageKey: string;
     public storageAccount: string;
     public connectionString: string;
+    
     constructor() {
         super();
     }
+
     public getOptions(): BlobStorageSettings {
         return null;
     }

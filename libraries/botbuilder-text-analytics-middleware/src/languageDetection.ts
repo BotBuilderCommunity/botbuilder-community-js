@@ -18,8 +18,8 @@ export class LanguageDetection implements Middleware {
             const input = {
                 documents: [
                     {
-                        id: '1'
-                        , text: context.activity.text
+                        id: '1',
+                        text: context.activity.text
                     }
                 ]
             };

@@ -7,9 +7,11 @@ import { IEndpointService, Service } from './service';
 export class EndpointService extends Service implements IEndpointService {
     public appId: string;
     public appPassword: string;
+    
     constructor() {
         super();
     }
+
     public getOptions(): any {
         return null;
     }

@@ -86,6 +86,7 @@ export class TableStorage implements Storage {
                 console.log(e);
             }
         }
+        
         return checkedTables[this.settings.tableName];
     }
 
@@ -94,6 +95,7 @@ export class TableStorage implements Storage {
         if (checkedTables[this.settings.tableName]) {
             delete checkedTables[this.settings.tableName];
         }
+        
         return this.tableService.deleteTableIfExistsAsync(this.settings.tableName);
     }
 

@@ -11,9 +11,11 @@ export class DispatchService extends Service implements IDispatchService {
     public authoringKey: string;
     public subscriptionKey: string;
     public endpointBasePath: string;
+    
     constructor() {
         super();
     }
+    
     public getOptions(): LuisRecognizerSettings {
         return null;
     }

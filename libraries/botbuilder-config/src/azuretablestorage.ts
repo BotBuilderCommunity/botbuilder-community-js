@@ -10,9 +10,11 @@ export class AzureTableStorageService extends Service implements IAzureTableStor
     public storageKey: string;
     public storageAccount: string;
     public connectionString: string;
+    
     constructor() {
         super();
     }
+
     public getOptions(): TableStorageSettings {
         return null;
     }
