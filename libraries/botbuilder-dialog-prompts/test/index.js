@@ -1,6 +1,6 @@
 const { BotFrameworkAdapter, ConversationState, MemoryStorage } = require("botbuilder");
 const restify = require("restify");
-const { TestBot } = require("../test");
+const { EmailBot } = require("../email");
 
 const server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
@@ -15,10 +15,10 @@ const adapter = new BotFrameworkAdapter({
 const memoryStorage = new MemoryStorage();
 const conversationState = new ConversationState(memoryStorage);
 
-const testBot = new TestBot(conversationState);
+const emailBot = new EmailBot(conversationState);
 
 server.post("/api/messages", (req, res) => {
     adapter.processActivity(req, res, async (context) => {
-        await testBot.onTurn(context);
+        await emailBot.onTurn(context);
     });
 });

@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}\\libraries\\botbuilder-dialog-prompts\\test\\bot.js",
+            "program": "${workspaceFolder}\\libraries\\botbuilder-dialog-prompts\\test\\index.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]//,
