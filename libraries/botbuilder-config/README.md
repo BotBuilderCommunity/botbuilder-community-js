@@ -9,30 +9,38 @@ Configuration helper for consuming and decrypting Microsoft Bot Framework bot fi
 ## Installation
 
 To install:
-
+```
     npm install botbuilder-config --save
-
+```
 ## Usage
 
 ### JavaScript
 
 To import the module:
 
+```javascript
     let { BotConfig } = require("botbuilder-config");
+```
 
 To instantiate the configuration:
 
+```javascript
     let c = new BotConfig({ botFilePath: "PATH_TO_BOT_FILE", secret: "SECRET" });
+```
 
 ### TypeScript
 
 To import the module:
 
+```typescript
     import { BotConfig } from "botbuilder-config";
+```
 
 To instantiate the configuration:
 
+```typescript
     let c = new BotConfig({ botFilePath: "PATH_TO_BOT_FILE", secret: "SECRET" });
+```
 
 > Both the bot file path and the secret are optional properties of a `BotConfigurationOptions` parameter. If the bot file is not specified, it will look in the current working directory of the bot. If the secret is not specified, it will assume that the bot file does not have any encrypted properties.
 
@@ -40,8 +48,10 @@ To instantiate the configuration:
 
 To access a bot service:
 
-    let qna = c.QnAMaker(); //returns an object with all the properties of the QnA maker service in the bot file.
-    qna.endpoint; //Access the "endpoint" property of the QnA Maker service.
+```javascript
+    let qna = c.QnAMaker(); // Returns an object with all the properties of the QnA maker service in the bot file.
+    qna.endpoint; // Access the "endpoint" property of the QnA Maker service.
+```
 
 Given the above instantiation (where `c` is the `BotConfig` object), you can access each service by calling the method that matches the service:
 
@@ -57,12 +67,16 @@ Given the above instantiation (where `c` is the `BotConfig` object), you can acc
 
 You could load and access the bot file by simply loading the bot file as JSON into your application. The advantage of this library is that it will decrypt your properties, if you have encrypted them with a secret.
 
+```javascript
     let c = new BotConfig({ botFilePath: "PATH_TO_BOT_FILE", secret: "SECRET" });
     let s = c.decrypt(c.QnAMaker().subscriptionKey)
-    console.log(s); //"s" will be decrypted;
+    console.log(s); // "s" will be decrypted;
+```
 
 You can also decrypt everything ahead of time.
 
+```javascript
     let c = new BotConfig({ botFilePath: "PATH_TO_BOT_FILE", secret: "SECRET" });
     let s = c.QnAMaker().subscriptionKey
-    console.log(s); //"s" will be decrypted;
+    console.log(s); // "s" will be decrypted;
+```
