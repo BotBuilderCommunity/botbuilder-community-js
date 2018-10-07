@@ -157,15 +157,17 @@ export class BotConfig implements IBotConfiguration {
         if (botFile === null) {
             throw new Error ('Error: No *.bot file found in the current working directory.');
         }
+        
         return botFile;
     }
 
     private parse(botFile: string): IBotConfiguration {
-        //Might need to account for other encodings.
+        // Might need to account for other encodings.
         const f: string = fs.readFileSync(botFile, 'utf-8');
+
         return <IBotConfiguration>JSON.parse(f);
     }
-    
+
     private parseService(type: string, name?: string): Service {
         const services: IServiceBase[] = [];
         this.services.forEach((s: Service, idx: number) => {
