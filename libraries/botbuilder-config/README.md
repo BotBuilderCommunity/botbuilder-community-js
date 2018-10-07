@@ -18,13 +18,13 @@ To install:
 To import the module:
 
 ```javascript
-let { BotConfig } = require("botbuilder-config");
+let { BotConfig } = require('botbuilder-config');
 ```
 
 To instantiate the configuration:
 
 ```javascript
-let c = new BotConfig({ botFilePath: "PATH_TO_BOT_FILE", secret: "SECRET" });
+let c = new BotConfig({ botFilePath: 'PATH_TO_BOT_FILE', secret: 'SECRET' });
 ```
 
 ### TypeScript
@@ -32,13 +32,13 @@ let c = new BotConfig({ botFilePath: "PATH_TO_BOT_FILE", secret: "SECRET" });
 To import the module:
 
 ```typescript
-import { BotConfig } from "botbuilder-config";
+import { BotConfig } from 'botbuilder-config';
 ```
 
 To instantiate the configuration:
 
 ```typescript
-let c = new BotConfig({ botFilePath: "PATH_TO_BOT_FILE", secret: "SECRET" });
+let c = new BotConfig({ botFilePath: 'PATH_TO_BOT_FILE', secret: 'SECRET' });
 ```
 
 > Both the bot file path and the secret are optional properties of a `BotConfigurationOptions` parameter. If the bot file is not specified, it will look in the current working directory of the bot. If the secret is not specified, it will assume that the bot file does not have any encrypted properties.
@@ -60,14 +60,14 @@ Given the above instantiation (where `c` is the `BotConfig` object), you can acc
 * `c.LUIS()`
 * `c.Dispatch()`
 
-**What if I have more than one of the same service?** You can specify an optional `name` parameter to the service method such as `c.QnAMaker("MY_SERVICE_NAME")` that matches the name property of the service in your bot file. If not, it will return the first service of that type that it finds.
+**What if I have more than one of the same service?** You can specify an optional `name` parameter to the service method such as `c.QnAMaker('MY_SERVICE_NAME')` that matches the name property of the service in your bot file. If not, it will return the first service of that type that it finds.
 
 ### Encryption
 
 You could load and access the bot file by simply loading the bot file as JSON into your application. The advantage of this library is that it will decrypt your properties, if you have encrypted them with a secret.
 
 ```javascript
-let c = new BotConfig({ botFilePath: "PATH_TO_BOT_FILE", secret: "SECRET" });
+let c = new BotConfig({ botFilePath: 'PATH_TO_BOT_FILE', secret: 'SECRET' });
 let s = c.decrypt(c.QnAMaker().subscriptionKey)
 console.log(s); // "s" will be decrypted;
 ```
@@ -75,7 +75,7 @@ console.log(s); // "s" will be decrypted;
 You can also decrypt everything ahead of time.
 
 ```javascript
-let c = new BotConfig({ botFilePath: "PATH_TO_BOT_FILE", secret: "SECRET" });
+let c = new BotConfig({ botFilePath: 'PATH_TO_BOT_FILE', secret: 'SECRET' });
 let s = c.QnAMaker().subscriptionKey
 console.log(s); // "s" will be decrypted;
 ```
