@@ -21,7 +21,7 @@ export interface TableStorageSettings {
      *
      * @remarks
      * Check table name rules: https://docs.microsoft.com/en-us/rest/api/storageservices/Understanding-the-Table-Service-Data-Model?redirectedfrom=MSDN#table-names
-    */
+     */
     tableName: string;
 
     /** (Optional) storage access key. */
@@ -38,7 +38,7 @@ export interface TableStorageSettings {
  * @private
  * Map of already initialized tables. Key = tableName, Value = Promise with TableResult creation.
  */
-const checkedTables: { [name: string]: Promise<azure.TableService.TableResult>; } = {};
+const checkedTables: { [name: string]: Promise<azure.TableService.TableResult> } = {};
 
 /**
  * Middleware that implements an Azure Table based storage provider for a bot.
@@ -54,7 +54,7 @@ const checkedTables: { [name: string]: Promise<azure.TableService.TableResult>; 
  *     tableName: 'mybotstate'
  * });
  * ```
-*/
+ */
 export class TableStorage implements Storage {
     private settings: TableStorageSettings;
     private tableService: TableServiceAsync;
@@ -73,7 +73,7 @@ export class TableStorage implements Storage {
             throw new Error('The table name contains invalid characters.');
         }
 
-        this.settings = {...settings};
+        this.settings = { ...settings };
         this.tableService = this.createTableService(this.settings.storageAccountOrConnectionString, this.settings.storageAccessKey, this.settings.host);
     }
 

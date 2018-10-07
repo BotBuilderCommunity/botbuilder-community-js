@@ -1,4 +1,4 @@
-import * as recognizers  from '@microsoft/recognizers-text-sequence';
+import * as recognizers from '@microsoft/recognizers-text-sequence';
 import { Activity, InputHints, TurnContext } from 'botbuilder-core';
 import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from 'botbuilder-dialogs';
 

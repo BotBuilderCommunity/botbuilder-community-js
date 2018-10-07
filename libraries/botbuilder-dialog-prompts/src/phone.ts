@@ -28,6 +28,7 @@ export class PhoneNumberPrompt extends Prompt<string> {
             result.succeeded = true;
             result.value = results[0].resolution.value;
         }
+        
         return result;
     }
 }
