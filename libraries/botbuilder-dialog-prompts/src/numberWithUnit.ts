@@ -3,7 +3,7 @@ import { Activity, InputHints, TurnContext } from "botbuilder-core";
 import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from "botbuilder-dialogs";
 
 /**
- * @module botbuildercommunity/dialogs-prompts
+ * @module botbuildercommunity/dialog-prompts
  */
 
 export interface NumberWithUnitResult

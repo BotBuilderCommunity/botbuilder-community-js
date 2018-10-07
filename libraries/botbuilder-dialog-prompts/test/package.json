@@ -1,0 +1,16 @@
+{
+  "name": "botbuilder-dialog-prompts-test",
+  "version": "0.1.0",
+  "description": "",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael Szul <michael@szul.us>",
+  "license": "MIT",
+  "dependencies": {
+    "botbuilder": "^4.0.6",
+    "botbuilder-dialogs": "^4.0.6",
+    "restify": "^7.2.1"
+  }
+}

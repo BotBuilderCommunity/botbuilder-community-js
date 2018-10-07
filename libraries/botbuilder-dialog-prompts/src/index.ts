@@ -1,5 +1,5 @@
 /**
- * @module botbuildercommunity/dialogs-prompts
+ * @module botbuildercommunity/dialog-prompts
  */
 
 export * from "./numberWithUnit";
@@ -8,3 +8,4 @@ export * from "./phone";
 export * from "./email";
 export * from "./internet";
 export * from "./socialMedia"
+export * from "./guid";

@@ -1,24 +1,22 @@
-import * as recognizers  from "@microsoft/recognizers-text-number";
+import * as recognizers  from "@microsoft/recognizers-text-sequence";
 import { Activity, InputHints, TurnContext } from "botbuilder-core";
 import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from "botbuilder-dialogs";
 
 /**
- * @module botbuildercommunity/dialogs-prompts
+ * @module botbuildercommunity/dialog-prompts
  */
 
-export enum NumberWithTypePromptType
+export enum InternetProtocolPromptType
 {
-    Ordinal = 0,
-    Percentage = 1
+    IPAddress = 0,
+    URL = 1
 }
 
-export class NumberWithTypePrompt extends Prompt<NumberWithTypePromptType> {
+export class InternetProtocolPrompt extends Prompt<string> {
     public defaultLocale: string | undefined;
-    public promptType: NumberWithTypePromptType;
-
-    constructor(dialogId: string, type: NumberWithTypePromptType, validator?: PromptValidator<number>, defaultLocale?: string) {
+    public promptType: InternetProtocolPromptType;
+    constructor(dialogId: string, type: InternetProtocolPromptType, validator?: PromptValidator<string>, defaultLocale?: string) {
         super(dialogId, validator);
-        this.defaultLocale = defaultLocale;
     }
     protected async onPrompt(context: TurnContext, state: any, options: PromptOptions, isRetry: boolean): Promise<void> {
         if (isRetry && options.retryPrompt) {
@@ -27,26 +25,26 @@ export class NumberWithTypePrompt extends Prompt<NumberWithTypePromptType> {
             await context.sendActivity(options.prompt, undefined, InputHints.ExpectingInput);
         }
     }
-    protected async onRecognize(context: TurnContext, state: any, options: PromptOptions): Promise<PromptRecognizerResult<number>> {
-        const result: PromptRecognizerResult<number> = { succeeded: false };
+    protected async onRecognize(context: TurnContext, state: any, options: PromptOptions): Promise<PromptRecognizerResult<string>> {
+        const result: PromptRecognizerResult<string> = { succeeded: false };
         var results: any;
         const activity: Activity = context.activity;
         const utterance: string = activity.text;
         const locale: string = activity.locale || this.defaultLocale || "en-us";
-        
+
         switch(this.promptType)
         {
-            case NumberWithTypePromptType.Ordinal:
-                results = recognizers.recognizeOrdinal(utterance, locale);
+            case InternetProtocolPromptType.IPAddress:
+                results = recognizers.recognizeIpAddress(utterance, locale);
                 break;
-            case NumberWithTypePromptType.Percentage:
-                results = recognizers.recognizePercentage(utterance, locale);
+            case InternetProtocolPromptType.URL:
+                results = recognizers.recognizeURL(utterance, locale);
                 break;
         }
         if (results.length > 0 && results[0].resolution != null) {
-            const resolvedValue = results[0].resolution.value;
             try {
-                result.value = parseFloat(results[0].resolution.value);
+                result.succeeded = true;
+                result.value = results[0].resolution.value;
             }
             catch(e) { }
         }
