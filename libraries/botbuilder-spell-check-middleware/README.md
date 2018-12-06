@@ -16,7 +16,6 @@ import { SpellCheck } from '@botbuildercommunity/spell-check-middleware';
 adapter.use(new SpellCheck(YOUR_BING_SPELL_CHECK_KEY));
 ```
 
-> Note that the TEXT_ANALYTICS_API_ENDPOINT will be the Cognitive Services endpoint root. For example: https://eastus.api.cognitive.microsoft.com
 
 When used, the `turnState` on the `TurnContext` will have a property named `suggestion` which is the actual suggestion. Furthermore `turnState` will have a property `token` which is the phrase which has been classified by the service to be replaced by the suggestion. A full example can be seen in the [`bot.js`](test/bot.js) bot test file.
 
