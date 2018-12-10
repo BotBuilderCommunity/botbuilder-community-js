@@ -1,8 +1,6 @@
-const { CognitiveServicesCredentials } = require("ms-rest-azure");
-const { SpellCheckAPIClient } = require("azure-cognitiveservices-spellcheck");
 const { WebRequest } = require("web-request");
 
-let key = "5a2949cce9da444dba449e1f3e9199d8";
+let key = "<yourKey>";
 
 
 async function testSpellcheckConnection() {

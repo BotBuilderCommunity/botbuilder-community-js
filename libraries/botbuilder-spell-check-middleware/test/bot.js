@@ -2,8 +2,6 @@ const { BotFrameworkAdapter } = require("botbuilder");
 const { restify } = require("restify");
 const { SpellCheck } = require("../src/index");
 
-//require("dotenv").config();
-
 const server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log(`${server.name} listening to ${server.url}`);
