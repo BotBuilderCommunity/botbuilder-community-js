@@ -1,0 +1,43 @@
+{
+  "name": "@botbuildercommunity/spell-check-middleware",
+  "version": "0.1.0",
+  "description": "Bot Framework middleware component for the Cognitive Services Spell Check API",
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "postinstall": "tsc -p .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "keywords": [
+    "chatbots",
+    "bot framework",
+    "bot builder",
+    "sentiment analysis",
+    "text analytics",
+    "cognitive services",
+    "middleware"
+  ],
+  "contributors": [
+    "Bot Builder Community",
+    "Stephan Bisser <stephan@bisser.at>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
+  "dependencies": {
+    "azure-cognitiveservices-spellcheck": "^1.0.1",
+    "botbuilder": "^4.1.3",
+    "ms-rest-azure": "^2.5.9",
+    "restify": "^7.2.2",
+    "web-request": "^1.0.7"
+  }
+}
