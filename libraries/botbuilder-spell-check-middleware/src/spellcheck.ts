@@ -18,7 +18,6 @@ export class SpellCheck implements Middleware {
                 var re = await WebRequest.get(url, {
                     headers : {
                         'Content-Type' : 'application/x-www-form-urlencoded',
-                        'Content-Length' : 30,
                         'Ocp-Apim-Subscription-Key' : this.key,
                     }
                 });
