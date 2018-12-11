@@ -36,7 +36,6 @@
   "dependencies": {
     "azure-cognitiveservices-spellcheck": "^1.0.1",
     "botbuilder": "^4.1.3",
-    "ms-rest-azure": "^2.5.9",
     "restify": "^7.2.2",
     "web-request": "^1.0.7"
   }
