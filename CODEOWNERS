@@ -1,0 +1,14 @@
+# People marked here will be automatically requested for a review
+# when the code that they own is touched.
+# https://help.github.com/articles/about-codeowners/
+
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+* @szul
+
+# Library Owners
+/libraries/botbuilder-config/ @szul
+/libraries/botbuilder-azuretablestorage/ @szul
+/libraries/botbuilder-dialog-prompts/ @szul
+/libraries/botbuilder-text-analytics-middleware/ @szul
+/libraries/botbuilder-spell-check-middleware/ @cloudguy-pro

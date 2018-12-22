@@ -19,17 +19,19 @@ The number with unit prompt allows you to prompt for four different unit types:
 * Age
 * Dimension
 
-```
-dialogs.add(new NumberWithUnitPrompt("numberPrompt", NumberWithUnitPromptType.Currency);
+```javascript
+dialogs.add(new NumberWithUnitPrompt('numberPrompt', NumberWithUnitPromptType.Currency);
 ```
 
 It returns a `NumberWithUnitResult`. You can see the interface below.
 
-    export interface NumberWithUnitResult
-    {
-        unit: string
-        , value: any
-    }
+```typescript
+export interface NumberWithUnitResult
+{
+    unit: string
+    , value: any
+}
+```
 
 ## Number with Type
 
@@ -38,8 +40,8 @@ Number with type allows you to accept numbers from the follow type enum:
 * Ordinal
 * Percentage
 
-```
-dialogs.add(new NumberWithTypePrompt("numberPrompt", NumberWithTypePrompt.Ordinal);
+```javascript
+dialogs.add(new NumberWithTypePrompt('numberPrompt', NumberWithTypePrompt.Ordinal);
 ```
 
 ## Phone Number
