@@ -1,14 +1,15 @@
-import * as recognizers  from '@microsoft/recognizers-text-number-with-unit';
+import * as recognizers from '@microsoft/recognizers-text-number-with-unit';
 import { Activity, InputHints, TurnContext } from 'botbuilder-core';
 import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from 'botbuilder-dialogs';
+import { ModelResult } from '@microsoft/recognizers-text';
 
 /**
  * @module botbuildercommunity/dialog-prompts
  */
 
 export interface NumberWithUnitResult {
-    unit: string
-    ; value: any;
+    unit: string;
+    value: any;
 }
 
 export enum NumberWithUnitPromptType {
@@ -26,6 +27,7 @@ export class NumberWithUnitPrompt extends Prompt<NumberWithUnitResult> {
         super(dialogId, validator);
         this.defaultLocale = defaultLocale;
     }
+
     protected async onPrompt(context: TurnContext, state: any, options: PromptOptions, isRetry: boolean): Promise<void> {
         if (isRetry && options.retryPrompt) {
             await context.sendActivity(options.retryPrompt, undefined, InputHints.ExpectingInput);
@@ -33,9 +35,10 @@ export class NumberWithUnitPrompt extends Prompt<NumberWithUnitResult> {
             await context.sendActivity(options.prompt, undefined, InputHints.ExpectingInput);
         }
     }
+
     protected async onRecognize(context: TurnContext, state: any, options: PromptOptions): Promise<PromptRecognizerResult<NumberWithUnitResult>> {
         const result: PromptRecognizerResult<NumberWithUnitResult> = { succeeded: false };
-        let results: any;
+        let results: ModelResult[];
         const activity: Activity = context.activity;
         const utterance: string = activity.text;
         const locale: string = activity.locale || this.defaultLocale || 'en-us';
@@ -54,18 +57,20 @@ export class NumberWithUnitPrompt extends Prompt<NumberWithUnitResult> {
                 results = recognizers.recognizeTemperature(utterance, locale);
                 break;
         }
+
         if (results.length > 0 && results[0].resolution != null) {
             const resolvedUnit = results[0].resolution.unit;
             const resolvedValue = results[0].resolution.value;
             try {
                 result.succeeded = true;
                 const numberWithUnitResult = {
-                    unit: resolvedUnit
-                    , value: resolvedValue
+                    unit: resolvedUnit,
+                    value: resolvedValue
                 };
                 result.value = numberWithUnitResult;
             } catch (e) { }
         }
+
         return result;
     }
 }

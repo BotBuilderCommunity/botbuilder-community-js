@@ -1,6 +1,7 @@
-import * as recognizers  from '@microsoft/recognizers-text-number';
+import * as recognizers from '@microsoft/recognizers-text-number';
 import { Activity, InputHints, TurnContext } from 'botbuilder-core';
 import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from 'botbuilder-dialogs';
+import { ModelResult } from '@microsoft/recognizers-text';
 
 /**
  * @module botbuildercommunity/dialog-prompts
@@ -14,10 +15,12 @@ export enum NumberWithTypePromptType {
 export class NumberWithTypePrompt extends Prompt<NumberWithTypePromptType> {
     public defaultLocale: string | undefined;
     public promptType: NumberWithTypePromptType;
+
     constructor(dialogId: string, type: NumberWithTypePromptType, validator?: PromptValidator<number>, defaultLocale?: string) {
         super(dialogId, validator);
         this.defaultLocale = defaultLocale;
     }
+
     protected async onPrompt(context: TurnContext, state: any, options: PromptOptions, isRetry: boolean): Promise<void> {
         if (isRetry && options.retryPrompt) {
             await context.sendActivity(options.retryPrompt, undefined, InputHints.ExpectingInput);
@@ -25,9 +28,10 @@ export class NumberWithTypePrompt extends Prompt<NumberWithTypePromptType> {
             await context.sendActivity(options.prompt, undefined, InputHints.ExpectingInput);
         }
     }
+
     protected async onRecognize(context: TurnContext, state: any, options: PromptOptions): Promise<PromptRecognizerResult<number>> {
         const result: PromptRecognizerResult<number> = { succeeded: false };
-        let results: any;
+        let results: ModelResult[];
         const activity: Activity = context.activity;
         const utterance: string = activity.text;
         const locale: string = activity.locale || this.defaultLocale || 'en-us';
@@ -40,12 +44,14 @@ export class NumberWithTypePrompt extends Prompt<NumberWithTypePromptType> {
                 results = recognizers.recognizePercentage(utterance, locale);
                 break;
         }
-        if (results.length > 0 && results[0].resolution != null) {
+        if (results.length > 0 && results[0].resolution !== null) {
             try {
                 result.succeeded = true;
                 result.value = parseFloat(results[0].resolution.value);
             } catch (e) { }
         }
+
         return result;
     }
+
 }
