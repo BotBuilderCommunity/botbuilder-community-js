@@ -8,7 +8,7 @@ The Text Analytics Middleware offers Bot Framework middleware components for the
 
 ## Usage
 
-All middleware is created and use in the same way. For example, for sentiment analysis, import the `SentimentAnalysis` class from the package, and add it to your bot adapter:
+All middleware is created and used in the same way. For example, for sentiment analysis, import the `SentimentAnalysis` class from the package, and add it to your bot adapter:
 
     import { SentimentAnalysis } from "@botbuildercommunity/text-analytics-middleware";
 
@@ -27,7 +27,7 @@ Supported middleware classes include:
 
 Each class takes the two required parameters in the example usage above (with the SERVICE_CLIENT_OPTIONS parameter being optional).
 
-In each case, properties are added to the `turnState` of the `TurnContext` You can retrieve them in your bot via:
+In each case, properties are added to the `turnState` of the `TurnContext`. You can retrieve them in your bot via:
 
 * `context.turnState.get("sentimentScore")` //This is a number for `SentimentAnalysis`
 * `context.turnState.get("language")` //This is a string for `LanguageDetection`

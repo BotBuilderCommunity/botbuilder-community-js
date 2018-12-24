@@ -3,12 +3,11 @@ import { recognizeHashtag, recognizeMention } from '@microsoft/recognizers-text-
 import { ActivityTypes, Middleware, TurnContext } from 'botbuilder';
 
 /**
- * @module botbuildercommunity/text-recognizers
+ * @module botbuildercommunity/text-recognizer-middleware
  */
 
 export class SocialMediaRecognizer implements Middleware {
     constructor(public defaultLocale?: string) {
-        //
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if (context.activity.type === ActivityTypes.Message) {

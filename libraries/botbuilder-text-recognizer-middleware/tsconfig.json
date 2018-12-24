@@ -5,8 +5,7 @@
     "declaration": true,
     "sourceMap": true,
     "outDir": "./lib",
-    "rootDir": "./src",
-    "types" : ["node"]
+    "rootDir": "./src"
   },
   "include": [
     "src/**/*"
