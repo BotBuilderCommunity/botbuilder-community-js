@@ -22,3 +22,11 @@ The following Bot Framework compatible packages are available to install within 
 | [botbuilder-spell-check-middleware](libraries/botbuilder-spell-check-middleware/README.md) | Use Cogntive Services Spell Check API to detect misspellings and correct these | ![NPM Version](https://img.shields.io/badge/npm-0.1.0-red.svg) |
 
 > The Azure Table Storage package has been deprecated from Microsoft's `botbuilder-js` repository, and is being taken over by the community.
+
+## Adapters
+
+The following Bot Framework compatible packages are available as alternative adapters for creating chatbots.
+
+| Name | Description | NPM |
+| ---- | ----------- |-------|
+| [botbuilder-adapters](libraries/botbuilder-adapters/README.md) | Use alternative adapters in your chabot |  |
