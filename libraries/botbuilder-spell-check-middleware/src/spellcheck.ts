@@ -22,9 +22,7 @@ export class SpellCheck implements Middleware {
                     }
                 });
                 const obj: any = JSON.parse(re.content);
-                if (obj.flaggedTokens[0] == null) {
-                    throw new Error('No tokens/suggestions found........');
-                } else {
+                if (obj.flaggedTokens && obj.flaggedTokens.length > 0) {
                     try {
                         if (obj.flaggedTokens[0].suggestions[0].suggestion) {
                             const suggestion: any = obj.flaggedTokens[0].suggestions[0].suggestion;
