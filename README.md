@@ -9,7 +9,7 @@ The following Bot Framework compatible packages are available to install within 
 | Name | Description | NPM |
 | ---- | ----------- |-----|
 | [botbuilder-config](libraries/botbuilder-config/README.md) | Consume/decrypt bot files | ![NPM Version](https://img.shields.io/badge/npm-0.5.1-red.svg) |
-| [botbuilder-dialog-prompts](libraries/botbuilder-dialog-prompts/README.md) | A variety of prompts using the Microsoft text recognizer suite | ![NPM Version](https://img.shields.io/badge/npm-0.1.0-red.svg) |
+| [botbuilder-dialog-prompts](libraries/botbuilder-dialog-prompts/README.md) | A variety of prompts using the Microsoft Text Recognizer Suite | ![NPM Version](https://img.shields.io/badge/npm-0.1.0-red.svg) |
 
 ## Middleware
 
@@ -19,5 +19,6 @@ The following Bot Framework compatible packages are available to install within 
 | ---- | ----------- |-------|
 | [botbuilder-azuretablestorage](libraries/botbuilder-azurestablestorage/README.md) | Use Azure Table Storage in your bot | ![NPM Version](https://img.shields.io/badge/npm-0.1.1-red.svg) |
 | [botbuilder-text-analytics-middleware](libraries/botbuilder-text-analytics-middleware/README.md) | Use Cogntive Services Text Analytics API for sentiment analysis, language detection, key phrases, and entity extraction | ![NPM Version](https://img.shields.io/badge/npm-0.1.2-red.svg) |
+| [botbuilder-text-recognizer-middleware](libraries/botbuilder-text-recognizer-middleware/README.md) | Use the Microsoft Text Recognizer Suite for recognizing certain text sequences | ![NPM Version](https://img.shields.io/badge/npm-0.1.0-red.svg) |
 
 > The Azure Table Storage package has been deprecated from Microsoft's `botbuilder-js` repository, and is being taken over by the community.
