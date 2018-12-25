@@ -1,13 +1,14 @@
 {
-  "name": "botbuilder-azuretablestorage",
-  "version": "0.1.1",
-  "description": "Bot Builder SDK Azure Table Storage",
+  "name": "@botbuildercommunity/storage",
+  "version": "0.1.2",
+  "description": "Additional storage options for the Microsoft Bot Framework, including Azure Table Storage",
   "keywords": [
     "botbuilder",
     "bots",
     "chatbots",
     "azure table storage",
-    "table storage"
+    "table storage",
+    "storage"
   ],
   "contributors": [
     "Microsoft Corp.",
