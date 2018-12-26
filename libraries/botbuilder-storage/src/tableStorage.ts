@@ -99,15 +99,18 @@ export class TableStorage implements Storage {
     }
 
     public read(keys: string[]): Promise<StoreItems> {
-        if (!keys || !keys.length) {
+        if (!keys) {
             throw new Error('Please provide at least one key to read from storage.');
         }
-        return this.ensureTable().then(async () => {
-            var reads = keys.map(key => {
-                let pk = this.sanitizeKey(key);
-                this.tableService.doesTableExistAsync(this.settings.tableName).then((tableResult: azure.TableService.TableResult) => {
-                    if(tableResult.exists) {
-                        return this.tableService.retrieveEntityAsync<any>(this.settings.tableName, pk, '', { entityResolver: entityResolver })
+
+        const sanitizedKeys: string[] = keys.filter((k: string) => k).map((key: string) => this.sanitizeKey(key));
+
+        return this.ensureTable().then((container: azure.TableService.TableResult) => {
+            return new Promise<StoreItems>((resolve: any, reject: any): void => {
+                Promise.all<StoreItem>(sanitizedKeys.map((key: string) => {
+                    return this.tableService.doesTableExistAsync(this.settings.tableName).then((tableResult: azure.TableService.TableResult) => {
+                        if (tableResult.exists) {
+                            return this.tableService.retrieveEntityAsync<any>(this.settings.tableName, key, '', { entityResolver: entityResolver })
                             .then(result => {
                                 let value = unflatten(result, flattenOptions);
                                 value.eTag = value['.metadata'].etag;
@@ -117,19 +120,20 @@ export class TableStorage implements Storage {
 
                                 return { key, value };
                             }).catch(handleNotFoundWith({ key, value: null }));
+                        } else {
+                            // If blob does not exist, return an empty StoreItem.
+                            return { } as StoreItem;
+                        }
+                    });
+                })).then((items: StoreItem[]) => {
+                    if (items !== null && items.length > 0) {
+                        const storeItems: StoreItems = {};
+                        items.filter(prop => (<any>prop).value !== null).reduce(propsReducer, {});
+                        resolve(storeItems);
                     }
-                    else {
-                        return {  } as StoreItem;
-                    }
-                });
-
-                return Promise.all(reads)
-                    .then(items => items
-                        .filter(prop => (<any>prop).value !== null)
-                        .reduce(propsReducer, {})
-                    ).catch(e => console.log(e));     // as StoreItems
-                });
-        });
+                }).catch((error: Error) => { reject(error); });
+            });
+        }).catch((error: Error) => { throw error; });
     }
 
     public write(changes: StoreItems): Promise<void> {
@@ -226,7 +230,7 @@ export class TableStorage implements Storage {
             createTableIfNotExistsAsync: this.denodeify(tableService, tableService.createTableIfNotExists),
             deleteTableIfExistsAsync: this.denodeify(tableService, tableService.deleteTableIfExists),
             retrieveEntityAsync: this.denodeify(tableService, tableService.retrieveEntity),
-            doesTableExistAsync: this.denodeify(tableService, tableService.doesTableExistAsync),
+            doesTableExistAsync: this.denodeify(tableService, tableService.doesTableExist),
             insertOrReplaceEntityAsync: this.denodeify(tableService, tableService.insertOrReplaceEntity),
             replaceEntityAsync: this.denodeify(tableService, tableService.replaceEntity),
             deleteEntityAsync: this.denodeify(tableService, tableService.deleteEntity)
