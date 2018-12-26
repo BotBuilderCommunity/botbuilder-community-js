@@ -17,7 +17,7 @@ The following Bot Framework compatible packages are available to install within 
 
 | Name | Description | NPM |
 | ---- | ----------- |-------|
-| [botbuilder-azuretablestorage](libraries/botbuilder-azurestablestorage/README.md) | Use Azure Table Storage in your bot | ![NPM Version](https://img.shields.io/badge/npm-0.1.1-red.svg) |
+| [botbuilder-storage](libraries/botbuilder-storage/README.md) | Use alternative storage, such as Azure Table Storage in your bot | ![NPM Version](https://img.shields.io/badge/npm-0.1.2-red.svg) |
 | [botbuilder-text-analytics-middleware](libraries/botbuilder-text-analytics-middleware/README.md) | Use Cogntive Services Text Analytics API for sentiment analysis, language detection, key phrases, and entity extraction | ![NPM Version](https://img.shields.io/badge/npm-0.1.2-red.svg) |
 | [botbuilder-spell-check-middleware](libraries/botbuilder-spell-check-middleware/README.md) | Use Cogntive Services Spell Check API to detect misspellings and correct these | ![NPM Version](https://img.shields.io/badge/npm-0.1.0-red.svg) |
 
