@@ -31,12 +31,12 @@
   "typings": "./lib/index.d.ts",
   "dependencies": {
     "azure-storage": "^2.6.0",
-    "botbuilder": "^4.0.0-preview1.2",
-    "botbuilder-azure": "^4.0.0-preview1.2",
-    "flat": "^4.1.0",
-    "typescript": "^3.0.1"
+    "botbuilder": "^4.2.0",
+    "botbuilder-azure": "^4.2.0",
+    "flat": "^4.1.0"
   },
   "devDependencies": {
+    "typescript": "^3.0.1",
     "@types/node": "^7.0.64"
   }
 }
