@@ -24,3 +24,11 @@ The following Bot Framework compatible packages are available to install within 
 | [botbuilder-text-recognizer-middleware](libraries/botbuilder-text-recognizer-middleware/README.md) | Use the Microsoft Text Recognizer Suite for recognizing certain text sequences | ![NPM Version](https://img.shields.io/badge/npm-0.1.0-red.svg) |
 
 > The Azure Table Storage package has been deprecated from Microsoft's `botbuilder-js` repository, and is being taken over by the community.
+
+## Adapters
+
+The following Bot Framework compatible packages are available as alternative adapters for creating chatbots.
+
+| Name | Description | NPM |
+| ---- | ----------- |-------|
+| [botbuilder-adapters](libraries/botbuilder-adapters/README.md) | Use alternative adapters in your chabot |  |

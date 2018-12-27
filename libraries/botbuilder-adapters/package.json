@@ -1,0 +1,43 @@
+{
+  "name": "@botbuildercommunity/adapters",
+  "version": "0.1.0",
+  "description": "A collection of adapters for use with the Bot Framework, in order to handle different deployment and integration scenarios.",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "postinstall": "tsc -p .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "keywords": [
+    "chatbots",
+    "bot framework",
+    "bot builder",
+    "console adapter",
+    "adapters"
+  ],
+  "contributors": [
+    "Bot Builder Community",
+    "Michael Szul <michael@szul.us>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
+  "dependencies": {
+    "botbuilder": "^4.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "tslint": "^5.12.0",
+    "tslint-microsoft-contrib": "^5.2.1",
+    "typescript": "^3.2.2"
+  }
+}
