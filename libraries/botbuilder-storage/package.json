@@ -24,7 +24,7 @@
     "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
   },
   "scripts": {
-    "postinstall": "./node_modules/.bin/tsc -p .",
+    "postinstall": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "main": "./lib/index.js",
@@ -36,7 +36,7 @@
     "flat": "^4.1.0"
   },
   "devDependencies": {
-    "typescript": "^3.0.1",
-    "@types/node": "^7.0.64"
+    "@types/node": "^7.0.64",
+    "typescript": "^3.2.2"
   }
 }

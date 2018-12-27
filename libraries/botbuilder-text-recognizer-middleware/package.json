@@ -8,7 +8,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "postinstall": "tsc -p .",
+    "postinstall": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
