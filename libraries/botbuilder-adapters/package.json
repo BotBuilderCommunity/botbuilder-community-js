@@ -1,9 +1,9 @@
 {
-  "name": "@botbuildercommunity/spell-check-middleware",
+  "name": "@botbuildercommunity/adapters",
   "version": "0.1.0",
-  "description": "Bot Framework middleware component for the Cognitive Services Spell Check API",
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "description": "A collection of adapters for use with the Bot Framework, in order to handle different deployment and integration scenarios.",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "directories": {
     "lib": "lib"
   },
@@ -19,14 +19,12 @@
     "chatbots",
     "bot framework",
     "bot builder",
-    "sentiment analysis",
-    "text analytics",
-    "cognitive services",
-    "middleware"
+    "console adapter",
+    "adapters"
   ],
   "contributors": [
     "Bot Builder Community",
-    "Stephan Bisser <stephan@bisser.at>"
+    "Michael Szul <michael@szul.us>"
   ],
   "license": "MIT",
   "bugs": {
@@ -34,15 +32,12 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "azure-cognitiveservices-spellcheck": "^1.0.1",
-    "botbuilder": "^4.1.3",
-    "restify": "^7.2.2",
-    "web-request": "^1.0.7"
+    "botbuilder": "^4.2.0"
   },
   "devDependencies": {
-    "typescript": "^3.2.2",
     "mocha": "^5.2.0",
-    "tslint": "^5.11.0",
-    "tslint-microsoft-contrib": "^5.2.1"
+    "tslint": "^5.12.0",
+    "tslint-microsoft-contrib": "^5.2.1",
+    "typescript": "^3.2.2"
   }
 }

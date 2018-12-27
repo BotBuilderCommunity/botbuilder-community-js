@@ -2,4 +2,4 @@
  * @module botbuildercommunity/spellcheck
  */
 
-export * from "./spellcheck";
+export * from './spellcheck';

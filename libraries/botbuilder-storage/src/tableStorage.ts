@@ -1,5 +1,5 @@
 /**
- * @module botbuilder-azuretablestorage
+ * @module @botbuildercommunity/storage
  */
 /**
  * Initial code copyright (c) Microsoft Corporation. All rights reserved.
@@ -99,33 +99,42 @@ export class TableStorage implements Storage {
     }
 
     public read(keys: string[]): Promise<StoreItems> {
-        if (!keys || !keys.length) {
+        if (!keys) {
             throw new Error('Please provide at least one key to read from storage.');
         }
 
-        return this.ensureTable().then(() => {
-            var reads = keys.map(key => {
-                let pk = this.sanitizeKey(key);
-                return this.tableService.retrieveEntityAsync<any>(this.settings.tableName, pk, '', { entityResolver: entityResolver })
-                    .then(result => {
-                        let value = unflatten(result, flattenOptions);
-                        value.eTag = value['.metadata'].etag;
+        const sanitizedKeys: string[] = keys.filter((k: string) => k).map((key: string) => this.sanitizeKey(key));
 
-                        // remove TableRow Properties from storeItem
-                        ['PartitionKey', 'RowKey', '.metadata'].forEach(k => delete value[k]);
+        return this.ensureTable().then((container: azure.TableService.TableResult) => {
+            return new Promise<StoreItems>((resolve: any, reject: any): void => {
+                Promise.all<StoreItem>(sanitizedKeys.map((key: string) => {
+                    return this.tableService.doesTableExistAsync(this.settings.tableName).then((tableResult: azure.TableService.TableResult) => {
+                        if (tableResult.exists) {
+                            return this.tableService.retrieveEntityAsync<any>(this.settings.tableName, key, '', { entityResolver: entityResolver })
+                            .then(result => {
+                                let value = unflatten(result, flattenOptions);
+                                value.eTag = value['.metadata'].etag;
 
-                        return { key, value };
-                    }).catch(handleNotFoundWith({ key, value: null }));
+                                // remove TableRow Properties from storeItem
+                                ['PartitionKey', 'RowKey', '.metadata'].forEach(k => delete value[k]);
+
+                                return { key, value };
+                            }).catch(handleNotFoundWith({ key, value: null }));
+                        } else {
+                            // If blob does not exist, return an empty StoreItem.
+                            return { } as StoreItem;
+                        }
+                    });
+                })).then((items: StoreItem[]) => {
+                    if (items !== null && items.length > 0) {
+                        const storeItems: StoreItems = {};
+                        items.filter(prop => (<any>prop).value !== null).reduce(propsReducer, {});
+                        resolve(storeItems);
+                    }
+                }).catch((error: Error) => { reject(error); });
             });
-
-            return Promise.all(reads)
-                .then(items => items
-                    .filter(prop => prop.value !== null)
-                    .reduce(propsReducer, {})
-                ).catch(e => console.log(e));     // as StoreItems
-                    
-        });
-    };
+        }).catch((error: Error) => { throw error; });
+    }
 
     public write(changes: StoreItems): Promise<void> {
         if (!changes) {
@@ -221,6 +230,7 @@ export class TableStorage implements Storage {
             createTableIfNotExistsAsync: this.denodeify(tableService, tableService.createTableIfNotExists),
             deleteTableIfExistsAsync: this.denodeify(tableService, tableService.deleteTableIfExists),
             retrieveEntityAsync: this.denodeify(tableService, tableService.retrieveEntity),
+            doesTableExistAsync: this.denodeify(tableService, tableService.doesTableExist),
             insertOrReplaceEntityAsync: this.denodeify(tableService, tableService.insertOrReplaceEntity),
             replaceEntityAsync: this.denodeify(tableService, tableService.replaceEntity),
             deleteEntityAsync: this.denodeify(tableService, tableService.deleteEntity)
@@ -246,6 +256,7 @@ interface TableServiceAsync extends azure.TableService {
     createTableIfNotExistsAsync(table: string): Promise<azure.TableService.TableResult>;
     deleteTableIfExistsAsync(table: string): Promise<boolean>;
     retrieveEntityAsync<T>(table: string, partitionKey: string, rowKey: string, options: any): Promise<T>;
+    doesTableExistAsync(table: string): Promise<azure.TableService.TableResult>;
     replaceEntityAsync<T>(table: string, entityDescriptor: T): Promise<azure.TableService.EntityMetadata>;
     insertOrReplaceEntityAsync<T>(table: string, entityDescriptor: T): Promise<azure.TableService.EntityMetadata>;
     deleteEntityAsync<T>(table: string, entityDescriptor: T): Promise<void>;
