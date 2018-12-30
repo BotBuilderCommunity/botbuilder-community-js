@@ -1,0 +1,12 @@
+{
+  "name": "botbuildercommunity-packages",
+  "private": true,
+  "scripts": {
+    "build": "lerna bootstrap"
+  },
+  "devDependencies": {
+    "lerna": "^3.8.0",
+    "mocha": "^5.2.0",
+    "typescript": "^3.2.2"
+  }
+}

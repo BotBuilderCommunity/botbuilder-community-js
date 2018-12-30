@@ -8,7 +8,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "postinstall": "tsc -p .",
+    "postinstall": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -41,6 +41,7 @@
     "botbuilder-dialogs": "^4.0.6"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "typescript": "^3.2.2"
   }
 }
