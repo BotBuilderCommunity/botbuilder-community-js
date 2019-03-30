@@ -7,7 +7,6 @@
 * @szul
 
 # Library Owners
-/libraries/botbuilder-config/ @szul
 /libraries/botbuilder-azuretablestorage/ @szul
 /libraries/botbuilder-dialog-prompts/ @szul
 /libraries/botbuilder-text-analytics-middleware/ @szul
