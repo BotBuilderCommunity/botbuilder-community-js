@@ -8,7 +8,6 @@ The following Bot Framework compatible packages are available to install within 
 
 | Name | Description | NPM |
 | ---- | ----------- | ----- |
-| [botbuilder-config](libraries/botbuilder-config/README.md) | Consume/decrypt bot files | [![NPM Version](https://img.shields.io/badge/npm-0.5.1-red.svg)](https://www.npmjs.com/package/botbuilder-config) |
 | [botbuilder-dialog-prompts](libraries/botbuilder-dialog-prompts/README.md) | A variety of prompts using the Microsoft text recognizer suite | [![NPM Version](https://img.shields.io/badge/npm-0.1.0-red.svg)](https://www.npmjs.com/package/@botbuildercommunity/dialog-prompts) |
 
 ## Middleware
