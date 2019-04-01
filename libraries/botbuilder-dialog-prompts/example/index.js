@@ -1,6 +1,6 @@
 const { BotFrameworkAdapter, ConversationState, MemoryStorage } = require("botbuilder");
 const restify = require("restify");
-const { EmailBot } = require("../email");
+const { EmailBot } = require("./bot");
 
 const server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {

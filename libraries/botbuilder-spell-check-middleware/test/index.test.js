@@ -1,3 +1,4 @@
+/*
 const { WebRequest } = require("web-request");
 
 let key = "<yourKey>";
@@ -31,3 +32,6 @@ async function testSpellcheckConnection() {
 }
 
 testSpellcheckConnection();
+*/
+
+//Need to put into Mocha format.
