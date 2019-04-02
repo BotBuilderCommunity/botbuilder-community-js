@@ -1,5 +1,6 @@
 //@ts-check
 
+const assert = require("assert");
 const { ConversationState, MemoryStorage, TestAdapter } = require("botbuilder");
 const { DialogSet, DialogTurnStatus } = require("botbuilder-dialogs");
 const { EmailPrompt } = require("../lib/email");
@@ -34,7 +35,7 @@ describe('Email dialog prompt tests', function() {
 
 describe('GUID dialog prompt tests', function() {
     this.timeout(5000);
-    it('should call GuidPrompt using when user initiates conversation.', async function () {
+    it('should call GuidPrompt using when user initiates conversation.', function (done) {
         const adapter = new TestAdapter(async (turnContext) => {
             const dc = await dialogs.createContext(turnContext);
 
@@ -53,9 +54,14 @@ describe('GUID dialog prompt tests', function() {
         const dialogs = new DialogSet(dialogState);
         dialogs.add(new GUIDPrompt('prompt'));
 
-        await adapter.send('Hello')
+        adapter.send('Hello')
             .assertReply('What is your Azure subscription?')
             .send('My Azure subscription GUID is c3125047-eaac-4755-82bf-a164c0699973')
-            .assertReply('c3125047-eaac-4755-82bf-a164c0699973');
+            .assertReply('c3125047-eaac-4755-82bf-a164c0699973')
+            .then(() => done())
+            .catch((e) => {
+                assert.equal(e, null);
+                done();
+            });
     });
 });
