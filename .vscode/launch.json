@@ -7,12 +7,15 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}\\libraries\\botbuilder-dialog-prompts\\test\\index.js",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]//,
-            //"envFile": "${workspaceFolder}\\libraries\\botbuilder-sentiment-middleware\\test\\.env"
+            "name": "Mocha Tests",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/mocha",
+            "args": [
+                "--inspect-brk",
+                "${workspaceFolder}/libraries/*/test/**/*.js",
+                "--recursive"
+            ],
+            "port": 9229,
+            "internalConsoleOptions": "openOnSessionStart"
         }
     ]
 }

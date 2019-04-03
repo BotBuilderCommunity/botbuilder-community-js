@@ -15,8 +15,9 @@ export enum InternetProtocolPromptType
 export class InternetProtocolPrompt extends Prompt<string> {
     public defaultLocale: string | undefined;
     public promptType: InternetProtocolPromptType;
-    constructor(dialogId: string, type: InternetProtocolPromptType, validator?: PromptValidator<string>, defaultLocale?: string) {
+    constructor(dialogId: string, promptType: InternetProtocolPromptType, validator?: PromptValidator<string>, defaultLocale?: string) {
         super(dialogId, validator);
+        this.promptType = promptType;
     }
     protected async onPrompt(context: TurnContext, state: any, options: PromptOptions, isRetry: boolean): Promise<void> {
         if (isRetry && options.retryPrompt) {
