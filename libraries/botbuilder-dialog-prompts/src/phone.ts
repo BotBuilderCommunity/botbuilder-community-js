@@ -23,7 +23,7 @@ export class PhoneNumberPrompt extends Prompt<string> {
         const activity: Activity = context.activity;
         const utterance: string = activity.text;
         const locale: string = activity.locale || this.defaultLocale || "en-us";
-        const results = recognizers.recognizeIpAddress(utterance, locale);
+        const results = recognizers.recognizePhoneNumber(utterance, locale);
         if (results.length > 0 && results[0].resolution != null) {
             result.succeeded = true;
             result.value = results[0].resolution.value;
