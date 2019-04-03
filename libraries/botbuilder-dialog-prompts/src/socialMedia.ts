@@ -15,9 +15,10 @@ export enum SocialMediaPromptType
 export class SocialMediaPrompt extends Prompt<string> {
     public defaultLocale: string | undefined;
     public promptType: SocialMediaPromptType;
-    constructor(dialogId: string, type: SocialMediaPromptType, validator?: PromptValidator<string>, defaultLocale?: string) {
+    constructor(dialogId: string, promptType: SocialMediaPromptType, validator?: PromptValidator<string>, defaultLocale?: string) {
         super(dialogId, validator);
         this.defaultLocale = defaultLocale;
+        this.promptType = promptType;
     }
     protected async onPrompt(context: TurnContext, state: any, options: PromptOptions, isRetry: boolean): Promise<void> {
         if (isRetry && options.retryPrompt) {

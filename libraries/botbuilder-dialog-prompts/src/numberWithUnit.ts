@@ -23,10 +23,10 @@ export enum NumberWithUnitPromptType
 export class NumberWithUnitPrompt extends Prompt<NumberWithUnitResult> {
     public defaultLocale: string | undefined;
     public promptType: NumberWithUnitPromptType;
-
-    constructor(dialogId: string, type: NumberWithUnitPromptType, validator?: PromptValidator<NumberWithUnitResult>, defaultLocale?: string) {
+    constructor(dialogId: string, promptType: NumberWithUnitPromptType, validator?: PromptValidator<NumberWithUnitResult>, defaultLocale?: string) {
         super(dialogId, validator);
         this.defaultLocale = defaultLocale;
+        this.promptType = promptType;
     }
     protected async onPrompt(context: TurnContext, state: any, options: PromptOptions, isRetry: boolean): Promise<void> {
         if (isRetry && options.retryPrompt) {

@@ -15,9 +15,10 @@ export enum NumberWithTypePromptType
 export class NumberWithTypePrompt extends Prompt<NumberWithTypePromptType> {
     public defaultLocale: string | undefined;
     public promptType: NumberWithTypePromptType;
-    constructor(dialogId: string, type: NumberWithTypePromptType, validator?: PromptValidator<number>, defaultLocale?: string) {
+    constructor(dialogId: string, promptType: NumberWithTypePromptType, validator?: PromptValidator<number>, defaultLocale?: string) {
         super(dialogId, validator);
         this.defaultLocale = defaultLocale;
+        this.promptType = promptType;
     }
     protected async onPrompt(context: TurnContext, state: any, options: PromptOptions, isRetry: boolean): Promise<void> {
         if (isRetry && options.retryPrompt) {

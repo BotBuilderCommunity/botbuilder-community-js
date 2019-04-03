@@ -1,3 +1,4 @@
+/*
 const { CognitiveServicesCredentials } = require("ms-rest-azure");
 const { TextAnalyticsClient } = require("azure-cognitiveservices-textanalytics");
 
@@ -24,3 +25,4 @@ async function testSentimentConnection() {
 }
 
 testSentimentConnection();
+*/
