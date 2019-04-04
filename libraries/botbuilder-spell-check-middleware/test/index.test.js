@@ -1,37 +1,37 @@
-/*
-const { WebRequest } = require("web-request");
+//@ts-check
 
-let key = "<yourKey>";
+const { TestAdapter } = require("botbuilder");
+const rewire = require("rewire");
+const spellchecker = rewire("../lib/spellcheck")
 
-
-async function testSpellcheckConnection() {
-    text = "Cognutive Services";
-            let url = "https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/?text=" + text + "&mode=spell"
-            try {
-                var re = await WebRequest.get(url, {
-                    headers : {
-                        'Content-Type' : 'application/x-www-form-urlencoded',
-                        'Content-Length' : 30,
-                        'Ocp-Apim-Subscription-Key' : key,
-                    }
-                });
-                let obj = JSON.parse(re.content);
-                if(obj.flaggedTokens[0].suggestions[0].suggestion){
-                    let suggestion = obj.flaggedTokens[0].suggestions[0].suggestion;
-                    let token = obj.flaggedTokens[0].token;
-                    console.log("Did you mean this: " + suggestion);
-                    console.log("Token: " + token);
-                
-                    context.turnState.set("token", token);
-                    context.turnState.set("suggestion", suggestion);
-                }               
-            }
-            catch(e) {
-                throw new Error(`Failed to process spellcheck on ${text}. Error: ${e}`);
-            }
+const mock = async function getWebRequest(url, string) {
+    return Promise.resolve({
+        content: JSON.stringify({
+            _type: "SpellCheck",
+            flaggedTokens: [{
+                offset: 0,
+                token: "hellow",
+                type: "UnknownToken",
+                suggestions: [{
+                    suggestion: "hello",
+                    score: 0.875
+                }]
+            }]
+        })
+    });
 }
 
-testSpellcheckConnection();
-*/
+spellchecker.__set__("getWebRequest", mock);
 
-//Need to put into Mocha format.
+describe('Spellcheck middleware tests', function () {
+	this.timeout(5000);
+
+	it('should spellcheck a message', async () => {
+
+		const adapter = new TestAdapter(async (context) => {
+			await context.sendActivity(context.turnState.get('suggestion'));
+        });
+        adapter.use(new spellchecker.SpellCheck("not a real key"));
+		await adapter.test('hellow', 'hello');
+	});
+});
