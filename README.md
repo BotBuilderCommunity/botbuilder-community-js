@@ -29,4 +29,4 @@ The following Bot Framework compatible packages are available as alternative ada
 
 | Name | Description | NPM |
 | ---- | ----------- | ------- |
-| [botbuilder-adapters](libraries/botbuilder-adapters/README.md) | Use alternative adapters in your chabot | ![NPM Version](https://img.shields.io/badge/npm-0.2.0-red.svg) |
+| [botbuilder-adapters](libraries/botbuilder-adapters/README.md) | Use alternative adapters in your chatbot | ![NPM Version](https://img.shields.io/badge/npm-0.2.0-red.svg) |
