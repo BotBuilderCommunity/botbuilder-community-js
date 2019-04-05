@@ -338,8 +338,8 @@ describe('Phone number dialog prompt tests', function() {
         dialogs.add(new PhoneNumberPrompt('prompt'));
 
         await adapter.test('Hello', 'What is your phone number?')
-            .send('My phone number 609-560-5662')
-            .assertReply('609-560-5662');
+            .send('My phone number 540-123-1234')
+            .assertReply('540-123-1234');
     });
 });
 
