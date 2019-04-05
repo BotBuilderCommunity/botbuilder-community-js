@@ -2,7 +2,8 @@
   "name": "botbuildercommunity-packages",
   "private": true,
   "scripts": {
-    "build": "lerna bootstrap"
+    "build": "lerna bootstrap",
+    "test": "mocha \"libraries/bot*/test/*.test.js\""
   },
   "devDependencies": {
     "lerna": "^3.8.0",
