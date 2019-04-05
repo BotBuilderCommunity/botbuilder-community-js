@@ -30,6 +30,6 @@ describe('Console adapter tests', () => {
         assert.equal((result.length === 2), true);
     });
     after(() => {
-        process.exit();
+        //process.exit(); //Uncomment this line if you're only running tests against the adapter library
     });
 });
