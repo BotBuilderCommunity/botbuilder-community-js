@@ -1,0 +1,40 @@
+{
+  "name": "@botbuildercommunity/ai",
+  "version": "0.1.0",
+  "description": "A collection of natural language processing and understanding add-ons for using utilities other than LUIS and QnA Maker.",
+  "main": "./lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "keywords": [
+    "chatbots",
+    "bot framework",
+    "bot builder",
+    "ai",
+    "nlp",
+    "nlu",
+    "natural language processing",
+    "natural language understanding",
+    "watson"
+  ],
+  "contributors": [
+    "Bot Builder Community",
+    "Michael Szul <michael@szul.us>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
+  "dependencies": {
+    "watson-developer-cloud": "^4.0.1"
+  }
+}
