@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/text-analytics-middleware",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "description": "Bot Framework middleware component for the Cognitive Services Text Analytics API, including sentiment analysis, language detection, entity extraction, and keyword recognition.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -36,7 +36,8 @@
   "dependencies": {
     "azure-cognitiveservices-textanalytics": "^2.0.0",
     "botbuilder": "^4.3.4",
-    "ms-rest-azure": "^2.5.9"
+    "ms-rest-azure": "^2.5.9",
+    "watson-developer-cloud": "^4.0.1"
   },
   "devDependencies": {
     "mocha": "^6.0.2",

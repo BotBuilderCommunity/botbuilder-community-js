@@ -36,5 +36,6 @@
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
     "watson-developer-cloud": "^4.0.1"
-  }
+  },
+  "devDependencies": {}
 }
