@@ -15,14 +15,8 @@ export enum EngineType {
 
 export interface IEngineOptions {
     engine: EngineType;
-    ServiceClientOptions: any;
-    WatsonClientOptions: any;
+    ClientOptions: any;
 }
-
-export interface IWatsonRecognizerOptions {
-
-}
-
 
 export abstract class Engine {
     public client: any;
@@ -36,9 +30,9 @@ export abstract class Engine {
         }
         switch(options.engine) {
             case EngineType.COGNITIVE_SERVICE:
-                return new CognitiveServiceEngine(key, endpoint, options.ServiceClientOptions);
+                return new CognitiveServiceEngine(key, endpoint, options.ClientOptions);
             case EngineType.WATSON:
-                return new WatsonEngine(key, endpoint, options.WatsonClientOptions);
+                return new WatsonEngine(key, endpoint, options.ClientOptions);
         }
     }
 }
@@ -59,9 +53,9 @@ export class CognitiveServiceEngine extends Engine {
 export class WatsonEngine extends Engine {
     private _apikey: string;
     private _url: string;
-    private _options: IWatsonRecognizerOptions;
+    private _options: any;
     private _nlu: any;
-    constructor(apikey: string, url: string, opts?: IWatsonRecognizerOptions) {
+    constructor(apikey: string, url: string, opts?: any) {
         super();
         this._apikey = apikey;
         this._url = url;

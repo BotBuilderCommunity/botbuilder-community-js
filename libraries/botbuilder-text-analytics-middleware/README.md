@@ -13,8 +13,10 @@ All middleware is created and used in the same way. For example, for sentiment a
 ```typescript
 import { SentimentAnalysis } from '@botbuildercommunity/text-analytics-middleware';
 
-adapter.use(new SentimentAnalysis(YOUR_TEXT_ANALYTICS_KEY, TEXT_ANALYTICS_API_ENDPOINT, SERVICE_CLIENT_OPTIONS));
+adapter.use(new SentimentAnalysis(YOUR_TEXT_ANALYTICS_KEY, TEXT_ANALYTICS_API_ENDPOINT, IEngineOptions));
 ```
+
+The `IEngineOptions` parameter is optional. See the next section for details.
 
 > Note that the TEXT_ANALYTICS_API_ENDPOINT will be the Cognitive Services endpoint root. For example: https://eastus.api.cognitive.microsoft.com
 
@@ -35,3 +37,7 @@ In each case, properties are added to the `turnState` of the `TurnContext`. You 
 * `context.turnState.get('language')` //This is a string for `LanguageDetection`
 * `context.turnState.get('keyPhrases')` //This is an array of strings for `KeyPhrases`
 * `context.turnState.get('textEntities')` //This is an array of `EntityRecord` types` for `EntityExtraction`
+
+## Engine and Engine Options
+
+This package supports two engines: Azure's Cognitive Services Text Analytics API
