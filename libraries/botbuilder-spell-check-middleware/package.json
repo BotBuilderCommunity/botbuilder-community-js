@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/spell-check-middleware",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Bot Framework middleware component for the Cognitive Services Spell Check API",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -40,9 +40,10 @@
     "web-request": "^1.0.7"
   },
   "devDependencies": {
-    "typescript": "^3.2.2",
     "mocha": "^5.2.0",
+    "rewire": "^4.0.1",
     "tslint": "^5.11.0",
-    "tslint-microsoft-contrib": "^5.2.1"
+    "tslint-microsoft-contrib": "^5.2.1",
+    "typescript": "^3.2.2"
   }
 }
