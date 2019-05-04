@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/adapters",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "A collection of adapters for use with the Bot Framework, in order to handle different deployment and integration scenarios.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
