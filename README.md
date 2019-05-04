@@ -30,3 +30,8 @@ The following Bot Framework compatible packages are available as alternative ada
 | Name | Description | NPM |
 | ---- | ----------- | ------- |
 | [botbuilder-adapters](libraries/botbuilder-adapters/README.md) | Use alternative adapters in your chatbot | ![NPM Version](https://img.shields.io/badge/npm-0.2.0-red.svg) |
+| [botbuilder-adapter-slack](https://github.com/howdyai/botkit/tree/master/packages/botbuilder-adapter-slack#readme) | A platform adapter for Slack | ![NPM Version](https://img.shields.io/npm/v/botbuilder-adapter-slack.svg)
+| [botbuilder-adapter-webex](https://github.com/howdyai/botkit/tree/master/packages/botbuilder-adapter-webex#readme) | A platform adapter for Webex Teams| ![NPM Version](https://img.shields.io/npm/v/botbuilder-adapter-webex.svg)
+| [botbuilder-adapter-hangouts](https://github.com/howdyai/botkit/tree/master/packages/botbuilder-adapter-hangouts#readme) | A platform adapter for Google | ![NPM Version](https://img.shields.io/npm/v/botbuilder-adapter-hangouts.svg)
+| [botbuilder-adapter-twilio-sms](https://github.com/howdyai/botkit/tree/master/packages/botbuilder-adapter-twilio-sms#readme) | A platform adapter for Twilio SMS | ![NPM Version](https://img.shields.io/npm/v/botbuilder-adapter-twilio-sms.svg)
+| [botbuilder-adapter-facebook](https://github.com/howdyai/botkit/tree/master/packages/botbuilder-adapter-facebook#readme) | A platform adapter for Facebook Messenger | ![NPM Version](https://img.shields.io/npm/v/botbuilder-adapter-facebook.svg)
