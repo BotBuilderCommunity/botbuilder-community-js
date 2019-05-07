@@ -31,7 +31,7 @@ The following Bot Framework compatible packages are available as alternative ada
 | ---- | ----------- | ------- |
 | [botbuilder-adapters](libraries/botbuilder-adapters/README.md) | Use alternative adapters in your chatbot | ![NPM Version](https://img.shields.io/badge/npm-0.2.2-red.svg) |
 
-The following packages are available from [Howdy.ai](https://github.com/howdyai), and work with both the Bot Framework and BotKit:
+The following packages are available from [Botkit](https://github.com/howdyai/botkit), and work with both the Bot Framework and Botkit:
 
 | Name | Description | NPM |
 | ---- | ----------- | ------- |
