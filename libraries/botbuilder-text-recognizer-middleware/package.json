@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/text-recognizer-middleware",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A collection of Bot Framework middleware components that uses Microsoft's recognizer text suite to parse inbound messages, and extract useful information.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
