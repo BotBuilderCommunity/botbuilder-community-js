@@ -5,7 +5,6 @@ const { KeyPhrases } = require("../lib/keyPhrases");
 const { LanguageDetection } = require("../lib/languageDetection");
 const { SentimentAnalysis } = require("../lib/sentiment");
 
-
 describe('Entity middleware tests', function () {
 	this.timeout(5000);
 
