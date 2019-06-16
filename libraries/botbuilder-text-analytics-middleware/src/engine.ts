@@ -69,26 +69,36 @@ export class WatsonEngine extends Engine {
             url: this._url
         });
     }
-    public entities(): any {
-
+    private recognize(text: string): Promise<any> {
+        return watsonRecognizer(text, "entities");
     }
-    public recognize(text: string): Promise<any> {
-        const opts = {
-            html: text,
-            features: {
-                entities: {},
-                keywords: {},
-                concepts: {},
-                relations: {}
+    public async entities(input: string): Promise<any> {
+        const entities = this.recognize(input);
+        return Promise.resolve(
+            {
+                documents:[
+                    {
+                        entities: entities
+                    }
+                ]
             }
-        };
-        return new Promise((resolve, reject) => {
-            this._nlu.analyze(opts, (err, res) => {
-                if(err != null) {
-                    reject(err);
-                }
-                resolve((res));
-            });
-        });
+        );
     }
+}
+
+function watsonRecognizer(text: string, type: string): Promise<any> {
+    const opts = {
+        html: text,
+        features: {
+            [type]: {}
+        }
+    };
+    return new Promise((resolve, reject) => {
+        this._nlu.analyze(opts, (err, res) => {
+            if(err != null) {
+                reject(err);
+            }
+            resolve((res[type]));
+        });
+    });
 }
