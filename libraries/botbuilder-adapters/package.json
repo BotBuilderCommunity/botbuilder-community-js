@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/adapters",
-  "version": "0.2.0",
+  "version": "0.2.3",
   "description": "A collection of adapters for use with the Bot Framework, in order to handle different deployment and integration scenarios.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -32,12 +32,12 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "botbuilder": "^4.3.4"
+    "botbuilder": "^4.4.0"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
-    "tslint": "^5.12.0",
+    "tslint": "^5.18.0",
     "tslint-microsoft-contrib": "^5.2.1",
-    "typescript": "^3.2.2"
+    "typescript": "^3.5.2"
   }
 }

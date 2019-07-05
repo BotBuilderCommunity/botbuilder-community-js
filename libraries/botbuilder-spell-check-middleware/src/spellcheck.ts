@@ -4,6 +4,19 @@ import * as WebRequest from 'web-request';
  * @module botbuildercommunity/spellcheck
  */
 
+function getUrl(text: string): string {
+    return `https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/?text=${text}&mode=spell`;
+}
+
+async function getWebRequest(url: string, key: string): Promise<WebRequest.Response<string>> {
+    return await WebRequest.get(url, {
+        headers : {
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'Ocp-Apim-Subscription-Key' : key
+        }
+    });
+}
+
 export class SpellCheck implements Middleware {
     public text: string;
     public key: string;
@@ -13,14 +26,9 @@ export class SpellCheck implements Middleware {
     public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if (context.activity.type === ActivityTypes.Message) {
             this.text = context.activity.text;
-            const url: string = `https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/?text=${this.text}&mode=spell`;
+            const url: string = getUrl(this.text);
             try {
-                const re: WebRequest.Response<string> = await WebRequest.get(url, {
-                    headers : {
-                        'Content-Type' : 'application/x-www-form-urlencoded',
-                        'Ocp-Apim-Subscription-Key' : this.key
-                    }
-                });
+                const re: WebRequest.Response<string> = await getWebRequest(url, this.key);
                 const obj: any = JSON.parse(re.content);
                 if (obj.flaggedTokens && obj.flaggedTokens.length > 0) {
                     try {

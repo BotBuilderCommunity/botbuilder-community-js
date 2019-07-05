@@ -34,13 +34,13 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "azure-cognitiveservices-textanalytics": "^2.0.0",
-    "botbuilder": "^4.3.4",
-    "ms-rest-azure": "^2.5.9",
-    "watson-developer-cloud": "^4.0.1"
+    "watson-developer-cloud": "^4.0.1",
+    "azure-cognitiveservices-textanalytics": "^2.1.0",
+    "botbuilder": "^4.4.0",
+    "ms-rest-azure": "^2.6.0"
   },
   "devDependencies": {
-    "mocha": "^6.0.2",
-    "typescript": "^3.4.1"
+    "mocha": "^6.1.4",
+    "typescript": "^3.5.2"
   }
 }
