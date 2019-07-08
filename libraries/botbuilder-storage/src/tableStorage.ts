@@ -103,7 +103,7 @@ export class TableStorage implements Storage {
             throw new Error('Please provide at least one key to read from storage.');
         }
 
-        const sanitizedKeys: string[] = keys.filter((k: string) => k).map((key: string) => this.sanitizeKey(key));
+        const sanitizedKeys: string[] = keys.filter((k: string) => k).map((key: string) => sanitizeKey(key));
 
         return this.ensureTable().then((container: azure.TableService.TableResult) => {
             return new Promise<StoreItems>((resolve: any, reject: any): void => {
@@ -158,7 +158,7 @@ export class TableStorage implements Storage {
                 delete entity.eTag;
 
                 // add PK/RK and ETag
-                let pk = this.sanitizeKey(key);
+                let pk = sanitizeKey(key);
                 entity.PartitionKey = EntityGenerator.String(pk);
                 entity.RowKey = EntityGenerator.String('');
                 entity['.metadata'] = { etag: storeItem.eTag };
@@ -183,7 +183,7 @@ export class TableStorage implements Storage {
 
         return this.ensureTable().then(() => {
             let deletes = keys.map(key => {
-                let pk = this.sanitizeKey(key);
+                let pk = sanitizeKey(key);
                 let entity = {
                     PartitionKey: EntityGenerator.String(pk),
                     RowKey: EntityGenerator.String('')
@@ -198,26 +198,6 @@ export class TableStorage implements Storage {
             return Promise.all(deletes)
                 .then(() => { }).catch(err => console.log(err));            // void
         }).catch(e => console.log(e));
-    }
-
-    private sanitizeKey(key: string): string {
-        let badChars = ['\\', '?', '/', '#', '\t', '\n', '\r'];
-        let sb = '';
-        for (let iCh = 0; iCh < key.length; iCh++) {
-            let ch = key[iCh];
-            let isBad: boolean = false;
-            for (let iBad in badChars) {
-                let badChar = badChars[iBad];
-                if (ch === badChar) {
-                    sb += '%' + ch.charCodeAt(0).toString(16);
-                    isBad = true;
-                    break;
-                }
-            }
-            if (!isBad)
-                sb += ch;
-        }
-        return sb;
     }
 
     // create TableServiceAsync instance based on connection config
@@ -341,6 +321,30 @@ const propsReducer = (resolved, propValue: { key, value }): any => {
     resolved[propValue.key] = propValue.value;
     return resolved;
 };
+
+/**
+ * @private
+ * Sanitize key
+ */
+const sanitizeKey = (key: string): string => {
+    let badChars = ['\\', '?', '/', '#', '\t', '\n', '\r'];
+    let sb = '';
+    for (let iCh = 0; iCh < key.length; iCh++) {
+        let ch = key[iCh];
+        let isBad: boolean = false;
+        for (let iBad in badChars) {
+            let badChar = badChars[iBad];
+            if (ch === badChar) {
+                sb += '%' + ch.charCodeAt(0).toString(16);
+                isBad = true;
+                break;
+            }
+        }
+        if (!isBad)
+            sb += ch;
+    }
+    return sb;
+}
 
 /**
  * @private
