@@ -12,13 +12,13 @@ import { Host } from "botbuilder-azure";
 
 const EntityGenerator = azure.TableUtilities.entityGenerator;
 
-/** 
- * Additional settings for configuring an instance of `TableStorage`. 
+/**
+ * Additional settings for configuring an instance of `TableStorage`.
  */
 export interface TableStorageSettings {
     /**
      * Name of the table to use for storage.
-     * 
+     *
      * @remarks
      * Check table name rules: https://docs.microsoft.com/en-us/rest/api/storageservices/Understanding-the-Table-Service-Data-Model?redirectedfrom=MSDN#table-names
     */
@@ -48,7 +48,7 @@ const checkedTables: { [name: string]: Promise<azure.TableService.TableResult>; 
  *
  * ```JavaScript
  * const { TableStorage } = require('botbuilder-azure');
- * 
+ *
  * const storage = new TableStorage({
  *     storageAccountOrConnectionString: 'UseDevelopmentStorage=true',
  *     tableName: 'mybotstate'
@@ -103,7 +103,7 @@ export class TableStorage implements Storage {
             throw new Error('Please provide at least one key to read from storage.');
         }
 
-        const sanitizedKeys: string[] = keys.filter((k: string) => k).map((key: string) => this.sanitizeKey(key));
+        const sanitizedKeys: string[] = keys.filter((k: string) => k).map((key: string) => sanitizeKey(key));
 
         return this.ensureTable().then((container: azure.TableService.TableResult) => {
             return new Promise<StoreItems>((resolve: any, reject: any): void => {
@@ -127,8 +127,9 @@ export class TableStorage implements Storage {
                     });
                 })).then((items: StoreItem[]) => {
                     if (items !== null && items.length > 0) {
-                        const storeItems: StoreItems = {};
-                        items.filter(prop => (<any>prop).value !== null).reduce(propsReducer, {});
+                        const storeItems: StoreItems = items.filter(prop => (<any>prop).value !== null)
+                            .map((propValue: { key, value }) => ({...propValue, key: unSanitizeKey(propValue.key)}))
+                            .reduce(propsReducer, {});
                         resolve(storeItems);
                     }
                 }).catch((error: Error) => { reject(error); });
@@ -159,7 +160,7 @@ export class TableStorage implements Storage {
                 delete entity.eTag;
 
                 // add PK/RK and ETag
-                let pk = this.sanitizeKey(key);
+                let pk = sanitizeKey(key);
                 entity.PartitionKey = EntityGenerator.String(pk);
                 entity.RowKey = EntityGenerator.String('');
                 entity['.metadata'] = { etag: storeItem.eTag };
@@ -184,7 +185,7 @@ export class TableStorage implements Storage {
 
         return this.ensureTable().then(() => {
             let deletes = keys.map(key => {
-                let pk = this.sanitizeKey(key);
+                let pk = sanitizeKey(key);
                 let entity = {
                     PartitionKey: EntityGenerator.String(pk),
                     RowKey: EntityGenerator.String('')
@@ -199,26 +200,6 @@ export class TableStorage implements Storage {
             return Promise.all(deletes)
                 .then(() => { }).catch(err => console.log(err));            // void
         }).catch(e => console.log(e));
-    }
-
-    private sanitizeKey(key: string): string {
-        let badChars = ['\\', '?', '/', '#', '\t', '\n', '\r'];
-        let sb = '';
-        for (let iCh = 0; iCh < key.length; iCh++) {
-            let ch = key[iCh];
-            let isBad: boolean = false;
-            for (let iBad in badChars) {
-                let badChar = badChars[iBad];
-                if (ch === badChar) {
-                    sb += '%' + ch.charCodeAt(0).toString(16);
-                    isBad = true;
-                    break;
-                }
-            }
-            if (!isBad)
-                sb += ch;
-        }
-        return sb;
     }
 
     // create TableServiceAsync instance based on connection config
@@ -342,6 +323,71 @@ const propsReducer = (resolved, propValue: { key, value }): any => {
     resolved[propValue.key] = propValue.value;
     return resolved;
 };
+
+/**
+ * Generate list of chars to replace
+ */
+const charToSanitizeList = [
+    {
+        char: '?',
+        value: '%' + '?'.charCodeAt(0).toString(16),
+        regexp: /\?/g,
+    },
+    {
+        char: '/',
+        value: '%' + '/'.charCodeAt(0).toString(16),
+        regexp: /\//g,
+    },
+    {
+        char: '#',
+        value: '%' + '#'.charCodeAt(0).toString(16),
+        regexp: /#/g,
+    },
+    {
+        char: '\t',
+        value: '%' + '\t'.charCodeAt(0).toString(16),
+        regexp: /\t/g,
+    },
+    {
+        char: '\n',
+        value: '%' + '\n'.charCodeAt(0).toString(16),
+        regexp: /\n/g,
+    },
+    {
+        char: '\r',
+        value: '%' + '\r'.charCodeAt(0).toString(16),
+        regexp: /\r/g,
+    },
+    {
+        char: '\\',
+        value: '%' + '\\'.charCodeAt(0).toString(16),
+        regexp: /\\/g,
+    },
+];
+
+/**
+ * @private
+ * Sanitize key
+ */
+const sanitizeKey = (key: string): string => {
+    let sb = key;
+    charToSanitizeList.forEach((charInfo) => {
+        sb = sb.replace(charInfo.regexp, charInfo.value);
+    });
+    return sb;
+}
+
+/**
+ * @private
+ * UnSanitize Key
+ */
+const unSanitizeKey = (key: string): string => {
+    let result = key;
+    charToSanitizeList.forEach((charInfo) => {
+        result = result.replace(new RegExp(charInfo.value, 'g'), charInfo.char);
+    });
+    return result;
+}
 
 /**
  * @private
