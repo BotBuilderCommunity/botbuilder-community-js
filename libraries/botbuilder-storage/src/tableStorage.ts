@@ -12,13 +12,13 @@ import { Host } from "botbuilder-azure";
 
 const EntityGenerator = azure.TableUtilities.entityGenerator;
 
-/** 
- * Additional settings for configuring an instance of `TableStorage`. 
+/**
+ * Additional settings for configuring an instance of `TableStorage`.
  */
 export interface TableStorageSettings {
     /**
      * Name of the table to use for storage.
-     * 
+     *
      * @remarks
      * Check table name rules: https://docs.microsoft.com/en-us/rest/api/storageservices/Understanding-the-Table-Service-Data-Model?redirectedfrom=MSDN#table-names
     */
@@ -48,7 +48,7 @@ const checkedTables: { [name: string]: Promise<azure.TableService.TableResult>; 
  *
  * ```JavaScript
  * const { TableStorage } = require('botbuilder-azure');
- * 
+ *
  * const storage = new TableStorage({
  *     storageAccountOrConnectionString: 'UseDevelopmentStorage=true',
  *     tableName: 'mybotstate'
@@ -127,8 +127,7 @@ export class TableStorage implements Storage {
                     });
                 })).then((items: StoreItem[]) => {
                     if (items !== null && items.length > 0) {
-                        const storeItems: StoreItems = {};
-                        items.filter(prop => (<any>prop).value !== null).reduce(propsReducer, {});
+                        const storeItems: StoreItems = items.filter(prop => (<any>prop).value !== null).reduce(propsReducer, {});
                         resolve(storeItems);
                     }
                 }).catch((error: Error) => { reject(error); });
