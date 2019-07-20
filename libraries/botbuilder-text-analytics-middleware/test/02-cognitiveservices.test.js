@@ -23,7 +23,7 @@ describe('Entity middleware tests', function () {
     }
 
     const entity = new EntityExtraction("not a real key", "Not a real endpoint");
-    entity.client = mock;
+    entity.engine = mock;
 
 	it('should extract a name', async () => {
 		const adapter = new TestAdapter(async (context) => {
@@ -54,7 +54,7 @@ describe('Key phrases middleware tests', function () {
     }
 
     const phrases = new KeyPhrases("not a real key", "Not a real endpoint");
-    phrases.client = mock;
+    phrases.engine = mock;
 
 	it('should extract some key phrases', async () => {
 		const adapter = new TestAdapter(async (context) => {
@@ -88,7 +88,7 @@ describe('Language detection middleware tests', function () {
     }
 
     const lang = new LanguageDetection("not a real key", "Not a real endpoint");
-    lang.client = mock;
+    lang.engine = mock;
 
 	it('should detect language', async () => {
 		const adapter = new TestAdapter(async (context) => {
@@ -116,7 +116,7 @@ describe('Sentiment middleware tests', function () {
     }
 
     const sentiment = new SentimentAnalysis("not a real key", "Not a real endpoint");
-    sentiment.client = mock;
+    sentiment.engine = mock;
 
 	it('should have a positive sentiment', async () => {
 		const adapter = new TestAdapter(async (context) => {

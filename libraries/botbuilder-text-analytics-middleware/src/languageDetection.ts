@@ -1,17 +1,16 @@
 import { Middleware, TurnContext, ActivityTypes } from "botbuilder";
 import { CognitiveServicesCredentials } from "ms-rest-azure";
 import { TextAnalyticsClient } from "azure-cognitiveservices-textanalytics";
+import { Engine } from "./engine";
 
 /**
  * @module botbuildercommunity/text-analytics
  */
 
 export class LanguageDetection implements Middleware {
-    public credentials: CognitiveServicesCredentials;
-    public client: TextAnalyticsClient;
+    public engine: Engine;
     constructor(public serviceKey: string, public endpoint: string, public options?: any) {
-        this.credentials = new CognitiveServicesCredentials(serviceKey);
-        this.client = new TextAnalyticsClient(this.credentials, endpoint, options);
+        this.engine = Engine.getEngine(serviceKey, endpoint, options);
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>) {
         if(context.activity.type === ActivityTypes.Message) {
@@ -24,7 +23,7 @@ export class LanguageDetection implements Middleware {
                 ]
             };
             try {
-                const result = await this.client.detectLanguage(input);
+                const result = await this.engine.detectLanguage(input);
                 const l = result.documents[0].detectedLanguages;
                 context.turnState.set("language", l);
             }
