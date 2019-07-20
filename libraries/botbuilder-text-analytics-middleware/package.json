@@ -36,7 +36,7 @@
   "dependencies": {
     "watson-developer-cloud": "^4.0.1",
     "azure-cognitiveservices-textanalytics": "^2.1.0",
-    "botbuilder": "^4.4.0",
+    "botbuilder": "^4.5.1",
     "ms-rest-azure": "^2.6.0"
   },
   "devDependencies": {
