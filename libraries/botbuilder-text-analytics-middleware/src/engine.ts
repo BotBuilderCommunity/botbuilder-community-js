@@ -26,13 +26,13 @@ export interface IEngineOptions {
 
 export abstract class Engine {
     public client: any;
-    public async abstract entities(input: any);
-    public async abstract keyPhrases(input: any);
-    public async abstract detectLanguage(input: any);
-    public async abstract sentiment(input: any);
-    public async abstract categories(input: any);
-    public async abstract concepts(input: any);
-    public async abstract emotion(input: any);
+    public async abstract entities(input: any): Promise<any>;
+    public async abstract keyPhrases(input: any): Promise<any>;
+    public async abstract detectLanguage(input: any): Promise<any>;
+    public async abstract sentiment(input: any): Promise<any>;
+    public async abstract categories(input: any): Promise<any>;
+    public async abstract concepts(input: any): Promise<any>;
+    public async abstract emotion(input: any): Promise<any>;
     public static getEngine(key: string, endpoint: string, options?: IEngineOptions): Engine {
         if(options == null) {
             return new CognitiveServiceEngine(key, endpoint);
@@ -61,13 +61,13 @@ export class CognitiveServiceEngine extends Engine {
         return await this.client.entities(input);
     }
     public async keyPhrases(input: MultiLanguageBatchInput): Promise<KeyPhraseBatchResult> {
-        return Promise.resolve(null);
+        return await this.client.keyPhrases(input);
     }
     public async detectLanguage(input: MultiLanguageBatchInput): Promise<LanguageBatchResult> {
-        return Promise.resolve(null);
+        return await this.client.detectLanguage(input);
     }
     public async sentiment(input: MultiLanguageBatchInput): Promise<SentimentBatchResult> {
-        return Promise.resolve(null);
+        return await this.client.sentiment(input);
     }
     public async categories(input: string): Promise<any> {
         return Promise.reject("[categories] is not supported by this engine.");
@@ -107,7 +107,7 @@ export class WatsonEngine extends Engine {
         const entities = this.recognize(input, "entities");
         return Promise.resolve(
             {
-                documents:[
+                documents: [
                     {
                         entities: entities
                     }
@@ -119,7 +119,7 @@ export class WatsonEngine extends Engine {
         const keyPhrases = this.recognize(input, "keywords");
         return Promise.resolve(
             {
-                documents:[
+                documents: [
                     {
                         keyPhrases: keyPhrases
                     }
@@ -134,7 +134,7 @@ export class WatsonEngine extends Engine {
         const sentiment = this.recognize(input, "sentiment");
         return Promise.resolve(
             {
-                documents:[
+                documents: [
                     {
                         sentiment: sentiment
                     }
@@ -146,7 +146,7 @@ export class WatsonEngine extends Engine {
         const categories = this.recognize(input, "categories");
         return Promise.resolve(
             {
-                documents:[
+                documents: [
                     {
                         categories: categories
                     }
@@ -158,7 +158,7 @@ export class WatsonEngine extends Engine {
         const concepts = this.recognize(input, "concepts");
         return Promise.resolve(
             {
-                documents:[
+                documents: [
                     {
                         concepts: concepts
                     }
@@ -170,7 +170,7 @@ export class WatsonEngine extends Engine {
         const emotion = this.recognize(input, "emotion");
         return Promise.resolve(
             {
-                documents:[
+                documents: [
                     {
                         emotion: emotion
                     }
@@ -192,7 +192,17 @@ function watsonRecognizer(text: string, type: string): Promise<any> {
             if(err != null) {
                 reject(err);
             }
-            resolve((res[type]));
+            const result = res[type];
+            if(type === "keywords") {
+                type = "keyPhrases";
+            }
+            resolve({
+                documents: [
+                    {
+                        [type]: result
+                    }
+                ]
+            });
         });
     });
 }

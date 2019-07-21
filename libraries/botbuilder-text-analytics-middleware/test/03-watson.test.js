@@ -2,17 +2,19 @@ const assert = require("assert");
 const { TestAdapter } = require("botbuilder");
 const { EntityExtraction } = require("../lib/entity");
 const { KeyPhrases } = require("../lib/keyPhrases");
-const { LanguageDetection } = require("../lib/languageDetection");
 const { SentimentAnalysis } = require("../lib/sentiment");
+const { CategoryExtraction } = require("../lib/categories");
+const { ConceptExtraction } = require("../lib/concepts");
+const { EmotionDetection } = require("../lib/emotion");
 
-describe('Cognitive Service engine tests', () => {
+describe('Watson engine tests', () => {
 
     describe('Entity middleware tests', function () {
         this.timeout(5000);
 
         const mock = {
             options: {
-                engine: 0
+                engine: 1
             },
             entities: function(input) {
                 return {
@@ -44,7 +46,7 @@ describe('Cognitive Service engine tests', () => {
 
         const mock = {
             options: {
-                engine: 0
+                engine: 1
             },
             keyPhrases: function(input) {
                 return {
@@ -73,49 +75,12 @@ describe('Cognitive Service engine tests', () => {
         });
     });
 
-    describe('Language detection middleware tests', function () {
-        this.timeout(5000);
-
-        const mock = {
-            options: {
-                engine: 0
-            },
-            detectLanguage: function(input) {
-                return {
-                    documents: [
-                        {
-                            id: "Not real",
-                            detectedLanguages: [
-                            {
-                                name: "English",
-                                iso6391Name: "en",
-                                score: 1.0
-                            }
-                            ]
-                        }
-                    ]
-                };
-            }
-        }
-
-        const lang = new LanguageDetection("not a real key", "Not a real endpoint");
-        lang.engine = mock;
-
-        it('should detect language', async () => {
-            const adapter = new TestAdapter(async (context) => {
-                await context.sendActivity(context.turnState.get('language')[0].name);
-            });
-            adapter.use(lang);
-            await adapter.test('I am glorious', 'English');
-        });
-    });
-
     describe('Sentiment middleware tests', function () {
         this.timeout(5000);
 
         const mock = {
             options: {
-                engine: 0
+                engine: 1
             },
             sentiment: function(input) {
                 return {
@@ -137,6 +102,102 @@ describe('Cognitive Service engine tests', () => {
                 assert.equal(context.turnState.get('sentimentScore'), 0.9928278923034668);
             });
             adapter.use(sentiment);
+            await adapter.send('I am glorious');
+        });
+    });
+
+    describe('Category middleware tests', function () {
+        this.timeout(5000);
+
+        const mock = {
+            options: {
+                engine: 1
+            },
+            categories: function(input) {
+                return {
+                    documents: [
+                        {
+                            categories: {
+
+                            }
+                        }
+                    ]
+                };
+            }
+        }
+
+        const categories = new CategoryExtraction("not a real key", "Not a real endpoint");
+        categories.engine = mock;
+
+        it('should have a category', async () => {
+            const adapter = new TestAdapter(async (context) => {
+                assert.notEqual(context.turnState.get('categoryEntities'), null);
+            });
+            adapter.use(categories);
+            await adapter.send('I am glorious');
+        });
+    });
+
+    describe('Concept middleware tests', function () {
+        this.timeout(5000);
+
+        const mock = {
+            options: {
+                engine: 1
+            },
+            concepts: function(input) {
+                return {
+                    documents: [
+                        {
+                            concepts: {
+
+                            }
+                        }
+                    ]
+                };
+            }
+        }
+
+        const concepts = new ConceptExtraction("not a real key", "Not a real endpoint");
+        concepts.engine = mock;
+
+        it('should have a concept', async () => {
+            const adapter = new TestAdapter(async (context) => {
+                assert.notEqual(context.turnState.get('conceptEntities'), null);
+            });
+            adapter.use(concepts);
+            await adapter.send('I am glorious');
+        });
+    });
+
+    describe('Emotion middleware tests', function () {
+        this.timeout(5000);
+
+        const mock = {
+            options: {
+                engine: 1
+            },
+            emotion: function(input) {
+                return {
+                    documents: [
+                        {
+                            emotion: {
+
+                            }
+                        }
+                    ]
+                };
+            }
+        }
+
+        const emotions = new EmotionDetection("not a real key", "Not a real endpoint");
+        emotions.engine = mock;
+
+        it('should have an emotion', async () => {
+            const adapter = new TestAdapter(async (context) => {
+                assert.notEqual(context.turnState.get('emotionDetection'), null);
+            });
+            adapter.use(emotions);
             await adapter.send('I am glorious');
         });
     });
