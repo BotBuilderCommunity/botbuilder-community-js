@@ -1,8 +1,9 @@
 const { BotFrameworkAdapter } = require("botbuilder");
 const restify = require("restify");
+const { config } = require("dotenv");
 const { SentimentAnalysis } = require("../lib/index");
 
-require("dotenv").config();
+config();
 
 const server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {

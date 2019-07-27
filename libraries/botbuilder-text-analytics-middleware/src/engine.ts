@@ -99,100 +99,47 @@ export class WatsonEngine extends Engine {
             url: this._url
         });
     }
-    private recognize(text: string, type: string): Promise<any> {
-        return watsonRecognizer(text, type);
+    private async recognize(text: string, type: string): Promise<any> {
+        return await watsonRecognizer(this._nlu, text, type);
     }
     //The below methods can all be abstracted further. Consider this a TO-DO.
     public async entities(input: string): Promise<any> {
-        const entities = this.recognize(input, "entities");
-        return Promise.resolve(
-            {
-                documents: [
-                    {
-                        entities: entities
-                    }
-                ]
-            }
-        );
+        return await this.recognize(input, "entities");
     }
     public async keyPhrases(input: string): Promise<any> {
-        const keyPhrases = this.recognize(input, "keywords");
-        return Promise.resolve(
-            {
-                documents: [
-                    {
-                        keyPhrases: keyPhrases
-                    }
-                ]
-            }
-        );
+        return await this.recognize(input, "keywords");
     }
     public async detectLanguage(input: string): Promise<any> {
         return Promise.reject("[detectLanguage] is not supported by this engine.");
     }
     public async sentiment(input: string): Promise<any> {
-        const sentiment = this.recognize(input, "sentiment");
-        return Promise.resolve(
-            {
-                documents: [
-                    {
-                        sentiment: sentiment
-                    }
-                ]
-            }
-        );
+        return await this.recognize(input, "sentiment");
     }
     public async categories(input: string): Promise<any> {
-        const categories = this.recognize(input, "categories");
-        return Promise.resolve(
-            {
-                documents: [
-                    {
-                        categories: categories
-                    }
-                ]
-            }
-        );
+        return await this.recognize(input, "categories");
     }
     public async concepts(input: string): Promise<any> {
-        const concepts = this.recognize(input, "concepts");
-        return Promise.resolve(
-            {
-                documents: [
-                    {
-                        concepts: concepts
-                    }
-                ]
-            }
-        );
+        return await this.recognize(input, "concepts");
     }
     public async emotion(input: string): Promise<any> {
-        const emotion = this.recognize(input, "emotion");
-        return Promise.resolve(
-            {
-                documents: [
-                    {
-                        emotion: emotion
-                    }
-                ]
-            }
-        );
+        return await this.recognize(input, "emotion");
     }
 }
 
-function watsonRecognizer(text: string, type: string): Promise<any> {
+async function watsonRecognizer(nlu: any, text: string, type: string): Promise<any> {
+    const input = (typeof text === 'string') ? text : (<any>text).documents[0].text;
     const opts = {
-        html: text,
+        html: input,
         features: {
             [type]: {}
         }
     };
     return new Promise((resolve, reject) => {
-        this._nlu.analyze(opts, (err, res) => {
+        nlu.analyze(opts, (err, res) => {
             if(err != null) {
                 reject(err);
             }
-            const result = res[type];
+            const result = res[type].document[type]; //Needs better checking of properties.
             if(type === "keywords") {
                 type = "keyPhrases";
             }
