@@ -2,34 +2,55 @@
 
 This repository is part of the Bot Builder Community Project and contains Bot Builder Extensions for the JavaScript SDK, including middleware, dialogs, helpers and more. Other repos within the Bot Builder Community Project exist for extensions for [.NET](https://github.com/BotBuilderCommunity/botbuilder-community-dotnet), [Python](https://github.com/BotBuilderCommunity/botbuilder-community-python), [Java](https://github.com/BotBuilderCommunity/botbuilder-community-java) and [tools](https://github.com/BotBuilderCommunity/botbuilder-community-tools) - you can find our other repos under [our GitHub organisation for the project](https://github.com/BotBuilderCommunity/).
 
-## Packages
+To see a list of current extensions available for the Bot Builder JavaScript SDK, use the links below to jump to a section.
 
-The following Bot Framework compatible packages are available to install within your chatbot application.
+* [Storage](#storage)
+* [Dialogs & Prompts](#dialogs-and-prompts)
+* [Middleware](#middleware)
+* [Adapters](#adapters)
+
+## Installation
+
+Each extension, such as middleware or recognizers, is available individually from NPM in the `@botbuildercommunity` scope. See each individual component description for installation details and links.
+
+## Contributing and Reporting Issues
+
+We welcome and encourage contributions to this project, in the form of bug fixes, enhancements or new extensions. Please fork the repo and raise a PR if you have something you would like us to review for inclusion. If you want to discuss an idea first then the best way to do this right now is to raise a GitHub issue or reach out to one of us on Twitter.
+
+## Storage
+
+The following alternative storage implementations are currently available;
 
 | Name | Description | NPM |
 | ---- | ----------- | ----- |
-| [botbuilder-dialog-prompts](libraries/botbuilder-dialog-prompts/README.md) | A variety of prompts using the Microsoft text recognizer suite | [![NPM Version](https://img.shields.io/badge/npm-0.2.4-red.svg)](https://www.npmjs.com/package/@botbuildercommunity/dialog-prompts) |
-
-## Middleware
-
-The following Bot Framework compatible packages are available to install within your chatbot application as middleware.
-
-| Name | Description | NPM |
-| ---- | ----------- | ------- |
-| [botbuilder-storage](libraries/botbuilder-storage/README.md) | Use alternative storage, such as Azure Table Storage in your bot | ![NPM Version](https://img.shields.io/badge/npm-0.2.7-red.svg) |
-| [botbuilder-text-analytics-middleware](libraries/botbuilder-text-analytics-middleware/README.md) | Use Cogntive Services Text Analytics API for sentiment analysis, language detection, key phrases, and entity extraction | [![NPM Version](https://img.shields.io/badge/npm-0.2.5-red.svg)](https://www.npmjs.com/package/@botbuildercommunity/text-analytics-middleware) |
-| [botbuilder-spell-check-middleware](libraries/botbuilder-spell-check-middleware/README.md) | Use Cogntive Services Spell Check API to detect misspellings and correct these | [![NPM Version](https://img.shields.io/badge/npm-0.2.4-red.svg)](https://www.npmjs.com/package/@botbuildercommunity/spell-check-middleware) |
-| [botbuilder-text-recognizer-middleware](libraries/botbuilder-text-recognizer-middleware/README.md) | Use the Microsoft Text Recognizer Suite for recognizing certain text sequences | ![NPM Version](https://img.shields.io/badge/npm-0.2.3-red.svg) |
+| [@botbuildercommunity/storage](libraries/botbuilder-storage/README.md) | Use alternative storage, such as Azure Table Storage in your bot. | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage.svg) |
 
 > The Azure Table Storage package has been deprecated from Microsoft's `botbuilder-js` repository, and is being taken over by the community.
 
-## Adapters
+## Dialogs and Prompts
+The following dialogs are currently available;
 
-The following Bot Framework compatible packages are available as alternative adapters for creating chatbots.
+| Name | Description | NPM |
+| ---- | ----------- | ----- |
+| [@botbuildercommunity/dialog-prompts](libraries/botbuilder-dialog-prompts/README.md) | A variety of prompts using the [Microsoft Recognizers Text](https://github.com/microsoft/Recognizers-Text) suite, such as currency, temperature, age and dimension.  | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/dialog-prompts.svg)](https://www.npmjs.com/package/@botbuildercommunity/dialog-prompts) |
+
+## Middleware
+
+The following pieces of middleware are currently available;
 
 | Name | Description | NPM |
 | ---- | ----------- | ------- |
-| [botbuilder-adapters](libraries/botbuilder-adapters/README.md) | Use alternative adapters in your chatbot | ![NPM Version](https://img.shields.io/badge/npm-0.2.4-red.svg) |
+| [@botbuildercommunity/text-analytics-middleware](libraries/botbuilder-text-analytics-middleware/README.md) | Use Cognitive Services Text Analytics API for sentiment analysis, language detection, key phrases and entity extraction. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/text-analytics-middleware.svg)](https://www.npmjs.com/package/@botbuildercommunity/text-analytics-middleware) |
+| [@botbuildercommunity/spell-check-middleware](libraries/botbuilder-spell-check-middleware/README.md) | Use Cognitive Services Spell Check API to detect misspellings and correct these. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/spell-check-middleware.svg)](https://www.npmjs.com/package/@botbuildercommunity/spell-check-middleware) |
+| [@botbuildercommunity/text-recognizer-middleware](libraries/botbuilder-text-recognizer-middleware/README.md) | Use the [Microsoft Recognizers Text](https://github.com/microsoft/Recognizers-Text) Suite for recognizing certain text sequences. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/text-recognizer-middleware.svg)](https://www.npmjs.com/package/@botbuildercommunity/text-recognizer-middleware) |
+
+## Adapters
+
+The following adapters can be used to expose your bot on additional channels not supported by the Azure Bot Service, such as Webex and Google Hangouts.
+
+| Name | Description | NPM |
+| ---- | ----------- | ------- |
+| [@botbuildercommunity/adapters](libraries/botbuilder-adapters/README.md) | Alternative platform adapters | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/adapters.svg)](https://www.npmjs.com/package/@botbuildercommunity/adapters) |
 
 The following packages are available from [Botkit](https://github.com/howdyai/botkit), and work with both the Bot Framework and Botkit:
 
