@@ -7,7 +7,9 @@ import { ActivityTypes, Middleware, TurnContext } from 'botbuilder';
  */
 
 export class SocialMediaRecognizer implements Middleware {
-    constructor(public defaultLocale?: string) {
+    public defaultLocale?: string
+    public constructor(defaultLocale?: string) {
+        this.defaultLocale = defaultLocale;
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if (context.activity.type === ActivityTypes.Message) {
