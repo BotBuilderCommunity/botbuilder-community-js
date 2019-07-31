@@ -223,6 +223,9 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                 case 'delivered':
                     activity.type = WhatsAppActivityTypes.MessageDelivered;
                     break;
+                case 'read':
+                    activity.type = WhatsAppActivityTypes.MessageRead;
+                    break;
                 default:
                     console.warn(`TwilioWhatsAppAdapter.processActivity(): SmsStatus '${ message.SmsStatus }' not supported.`);
             }
