@@ -68,7 +68,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         }
 
         try {
-            this.client = Twilio(settings.accountSid, settings.authToken);
+            this.client = this.createTwilioClient(settings.accountSid, settings.authToken);
         } catch (error) {
             throw new Error(`TwilioWhatsAppAdapter.constructor(): ${ error.message }.`);
         }
@@ -289,6 +289,15 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
      */
     protected createContext(request: Partial<Activity>): TurnContext {
         return new TurnContext(this as any, request);
+    }
+
+    /**
+     * Allows for the overriding of the Twilio object in unit tests and derived adapters.
+     * @param accountSid Twilio AccountSid
+     * @param authToken Twilio Auth Token
+     */
+    protected createTwilioClient(accountSid: string, authToken: string): Twilio.Twilio {
+        return Twilio(accountSid, authToken);
     }
 
     /**
