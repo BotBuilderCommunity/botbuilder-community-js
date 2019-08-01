@@ -12,4 +12,5 @@
 /libraries/botbuilder-spell-check-middleware/ @stephanbisser
 /libraries/botbuilder-storage/ @szul
 /libraries/botbuilder-text-analytics-middleware/ @szul
+/libraries/botbuilder-adapter-twilio-whatsapp/ @imicknl
 /libraries/botbuilder-text-recognizer-middleware/ @szul
