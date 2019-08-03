@@ -1,16 +1,15 @@
 import { Middleware, TurnContext, ActivityTypes } from "botbuilder";
-import { CognitiveServicesCredentials } from "ms-rest-azure";
-import { TextAnalyticsClient } from "azure-cognitiveservices-textanalytics";
-import { Engine } from "./engine";
+import { Engine } from "../../botbuilder-middleware-engine-core/lib/engine";
+import { CognitiveServiceEngine } from "./engine";
 
 /**
- * @module botbuildercommunity/text-analytics
+ * @module botbuildercommunity/middleware-text-analytics
  */
 
-export class SentimentAnalysis implements Middleware {
+export class LanguageDetection implements Middleware {
     public engine: Engine;
     constructor(public serviceKey: string, public endpoint: string, public options?: any) {
-        this.engine = Engine.getEngine(serviceKey, endpoint, options);
+        this.engine = new CognitiveServiceEngine(serviceKey, endpoint, options);
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>) {
         if(context.activity.type === ActivityTypes.Message) {
@@ -23,12 +22,12 @@ export class SentimentAnalysis implements Middleware {
                 ]
             };
             try {
-                const result = await this.engine.sentiment(input);
-                const s = result.documents[0].score;
-                context.turnState.set("sentimentScore", s);
+                const result = await this.engine.detectLanguage(input);
+                const l = result.documents[0].detectedLanguages;
+                context.turnState.set("language", l);
             }
             catch(e) {
-                throw new Error(`Failed to process sentiment on ${context.activity.text}. Error: ${e}`);
+                throw new Error(`Failed to process language on ${context.activity.text}. Error: ${e}`);
             }
         }
         await next();

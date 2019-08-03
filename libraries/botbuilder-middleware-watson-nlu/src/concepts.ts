@@ -1,14 +1,15 @@
 import { Middleware, TurnContext, ActivityTypes } from "botbuilder";
-import { Engine } from "./engine";
+import { Engine } from "../../botbuilder-middleware-engine-core/lib/engine";
+import { WatsonEngine } from "./engine";
 
 /**
- * @module botbuildercommunity/text-analytics
+ * @module botbuildercommunity/middleware-watson-nlu
  */
 
-export class EmotionDetection implements Middleware {
+export class ConceptExtraction implements Middleware {
     public engine: Engine;
     constructor(public serviceKey: string, public endpoint: string, public options?: any) {
-        this.engine = Engine.getEngine(serviceKey, endpoint, options);
+        this.engine = new WatsonEngine(serviceKey, endpoint, options);
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>) {
         if(context.activity.type === ActivityTypes.Message) {
@@ -21,12 +22,12 @@ export class EmotionDetection implements Middleware {
                 ]
             };
             try {
-                const result = await this.engine.emotion(input);
-                const l = result.documents[0].emotion;
-                context.turnState.set("emotionDetection", l);
+                const result = await this.engine.concepts(input);
+                const l = result.documents[0].concepts;
+                context.turnState.set("conceptEntities", l);
             }
             catch(e) {
-                throw new Error(`Failed to process emotions on ${context.activity.text}. Error: ${e}`);
+                throw new Error(`Failed to process concepts on ${context.activity.text}. Error: ${e}`);
             }
         }
         await next();

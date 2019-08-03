@@ -1,10 +1,9 @@
 /**
- * @module botbuildercommunity/text-analytics
+ * @module botbuildercommunity/middleware-watson-nlu
  */
 
 export * from "./engine";
 export * from "./sentiment";
-export * from "./languageDetection";
 export * from "./keyPhrases";
 export * from "./entity";
 export * from "./categories";

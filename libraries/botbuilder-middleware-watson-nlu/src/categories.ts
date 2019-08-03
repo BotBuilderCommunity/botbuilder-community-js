@@ -1,14 +1,15 @@
 import { Middleware, TurnContext, ActivityTypes } from "botbuilder";
-import { Engine } from "./engine";
+import { Engine } from "../../botbuilder-middleware-engine-core/lib/engine";
+import { WatsonEngine } from "./engine";
 
 /**
- * @module botbuildercommunity/text-analytics
+ * @module botbuildercommunity/middleware-watson-nlu
  */
 
 export class CategoryExtraction implements Middleware {
     public engine: Engine;
     constructor(public serviceKey: string, public endpoint: string, public options?: any) {
-        this.engine = Engine.getEngine(serviceKey, endpoint, options);
+        this.engine = new WatsonEngine(serviceKey, endpoint, options);
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>) {
         if(context.activity.type === ActivityTypes.Message) {

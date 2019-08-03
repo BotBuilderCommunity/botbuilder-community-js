@@ -1,0 +1,43 @@
+{
+  "name": "@botbuildercommunity/middleware-watson-nlu",
+  "version": "0.9.0",
+  "description": "Bot Framework middleware component for the IBM Watson NLU service.",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "keywords": [
+    "chatbots",
+    "bot framework",
+    "bot builder",
+    "emotion analysis",
+    "ibm",
+    "watson"
+  ],
+  "contributors": [
+    "Bot Builder Community",
+    "Michael Szul <michael@szul.us>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
+  "dependencies": {
+    "watson-developer-cloud": "^4.0.1",
+    "botbuilder": "^4.5.3"
+  },
+  "devDependencies": {
+    "mocha": "^6.1.4",
+    "typescript": "^3.5.2"
+  }
+}

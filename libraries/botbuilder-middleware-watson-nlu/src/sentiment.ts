@@ -1,17 +1,15 @@
 import { Middleware, TurnContext, ActivityTypes } from "botbuilder";
-import { CognitiveServicesCredentials } from "ms-rest-azure";
-import { TextAnalyticsClient } from "azure-cognitiveservices-textanalytics";
-import { Engine } from "./engine";
+import { Engine } from "../../botbuilder-middleware-engine-core/lib/engine";
+import { WatsonEngine } from "./engine";
 
 /**
- * @module botbuildercommunity/text-analytics
+ * @module botbuildercommunity/middleware-watson-nlu
  */
 
-export class KeyPhrases implements Middleware {
+export class SentimentAnalysis implements Middleware {
     public engine: Engine;
-
     constructor(public serviceKey: string, public endpoint: string, public options?: any) {
-        this.engine = Engine.getEngine(serviceKey, endpoint, options);
+        this.engine = new WatsonEngine(serviceKey, endpoint, options);
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>) {
         if(context.activity.type === ActivityTypes.Message) {
@@ -24,12 +22,12 @@ export class KeyPhrases implements Middleware {
                 ]
             };
             try {
-                const result = await this.engine.keyPhrases(input);
-                const k = result.documents[0].keyPhrases;
-                context.turnState.set("keyPhrases", k);
+                const result = await this.engine.sentiment(input);
+                const s = result.documents[0].score;
+                context.turnState.set("sentimentScore", s);
             }
             catch(e) {
-                throw new Error(`Failed to process key phrases on ${context.activity.text}. Error: ${e}`);
+                throw new Error(`Failed to process sentiment on ${context.activity.text}. Error: ${e}`);
             }
         }
         await next();

@@ -1,14 +1,15 @@
 import { Middleware, TurnContext, ActivityTypes } from "botbuilder";
-import { Engine } from "./engine";
+import { Engine } from "../../botbuilder-middleware-engine-core/lib/engine";
+import { CognitiveServiceEngine } from "./engine";
 
 /**
- * @module botbuildercommunity/text-analytics
+ * @module botbuildercommunity/middleware-text-analytics
  */
 
-export class ConceptExtraction implements Middleware {
+export class EntityExtraction implements Middleware {
     public engine: Engine;
     constructor(public serviceKey: string, public endpoint: string, public options?: any) {
-        this.engine = Engine.getEngine(serviceKey, endpoint, options);
+        this.engine = new CognitiveServiceEngine(serviceKey, endpoint, options);
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>) {
         if(context.activity.type === ActivityTypes.Message) {
@@ -21,12 +22,12 @@ export class ConceptExtraction implements Middleware {
                 ]
             };
             try {
-                const result = await this.engine.concepts(input);
-                const l = result.documents[0].concepts;
-                context.turnState.set("conceptEntities", l);
+                const result = await this.engine.entities(input);
+                const l = result.documents[0].entities;
+                context.turnState.set("textEntities", l);
             }
             catch(e) {
-                throw new Error(`Failed to process concepts on ${context.activity.text}. Error: ${e}`);
+                throw new Error(`Failed to process entities on ${context.activity.text}. Error: ${e}`);
             }
         }
         await next();
