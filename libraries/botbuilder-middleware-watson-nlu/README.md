@@ -4,7 +4,7 @@ The Watson NLU Middleware offers Bot Framework middleware components for the IBM
 
 ## Installing
 
-    npm install @botbuildercommunity/middlware-watson-nlu --save
+    npm install @botbuildercommunity/middleware-watson-nlu --save
 
 ## Usage
 
