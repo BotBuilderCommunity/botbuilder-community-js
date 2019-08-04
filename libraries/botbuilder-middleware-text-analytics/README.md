@@ -4,7 +4,7 @@ The Text Analytics Middleware offers Bot Framework middleware components for the
 
 ## Installing
 
-    npm install @botbuildercommunity/middlware-text-analytics --save
+    npm install @botbuildercommunity/middleware-text-analytics --save
 
 ## Usage
 
