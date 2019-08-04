@@ -8,6 +8,7 @@
 
 # Library Owners
 /libraries/botbuilder-adapters/ @szul
+/libraries/botbuilder-adapter-twilio-whatsapp/ @imicknl
 /libraries/botbuilder-dialog-prompts/ @szul
 /libraries/botbuilder-spell-check-middleware/ @stephanbisser
 /libraries/botbuilder-storage/ @szul
