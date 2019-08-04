@@ -57,6 +57,10 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
     protected readonly client: Twilio.Twilio;
     protected readonly channel: string = 'whatsapp';
 
+    /**
+     * Creates a new TwilioWhatsAppAdapter instance.
+     * @param settings configuration settings for the adapter.
+     */
     public constructor(settings: TwilioWhatsAppAdapterSettings) {
         super();
 
@@ -93,7 +97,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     break;
                 case ActivityTypes.Message:
                     if (!activity.conversation || !activity.conversation.id) {
-                        throw new Error(`TwilioWhatsAppAdapter.sendActivity(): missing conversation id.`);
+                        throw new Error(`TwilioWhatsAppAdapter.sendActivities(): Activity doesn't contain a conversation id.`);
                     }
 
                     // eslint-disable-next-line no-case-declarations
@@ -109,7 +113,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     break;
                 default:
                     responses.push({} as ResourceResponse);
-                    console.warn(`TwilioWhatsAppAdapter.sendActivity(): Activity ignored. Unknown message type '${ activity.type }'.`);
+                    console.warn(`TwilioWhatsAppAdapter.sendActivities(): Activities of type '${ activity.type }' aren't supported.`);
             }
         }
 
@@ -155,13 +159,13 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
 
         // Validate if requests are coming from Twilio
         // https://www.twilio.com/docs/usage/security#validating-requests
-        if (!req.headers && !req.headers['x-twilio-signature']) {
-            console.warn(`TwilioWhatsAppAdapter.processActivity(): request not signed by Twilio`);
+        if (!req.headers && (!req.headers['x-twilio-signature'] || !req.headers['X-Twilio-Signature'])) {
+            console.warn(`TwilioWhatsAppAdapter.processActivity(): request doesn't contain a Twilio Signature.`);
             res.status(401);
             res.end();
         }
 
-        const signature = req.headers['x-twilio-signature'];
+        const signature = req.headers['x-twilio-signature'] || !req.headers['X-Twilio-Signature'];
         const authToken = this.settings.authToken;
         const requestUrl = this.settings.endpointUrl;
         const message = await retrieveBody(req);
@@ -174,7 +178,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         const isTwilioRequest = Twilio.validateRequest(authToken, signature, requestUrl, message);
 
         if (!isTwilioRequest) {
-            console.warn(`TwilioWhatsAppAdapter.processActivity(): Twilio request can not be validated`);
+            console.warn(`TwilioWhatsAppAdapter.processActivity(): request doesn't contain a valid Twilio Signature.`);
 
             res.status(401);
             res.end();
@@ -227,7 +231,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     activity.type = WhatsAppActivityTypes.MessageRead;
                     break;
                 default:
-                    console.warn(`TwilioWhatsAppAdapter.processActivity(): SmsStatus '${ message.SmsStatus }' not supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.processActivity(): SmsStatus of type '${ message.SmsStatus }' is not supported.`);
             }
         }
 
@@ -243,7 +247,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     activity.type = ActivityTypes.Message;
                     break;
                 default:
-                    console.warn(`TwilioWhatsAppAdapter.processActivity(): EventType '${ message.EventType }' not supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.processActivity(): EventType of type '${ message.EventType }' is not supported.`);
             }
         }
 
