@@ -67,7 +67,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         this.settings = settings;
 
         // Add required `whatsapp:` prefix if not exists
-        if (!this.settings.phoneNumber.startsWith('whatsapp:')) {
+        if (!this.settings.phoneNumber.startsWith('whatsapp')) {
             this.settings.phoneNumber = 'whatsapp:' + this.settings.phoneNumber;
         }
 
