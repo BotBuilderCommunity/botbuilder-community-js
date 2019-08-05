@@ -1,5 +1,6 @@
 {
   "packages": [
+    "libraries/botbuilder-adapter-twilio-whatsapp",
     "libraries/botbuilder-adapters",
     "libraries/botbuilder-dialog-prompts",
     "libraries/botbuilder-spell-check-middleware",
