@@ -36,6 +36,10 @@
   },
   "devDependencies": {
     "mocha": "^6.2.0",
+    "sinon": "^7.3.2",
     "typescript": "^3.5.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

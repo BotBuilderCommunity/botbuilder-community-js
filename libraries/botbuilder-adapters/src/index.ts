@@ -2,4 +2,4 @@
  * @module botbuildercommunity/adapters
  */
 
-export * from './consoleAdapter';
+export * from './../../botbuilder-adapter-console';

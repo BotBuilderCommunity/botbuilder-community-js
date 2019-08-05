@@ -1,4 +1,4 @@
-import { Activity, BotAdapter, ConversationReference, ResourceResponse, TurnContext } from 'botbuilder';
+import { Activity, ActivityTypes, BotAdapter, ConversationReference, ResourceResponse, TurnContext } from 'botbuilder';
 import { createInterface, ReadLine, ReadLineOptions } from 'readline';
 
 /**
@@ -6,6 +6,7 @@ import { createInterface, ReadLine, ReadLineOptions } from 'readline';
  */
 
 export class ConsoleAdapter extends BotAdapter {
+
     private _nextID: number = 0;
     private readonly _ref: ConversationReference;
     private readonly _lineOptions: ReadLineOptions = {
@@ -13,8 +14,10 @@ export class ConsoleAdapter extends BotAdapter {
         output: process.stdout,
         terminal: false
     };
-    constructor() {
+
+    public constructor() {
         super();
+
         this._ref = {
             channelId: 'console',
             user: {
@@ -28,15 +31,17 @@ export class ConsoleAdapter extends BotAdapter {
             conversation: {
                 id: 'conversation',
                 name: 'Conversation',
-                isGroup: false
+                isGroup: false,
+                tenantId: null,
+                conversationType: null
             },
             serviceUrl: ''
-        } as ConversationReference;
+        };
     }
 
     public processActivity(callback: (context: TurnContext) => Promise<void>): void {
         const read: ReadLine = createInterface(this._lineOptions);
-        read.on('line', (text: string) => {
+        read.on('line', (text: string): void => {
             const activity: Partial<Activity> = TurnContext.applyConversationReference(
                 {
                     type: 'message',
@@ -46,7 +51,7 @@ export class ConsoleAdapter extends BotAdapter {
                 },
                 this._ref,
                 true);
-            this.runMiddleware(new TurnContext(this, activity), callback).catch((err: Error) => {
+            this.runMiddleware(new TurnContext(this, activity), callback).catch((err: Error): void => {
                 throw new Error(err.toString());
             });
         });
@@ -55,56 +60,36 @@ export class ConsoleAdapter extends BotAdapter {
     public continueConversation(ref: ConversationReference, callback: (context: TurnContext) => Promise<void>): Promise<void> {
         const activity: Partial<Activity> = TurnContext.applyConversationReference({}, ref, true);
 
-        return this.runMiddleware(new TurnContext(this, activity), callback).catch((err: Error) => {
+        return this.runMiddleware(new TurnContext(this, activity), callback).catch((err: Error): void => {
             throw new Error(err.toString());
         });
     }
 
-    public sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]> {
-        return new Promise((resolve: any): void => {
-            function next(i: number): void {
-                if (i < activities.length) {
-                    const activity: Partial<Activity> = activities[i];
-                    responses.push(<ResourceResponse>{});
-                    switch (activity.type) {
-                        case 'message':
-                            /*
-                             * The Bot Framework Adapter uses a ClientConnector object to reply/send conversation.
-                             * Since the Console Bot does not connect to an endpoint or REST API, we can't use that (code below).
-                             * Not sure if there is a better way to return this Promise that isn't an empty object array.
-                            if (activity.replyToId) {
-                                responses.push(await client.conversations.replyToActivity(
-                                    activity.conversation.id,
-                                    activity.replyToId,
-                                    activity as Activity
-                                ));
-                            } else {
-                                responses.push(await client.conversations.sendToConversation(
-                                    activity.conversation.id,
-                                    activity as Activity
-                                ));
-                            }
-                            */
-                            console.log((activity.text != null) ? activity.text : '');
-                            break;
-                        default:
-                            console.log(`The [${activity.type}] is not supported with the Console Adapter.`);
-                            break;
-                    }
-                    next(i + 1);
-                } else {
-                    resolve(responses);
-                }
+    public async sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]> {
+        const responses: ResourceResponse[] = [];
+
+        for (let i = 0; i < activities.length; i++) {
+            const activity: Partial<Activity> = activities[i];
+
+            responses.push({} as ResourceResponse);
+            switch (activity.type) {
+                case ActivityTypes.Message:
+                    console.log((activity.text != null) ? activity.text : '');
+                    break;
+                default:
+                    console.log(`The [${ activity.type }] is not supported with the Console Adapter.`);
             }
-            const responses: ResourceResponse[] = [];
-            next(0);
-        });
+        }
+
+        return responses;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public updateActivity(context: TurnContext, activity: Partial<Activity>): Promise<void> {
         return Promise.reject(new Error('The method [updateActivity] is not supported by the Console Adapter.'));
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public deleteActivity(context: TurnContext, reference: Partial<ConversationReference>): Promise<void> {
         return Promise.reject(new Error('The method [deleteActivity] is not supported by the Console Adapter.'));
     }
