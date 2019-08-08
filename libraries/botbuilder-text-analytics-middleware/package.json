@@ -8,8 +8,9 @@
     "lib": "lib"
   },
   "scripts": {
-    "build": "tsc -p .",
-    "test": "mocha"
+    "build": "tsc",
+    "test": "tsc && mocha",
+    "test-ci": "tsc && mocha --reporter xunit --reporter-options output=./test-results.xml --reporter-options suiteName=$npm_package_name"
   },
   "repository": {
     "type": "git",
@@ -39,7 +40,10 @@
     "ms-rest-azure": "^2.6.0"
   },
   "devDependencies": {
-    "mocha": "^6.1.4",
-    "typescript": "^3.5.2"
+    "mocha": "^6.2.0",
+    "typescript": "^3.5.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

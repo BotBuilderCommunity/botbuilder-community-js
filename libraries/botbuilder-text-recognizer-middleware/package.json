@@ -8,8 +8,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "build": "tsc -p .",
-    "test": "mocha"
+    "build": "tsc",
+    "test": "tsc && mocha"
   },
   "repository": {
     "type": "git",
@@ -40,9 +40,10 @@
     "botbuilder": "^4.5.3"
   },
   "devDependencies": {
-    "mocha": "^5.2.0",
-    "tslint": "^5.18.0",
-    "tslint-microsoft-contrib": "^5.2.1",
+    "mocha": "^6.2.0",
     "typescript": "^3.5.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
