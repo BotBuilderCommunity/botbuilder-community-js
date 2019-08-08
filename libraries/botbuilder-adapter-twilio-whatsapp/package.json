@@ -9,7 +9,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "tsc && mocha tests/ --exit"
+    "test": "tsc && mocha",
+    "test-ci": "tsc && mocha --reporter xunit --reporter-options output=./test-results.xml --reporter-options suiteName=$npm_package_name"
   },
   "repository": {
     "type": "git",
@@ -37,10 +38,11 @@
     "twilio": "^3.33.2"
   },
   "devDependencies": {
-    "mocha": "^5.2.0",
+    "mocha": "^6.2.0",
     "nock": "^10.0.6",
-    "tslint": "^5.18.0",
-    "tslint-microsoft-contrib": "^5.2.1",
     "typescript": "^3.5.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -1,0 +1,49 @@
+# Node.js
+# Analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js 10.x'
+
+- script: |
+    npm install
+  displayName: 'Install all modules'
+
+- script: |
+    npm run build
+  displayName: 'Build TypeScript'
+
+- script: |
+    npm run audit
+  displayName: 'Run a security audit'
+
+- script: |
+    npm run eslint
+  displayName: 'Test with ESLint'
+
+- script: |
+    npm run test-ci
+  displayName: 'Test with Mocha'
+
+- task: PublishTestResults@2
+  inputs:
+    testRunner: JUnit
+    testResultsFiles: '**/test-results.xml'
+    mergeTestResults: false
+    failTaskOnFailedTests: true
+  displayName: 'Publish test results'
+  condition: succeededOrFailed()
+
+# - script: |
+#     npx lerna publish
+#   displayName: 'Publish all packages to NPM (lerna publish)'
+#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
