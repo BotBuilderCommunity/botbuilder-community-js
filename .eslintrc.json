@@ -1,8 +1,7 @@
 {
     "parser": "@typescript-eslint/parser",
     "plugins": [
-        "@typescript-eslint",
-        "only-warn"
+        "@typescript-eslint"
     ],
     "extends": [
         "eslint:recommended",
