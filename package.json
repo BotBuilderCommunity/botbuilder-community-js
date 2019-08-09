@@ -2,19 +2,22 @@
   "name": "botbuildercommunity-packages",
   "private": true,
   "scripts": {
-    "build": "lerna bootstrap",
-    "test": "mocha \"libraries/bot*/test/*.test.js\"",
-    "eslint": "eslint  ./libraries/*/src/*.ts ./libraries/*/src/**/*.ts",
-    "eslint-fix": "eslint  ./libraries/*/src/*.ts ./libraries/*/src/**/*.ts --fix"
+    "postinstall": "lerna bootstrap",
+    "build": "lerna run build",
+    "test": "mocha ./libraries/**/test/*.test.js",
+    "test-ci": "lerna run test-ci --no-bail --parallel || true",
+    "eslint": "eslint ./libraries/*/src/*.ts ./libraries/*/src/**/*.ts",
+    "eslint-fix": "eslint ./libraries/*/src/*.ts ./libraries/*/src/**/*.ts --fix",
+    "audit": "lerna exec --stream --parallel -- npm audit --audit-level=moderate",
+    "audit-fix": "lerna exec --stream --parallel -- npm audit fix"
   },
   "devDependencies": {
-    "@types/node": "^12.0.12",
+    "@types/node": "^12.6.9",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
     "eslint": "^6.1.0",
-    "eslint-plugin-only-warn": "^1.0.1",
-    "lerna": "^3.15.0",
-    "mocha": "^5.2.0",
-    "typescript": "^3.5.2"
+    "lerna": "^3.16.4",
+    "mocha": "^6.2.0",
+    "typescript": "^3.5.3"
   }
 }
