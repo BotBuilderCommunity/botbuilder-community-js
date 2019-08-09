@@ -1,4 +1,4 @@
-import { Engine } from "../../botbuilder-middleware-engine-core/lib/engine";
+import { Engine } from "@botbuildercommunity/middleware-engine-core";
 import { CognitiveServicesCredentials } from "ms-rest-azure";
 import { TextAnalyticsClient } from "azure-cognitiveservices-textanalytics";
 import { ServiceClientOptions } from "@azure/ms-rest-js";

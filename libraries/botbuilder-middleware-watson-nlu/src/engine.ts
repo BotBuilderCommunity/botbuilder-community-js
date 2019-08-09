@@ -1,4 +1,4 @@
-import { Engine } from "../../botbuilder-middleware-engine-core/lib/engine";
+import { Engine } from "@botbuildercommunity/middleware-engine-core";
 import * as nlup from "watson-developer-cloud/natural-language-understanding/v1-generated";
 
 /**
