@@ -4,21 +4,23 @@ The Text Analytics Middleware offers Bot Framework middleware components for the
 
 ## Installing
 
-    npm install @botbuildercommunity/text-analytics-middleware --save
+    npm install @botbuildercommunity/middleware-text-analytics --save
 
 ## Usage
 
 All middleware is created and used in the same way. For example, for sentiment analysis, import the `SentimentAnalysis` class from the package, and add it to your bot adapter:
 
 ```typescript
-import { SentimentAnalysis } from '@botbuildercommunity/text-analytics-middleware';
+import { SentimentAnalysis } from '@botbuildercommunity/middleware-text-analytics';
 
 adapter.use(new SentimentAnalysis(YOUR_TEXT_ANALYTICS_KEY, TEXT_ANALYTICS_API_ENDPOINT, SERVICE_CLIENT_OPTIONS));
 ```
 
+The `CLIENT_OPTIONS` parameter is optional.
+
 > Note that the TEXT_ANALYTICS_API_ENDPOINT will be the Cognitive Services endpoint root. For example: https://eastus.api.cognitive.microsoft.com
 
-When used, the `turnState` on the `TurnContext` will have a property named `sentimentScore` between 0 and 1. A full example can be seen in the [`bot.js`](test/bot.js) bot test file.
+When used, the `turnState` on the `TurnContext` will have a property named `sentimentScore` between 0 and 1. A full example can be seen in the [`app-cs.js`](example/app-cs.js) bot test file.
 
 Supported middleware classes include:
 

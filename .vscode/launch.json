@@ -6,6 +6,12 @@
     "configurations": [
         {
             "type": "node",
+            "request": "attach",
+            "name": "Attach",
+            "port": 9229,
+        },
+        {
+            "type": "node",
             "request": "launch",
             "name": "Mocha Tests",
             "program": "${workspaceRoot}/node_modules/mocha/bin/mocha",
@@ -16,6 +22,20 @@
             ],
             "port": 9229,
             "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "(CS) Debug Text Analytics Middleware",
+            "program": "${workspaceRoot}\\libraries\\botbuilder-text-analytics-middleware\\example\\app-cs.js",
+            "envFile": "${workspaceFolder}/libraries/botbuilder-text-analytics-middleware/example/.env"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "(Watson) Debug Text Analytics Middleware",
+            "program": "${workspaceRoot}\\libraries\\botbuilder-text-analytics-middleware\\example\\app-watson.js",
+            "envFile": "${workspaceFolder}/libraries/botbuilder-text-analytics-middleware/example/.env"
         }
     ]
 }

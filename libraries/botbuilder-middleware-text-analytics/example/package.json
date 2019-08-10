@@ -22,10 +22,10 @@
   "author": "Michael Szul <michael@szul.us>",
   "license": "MIT",
   "dependencies": {
-    "azure-cognitiveservices-textanalytics": "^2.0.0",
-    "botbuilder": "^4.0.6",
-    "dotenv": "^6.0.0",
-    "ms-rest-azure": "^2.5.9",
-    "restify": "^7.2.1"
+    "azure-cognitiveservices-textanalytics": "^2.1.0",
+    "botbuilder": "^4.5.3",
+    "dotenv": "^6.2.0",
+    "ms-rest-azure": "^2.6.0",
+    "restify": "^7.7.0"
   }
 }

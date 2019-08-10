@@ -12,5 +12,7 @@
 /libraries/botbuilder-dialog-prompts/ @szul
 /libraries/botbuilder-spell-check-middleware/ @stephanbisser
 /libraries/botbuilder-storage/ @szul
-/libraries/botbuilder-text-analytics-middleware/ @szul
+/libraries/botbuilder-middleware-engine-core/ @szul
+/libraries/botbuilder-middleware-text-analytics/ @szul
+/libraries/botbuilder-middleware-watson-nlu/ @szul
 /libraries/botbuilder-text-recognizer-middleware/ @szul
