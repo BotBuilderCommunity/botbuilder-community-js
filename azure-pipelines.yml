@@ -23,25 +23,32 @@ steps:
   displayName: 'Build TypeScript'
 
 - script: |
-    npm run audit
-  displayName: 'Run a security audit'
-
-- script: |
     npm run eslint
   displayName: 'Test with ESLint'
+  continueOnError: true
+
+- script: |
+    npm run eslint-ci
+  displayName: 'Test with ESLint CI'
+  continueOnError: true
 
 - script: |
     npm run test-ci
   displayName: 'Test with Mocha'
+  continueOnError: true
 
 - task: PublishTestResults@2
   inputs:
     testRunner: JUnit
-    testResultsFiles: '**/test-results.xml'
+    testResultsFiles: '**/*-test-results.xml'
     mergeTestResults: false
     failTaskOnFailedTests: true
   displayName: 'Publish test results'
   condition: succeededOrFailed()
+
+- script: |
+    npm run audit
+  displayName: 'Run a security audit'
 
 # - script: |
 #     npx lerna publish
