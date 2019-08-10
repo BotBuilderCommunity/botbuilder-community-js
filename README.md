@@ -50,7 +50,7 @@ The following adapters can be used to expose your bot on additional channels not
 
 | Name | Description | NPM |
 | ---- | ----------- | ------- |
-| [@botbuildercommunity/adapters](libraries/botbuilder-adapters/README.md) | Alternative platform adapters | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/adapters.svg)](https://www.npmjs.com/package/@botbuildercommunity/adapters) |
+| [@botbuildercommunity/adapter-console](libraries/botbuilder-adapters/README.md) | A platform adapter for the console / terminal | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/adapter-console.svg)](https://www.npmjs.com/package/@botbuildercommunity/adapter-console) |
 | [@botbuildercommunity/adapter-twilio-whatsapp](libraries/botbuilder-adapter-twilio-whatsapp/README.md) | A platform adapter for Twilio WhatsApp | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/adapter-twilio-whatsapp.svg)](https://www.npmjs.com/package/@botbuildercommunity/adapter-twilio-whatsapp) |
 
 The following packages are available from [Botkit](https://github.com/howdyai/botkit), and work with both the Bot Framework and Botkit:
