@@ -7,6 +7,7 @@
     "test": "mocha ./libraries/**/test/*.test.js",
     "test-ci": "lerna run test-ci --no-bail --parallel || true",
     "eslint": "eslint ./libraries/*/src/*.ts ./libraries/*/src/**/*.ts",
+    "eslint-ci": "eslint ./libraries/*/src/*.ts ./libraries/*/src/**/*.ts --quiet -f junit -o ./eslint-test-results.xml",
     "eslint-fix": "eslint ./libraries/*/src/*.ts ./libraries/*/src/**/*.ts --fix",
     "audit": "lerna exec --stream --parallel -- npm audit --audit-level=moderate",
     "audit-fix": "lerna exec --stream --parallel -- npm audit fix"
