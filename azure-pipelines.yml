@@ -23,8 +23,13 @@ steps:
   displayName: 'Build TypeScript'
 
 - script: |
-    npm run eslint-ci
+    npm run eslint
   displayName: 'Test with ESLint'
+  continueOnError: true
+
+- script: |
+    npm run eslint-ci
+  displayName: 'Test with ESLint CI'
   continueOnError: true
 
 - script: |
