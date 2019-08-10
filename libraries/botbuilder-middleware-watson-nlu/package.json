@@ -1,7 +1,7 @@
 {
-  "name": "@botbuildercommunity/text-analytics-middleware",
-  "version": "0.2.6",
-  "description": "Bot Framework middleware component for the Cognitive Services Text Analytics API, including sentiment analysis, language detection, entity extraction, and keyword recognition.",
+  "name": "@botbuildercommunity/middleware-watson-nlu",
+  "version": "1.0.0",
+  "description": "Bot Framework middleware component for the IBM Watson NLU service.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "directories": {
@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "test": "tsc && mocha",
-    "test-ci": "tsc && mocha --reporter xunit --reporter-options output=./mocha-test-results.xml --reporter-options suiteName=$npm_package_name"
+    "test-ci": "tsc && mocha --reporter xunit --reporter-options output=./test-results.xml --reporter-options suiteName=$npm_package_name"
   },
   "repository": {
     "type": "git",
@@ -20,10 +20,9 @@
     "chatbots",
     "bot framework",
     "bot builder",
-    "sentiment analysis",
-    "text analytics",
-    "cognitive services",
-    "middleware"
+    "emotion analysis",
+    "ibm",
+    "watson"
   ],
   "contributors": [
     "Bot Builder Community",
@@ -35,15 +34,12 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "azure-cognitiveservices-textanalytics": "^2.1.0",
+    "@botbuildercommunity/middleware-engine-core": "^1.0.0",
     "botbuilder": "^4.5.3",
-    "ms-rest-azure": "^2.6.0"
+    "ibm-watson": "^4.3.3"
   },
   "devDependencies": {
-    "mocha": "^6.2.0",
-    "typescript": "^3.5.3"
-  },
-  "publishConfig": {
-    "access": "public"
+    "mocha": "^6.1.4",
+    "typescript": "^3.5.2"
   }
 }

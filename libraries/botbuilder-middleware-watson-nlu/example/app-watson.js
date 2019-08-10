@@ -1,6 +1,6 @@
 const { BotFrameworkAdapter } = require("botbuilder");
 const restify = require("restify");
-const { SentimentAnalysis } = require("../lib/index");
+const { EmotionDetection } = require("../lib/index");
 
 require("dotenv").config();
 
@@ -14,12 +14,12 @@ const adapter = new BotFrameworkAdapter({
     appPassword: process.env.MICROSOFT_APP_PASSWORD 
 });
 
-adapter.use(new SentimentAnalysis(process.env.TEXT_ANALYTICS_KEY, process.env.TEXT_ANALYTICS_ENDPOINT));
+adapter.use(new EmotionDetection(process.env.WATSON_API_KEY, process.env.WATSON_ENDPOINT));
 
 server.post("/api/messages", (req, res) => {
     adapter.processActivity(req, res, async (context) => {
         if (context.activity.type === "message") {
-            await context.sendActivity(`You said "${context.activity.text} with a sentiment of ${context.turnState.get("sentimentScore")}"`);
+            await context.sendActivity(`You said "${context.activity.text} with an emotion score of [joy] at ${context.turnState.get("emotionDetection").joy}"`);
         } else {
             await context.sendActivity(`[${context.activity.type} event detected]`);
         }
