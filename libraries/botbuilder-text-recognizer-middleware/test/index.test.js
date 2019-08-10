@@ -55,7 +55,4 @@ describe('Social media recognizer middleware tests', function() {
         adapter.use(new SocialMediaRecognizer());
         await adapter.test('Follow the #codepunk hashtag', '#codepunk');
     });
-    after(() => {
-        process.exit(); //Close out the entire process on the last test.
-    });
 });

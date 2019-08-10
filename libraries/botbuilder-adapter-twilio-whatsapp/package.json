@@ -1,9 +1,9 @@
 {
-  "name": "@botbuildercommunity/spell-check-middleware",
-  "version": "0.2.5",
-  "description": "Bot Framework middleware component for the Cognitive Services Spell Check API",
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "name": "@botbuildercommunity/adapter-twilio-whatsapp",
+  "version": "0.1.0",
+  "description": "Twilio WhatsApp adapter for use with the Bot Framework.",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "directories": {
     "lib": "lib"
   },
@@ -20,14 +20,13 @@
     "chatbots",
     "bot framework",
     "bot builder",
-    "sentiment analysis",
-    "text analytics",
-    "cognitive services",
-    "middleware"
+    "whatsapp adapter",
+    "adapters",
+    "whatsapp"
   ],
   "contributors": [
     "Bot Builder Community",
-    "Stephan Bisser <stephan@bisser.at>"
+    "Mick Vleeshouwer <mick@imick.nl>"
   ],
   "license": "MIT",
   "bugs": {
@@ -35,15 +34,13 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "azure-cognitiveservices-spellcheck": "^1.1.0",
     "botbuilder": "^4.5.3",
-    "restify": "^7.7.0",
-    "web-request": "^1.0.7"
+    "twilio": "^3.33.2"
   },
   "devDependencies": {
     "mocha": "^6.2.0",
-    "rewire": "^4.0.1",
-    "typescript": "^3.5.2"
+    "nock": "^10.0.6",
+    "typescript": "^3.5.3"
   },
   "publishConfig": {
     "access": "public"

@@ -61,3 +61,6 @@ typings/
 .next
 
 .lerna_backup
+
+# junit tests
+*-test-results.xml

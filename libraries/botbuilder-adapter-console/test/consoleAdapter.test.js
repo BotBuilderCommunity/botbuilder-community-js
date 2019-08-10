@@ -35,8 +35,11 @@ describe('Console adapter tests', () => {
         assert.notEqual(result, null);
         assert.equal((result.length === 2), true);
     });
+<<<<<<< HEAD:libraries/botbuilder-adapter-console/test/consoleAdapter.test.js
 
     after(() => {
         console.log.restore()
     });
+=======
+>>>>>>> 4016b576670d92a093a614d58b83610a1f185fb1:libraries/botbuilder-adapters/test/index.test.js
 });
