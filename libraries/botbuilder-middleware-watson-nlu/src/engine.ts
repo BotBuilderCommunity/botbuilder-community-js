@@ -1,5 +1,5 @@
 import { Engine } from '@botbuildercommunity/middleware-engine-core';
-import * as nlup from 'watson-developer-cloud/natural-language-understanding/v1-generated';
+import * as nlup from 'ibm-watson/natural-language-understanding/v1.js';
 
 /**
  * @module botbuildercommunity/middleware-watson-nlu

@@ -1,5 +1,5 @@
 import { Middleware, TurnContext, ActivityTypes } from 'botbuilder';
-import { Engine } from '../../botbuilder-middleware-engine-core/lib/engine';
+import { Engine } from '@botbuildercommunity/middleware-engine-core';
 import { CognitiveServiceEngine } from './engine';
 
 /**
