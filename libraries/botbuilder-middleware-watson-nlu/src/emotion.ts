@@ -1,6 +1,6 @@
-import { Middleware, TurnContext, ActivityTypes } from "botbuilder";
-import { Engine } from "../../botbuilder-middleware-engine-core/lib/engine";
-import { WatsonEngine } from "./engine";
+import { Middleware, TurnContext, ActivityTypes } from 'botbuilder';
+import { Engine } from '../../botbuilder-middleware-engine-core/lib/engine';
+import { WatsonEngine } from './engine';
 
 /**
  * @module botbuildercommunity/middleware-watson-nlu
@@ -16,18 +16,18 @@ export class EmotionDetection implements Middleware {
             const input = {
                 documents: [
                     {
-                        "id": "1"
-                        , "text": context.activity.text
+                        'id': '1'
+                        , 'text': context.activity.text
                     }
                 ]
             };
             try {
                 const result = await this.engine.emotion(input);
                 const l = result.documents[0].emotion;
-                context.turnState.set("emotionDetection", l);
+                context.turnState.set('emotionDetection', l);
             }
             catch(e) {
-                throw new Error(`Failed to process emotions on ${context.activity.text}. Error: ${e}`);
+                throw new Error(`Failed to process emotions on ${ context.activity.text }. Error: ${ e }`);
             }
         }
         await next();

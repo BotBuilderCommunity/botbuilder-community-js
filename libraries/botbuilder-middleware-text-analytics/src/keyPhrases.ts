@@ -1,6 +1,6 @@
-import { Middleware, TurnContext, ActivityTypes } from "botbuilder";
-import { Engine } from "../../botbuilder-middleware-engine-core/lib/engine";
-import { CognitiveServiceEngine } from "./engine";
+import { Middleware, TurnContext, ActivityTypes } from 'botbuilder';
+import { Engine } from '../../botbuilder-middleware-engine-core/lib/engine';
+import { CognitiveServiceEngine } from './engine';
 
 /**
  * @module botbuildercommunity/middleware-text-analytics
@@ -16,18 +16,18 @@ export class KeyPhrases implements Middleware {
             const input = {
                 documents: [
                     {
-                        "id": "1"
-                        , "text": context.activity.text
+                        'id': '1'
+                        , 'text': context.activity.text
                     }
                 ]
             };
             try {
                 const result = await this.engine.keyPhrases(input);
                 const k = result.documents[0].keyPhrases;
-                context.turnState.set("keyPhrases", k);
+                context.turnState.set('keyPhrases', k);
             }
             catch(e) {
-                throw new Error(`Failed to process key phrases on ${context.activity.text}. Error: ${e}`);
+                throw new Error(`Failed to process key phrases on ${ context.activity.text }. Error: ${ e }`);
             }
         }
         await next();

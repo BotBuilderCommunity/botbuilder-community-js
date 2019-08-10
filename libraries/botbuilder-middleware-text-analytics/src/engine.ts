@@ -1,14 +1,14 @@
-import { Engine } from "@botbuildercommunity/middleware-engine-core";
-import { CognitiveServicesCredentials } from "ms-rest-azure";
-import { TextAnalyticsClient } from "azure-cognitiveservices-textanalytics";
-import { ServiceClientOptions } from "@azure/ms-rest-js";
+import { Engine } from '@botbuildercommunity/middleware-engine-core';
+import { CognitiveServicesCredentials } from 'ms-rest-azure';
+import { TextAnalyticsClient } from 'azure-cognitiveservices-textanalytics';
+import { ServiceClientOptions } from '@azure/ms-rest-js';
 import {
     EntitiesBatchResult,
     MultiLanguageBatchInput,
     KeyPhraseBatchResult,
     SentimentBatchResult,
     LanguageBatchResult
-} from "azure-cognitiveservices-textanalytics/lib/models";
+} from 'azure-cognitiveservices-textanalytics/lib/models';
 
 /**
  * @module botbuildercommunity/middleware-text-analytics
@@ -35,12 +35,12 @@ export class CognitiveServiceEngine extends Engine {
         return await this.client.sentiment(input);
     }
     public async categories(input: string): Promise<any> {
-        return Promise.reject("[categories] is not supported by this engine.");
+        return Promise.reject('[categories] is not supported by this engine.');
     }
     public async concepts(input: string): Promise<any> {
-        return Promise.reject("[concepts] is not supported by this engine.");
+        return Promise.reject('[concepts] is not supported by this engine.');
     }
     public async emotion(input: string): Promise<any> {
-        return Promise.reject("[emotion] is not supported by this engine.");
+        return Promise.reject('[emotion] is not supported by this engine.');
     }
 }

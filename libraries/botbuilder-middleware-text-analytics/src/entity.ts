@@ -1,6 +1,6 @@
-import { Middleware, TurnContext, ActivityTypes } from "botbuilder";
-import { Engine } from "../../botbuilder-middleware-engine-core/lib/engine";
-import { CognitiveServiceEngine } from "./engine";
+import { Middleware, TurnContext, ActivityTypes } from 'botbuilder';
+import { Engine } from '../../botbuilder-middleware-engine-core/lib/engine';
+import { CognitiveServiceEngine } from './engine';
 
 /**
  * @module botbuildercommunity/middleware-text-analytics
@@ -16,18 +16,18 @@ export class EntityExtraction implements Middleware {
             const input = {
                 documents: [
                     {
-                        "id": "1"
-                        , "text": context.activity.text
+                        'id': '1'
+                        , 'text': context.activity.text
                     }
                 ]
             };
             try {
                 const result = await this.engine.entities(input);
                 const l = result.documents[0].entities;
-                context.turnState.set("textEntities", l);
+                context.turnState.set('textEntities', l);
             }
             catch(e) {
-                throw new Error(`Failed to process entities on ${context.activity.text}. Error: ${e}`);
+                throw new Error(`Failed to process entities on ${ context.activity.text }. Error: ${ e }`);
             }
         }
         await next();

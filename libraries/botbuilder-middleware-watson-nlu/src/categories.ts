@@ -1,6 +1,6 @@
-import { Middleware, TurnContext, ActivityTypes } from "botbuilder";
-import { Engine } from "../../botbuilder-middleware-engine-core/lib/engine";
-import { WatsonEngine } from "./engine";
+import { Middleware, TurnContext, ActivityTypes } from 'botbuilder';
+import { Engine } from '../../botbuilder-middleware-engine-core/lib/engine';
+import { WatsonEngine } from './engine';
 
 /**
  * @module botbuildercommunity/middleware-watson-nlu
@@ -16,18 +16,18 @@ export class CategoryExtraction implements Middleware {
             const input = {
                 documents: [
                     {
-                        "id": "1"
-                        , "text": context.activity.text
+                        'id': '1'
+                        , 'text': context.activity.text
                     }
                 ]
             };
             try {
                 const result = await this.engine.categories(input);
                 const l = result.documents[0].categories;
-                context.turnState.set("categoryEntities", l);
+                context.turnState.set('categoryEntities', l);
             }
             catch(e) {
-                throw new Error(`Failed to process categories on ${context.activity.text}. Error: ${e}`);
+                throw new Error(`Failed to process categories on ${ context.activity.text }. Error: ${ e }`);
             }
         }
         await next();

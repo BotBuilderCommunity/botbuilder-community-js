@@ -1,5 +1,5 @@
-import { Engine } from "@botbuildercommunity/middleware-engine-core";
-import * as nlup from "watson-developer-cloud/natural-language-understanding/v1-generated";
+import { Engine } from '@botbuildercommunity/middleware-engine-core';
+import * as nlup from 'watson-developer-cloud/natural-language-understanding/v1-generated';
 
 /**
  * @module botbuildercommunity/middleware-watson-nlu
@@ -19,7 +19,7 @@ export class WatsonEngine extends Engine {
     }
     private init(): any {
         return new nlup({
-            version: "2018-11-16",
+            version: '2018-11-16',
             iam_apikey: this._apikey,
             url: this._url
         });
@@ -29,25 +29,25 @@ export class WatsonEngine extends Engine {
     }
     //The below methods can all be abstracted further. Consider this a TO-DO.
     public async entities(input: string): Promise<any> {
-        return await this.recognize(input, "entities");
+        return await this.recognize(input, 'entities');
     }
     public async keyPhrases(input: string): Promise<any> {
-        return await this.recognize(input, "keywords");
+        return await this.recognize(input, 'keywords');
     }
     public async detectLanguage(input: string): Promise<any> {
-        return Promise.reject("[detectLanguage] is not supported by this engine.");
+        return Promise.reject('[detectLanguage] is not supported by this engine.');
     }
     public async sentiment(input: string): Promise<any> {
-        return await this.recognize(input, "sentiment");
+        return await this.recognize(input, 'sentiment');
     }
     public async categories(input: string): Promise<any> {
-        return await this.recognize(input, "categories");
+        return await this.recognize(input, 'categories');
     }
     public async concepts(input: string): Promise<any> {
-        return await this.recognize(input, "concepts");
+        return await this.recognize(input, 'concepts');
     }
     public async emotion(input: string): Promise<any> {
-        return await this.recognize(input, "emotion");
+        return await this.recognize(input, 'emotion');
     }
 }
 
@@ -65,8 +65,8 @@ async function watsonRecognizer(nlu: any, text: string, type: string): Promise<a
                 reject(err);
             }
             const result = res[type].document[type]; //Needs better checking of properties.
-            if(type === "keywords") {
-                type = "keyPhrases";
+            if(type === 'keywords') {
+                type = 'keyPhrases';
             }
             resolve({
                 documents: [
