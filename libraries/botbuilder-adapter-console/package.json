@@ -1,7 +1,7 @@
 {
-  "name": "@botbuildercommunity/adapters",
-  "version": "0.2.5",
-  "description": "A collection of adapters for use with the Bot Framework, in order to handle different deployment and integration scenarios.",
+  "name": "@botbuildercommunity/adapter-console",
+  "version": "1.0.0",
+  "description": "Console adapter for the Bot Framework SDK v4.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "directories": {
@@ -37,7 +37,8 @@
   },
   "devDependencies": {
     "mocha": "^6.2.0",
-    "typescript": "^3.5.2"
+    "sinon": "^7.3.2",
+    "typescript": "^3.5.3"
   },
   "publishConfig": {
     "access": "public"
