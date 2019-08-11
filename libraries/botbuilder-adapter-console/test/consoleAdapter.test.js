@@ -1,5 +1,6 @@
 const assert = require('assert');
 const { ConsoleAdapter } = require("../lib/consoleAdapter");
+const sinon = require('sinon');
 
 class TestBot {
     constructor() {
@@ -14,13 +15,18 @@ class TestBot {
 describe('Console adapter tests', () => {
     let testBot;
     let adapter;
+
     before(() => {
         testBot = new TestBot();
         adapter = new ConsoleAdapter();
+
         adapter.processActivity(async (context) => {
             await testBot.onTurn(context);
         });
+
+        sinon.stub(console, 'log')
     });
+
     it("should result in two response objects", async () => {
         const result = await adapter.sendActivities(null, [
             { type: "typing" },
@@ -28,5 +34,9 @@ describe('Console adapter tests', () => {
         ]);
         assert.notEqual(result, null);
         assert.equal((result.length === 2), true);
+    });
+
+    after(() => {
+        console.log.restore()
     });
 });
