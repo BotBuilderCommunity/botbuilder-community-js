@@ -1,0 +1,39 @@
+{
+  "name": "@botbuildercommunity/middleware-engine-core",
+  "version": "1.0.0",
+  "description": "Bot Framework middleware core engine builder for text analysis.",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "keywords": [
+    "chatbots",
+    "bot framework",
+    "bot builder",
+    "sentiment analysis",
+    "text analytics",
+    "cognitive services",
+    "middleware"
+  ],
+  "contributors": [
+    "Bot Builder Community",
+    "Michael Szul <michael@szul.us>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
+  "devDependencies": {
+    "typescript": "^3.5.2"
+  }
+}

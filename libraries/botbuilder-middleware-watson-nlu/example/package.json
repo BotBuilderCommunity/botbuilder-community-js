@@ -1,0 +1,30 @@
+{
+  "name": "botbuilder-emotion-middleware-testbot",
+  "version": "0.1.0",
+  "description": "Test bot application for verifying emotion analysis functionality.",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sentiment",
+    "analysis",
+    "text",
+    "analytics",
+    "api",
+    "cognitive",
+    "services",
+    "azure",
+    "bot",
+    "framework",
+    "chatbots"
+  ],
+  "author": "Michael Szul <michael@szul.us>",
+  "license": "MIT",
+  "dependencies": {
+    "botbuilder": "^4.5.3",
+    "dotenv": "^6.2.0",
+    "ibm-watson": "^4.3.0",
+    "restify": "^7.7.0"
+  }
+}
