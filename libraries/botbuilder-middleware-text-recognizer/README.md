@@ -4,13 +4,13 @@ The Text Recognizer Middleware library is a compliment to the Text Recognizer di
 
 ## Installing
 
-    npm install @botbuildercommunity/text-recognizer-middleware --save
+    npm install @botbuildercommunity/middleware-text-recognizer --save
 
 ## Usage
 
 All middleware is created and used in the same way. For example, for social media recognition, import the `SocialMediaRecognizer` class from the package, and add it to your bot adapter:
 
-    import { SocialMediaRecognizer } from "@botbuildercommunity/text-recognizer-middleware";
+    import { SocialMediaRecognizer } from "@botbuildercommunity/middleware-text-recognizer";
 
     adapter.use(new SocialMediaRecognizer());
 
