@@ -1,7 +1,6 @@
 **/node_modules/**
 
 libraries/botbuilder-dialog-prompts/**/*
-libraries/botbuilder-spell-check-middleware/**/*
 libraries/botbuilder-storage/**/*
 libraries/botbuilder-text-analytics-middleware/**/*
 libraries/botbuilder-middleware-text-analytics/**/*
