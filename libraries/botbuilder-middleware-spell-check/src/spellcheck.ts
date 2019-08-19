@@ -1,11 +1,11 @@
 import { ActivityTypes, Middleware, TurnContext } from 'botbuilder';
 import * as WebRequest from 'web-request';
 /**
- * @module botbuildercommunity/spellcheck
+ * @module botbuildercommunity/middleware-spell-check
  */
 
 function getUrl(text: string): string {
-    return `https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/?text=${text}&mode=spell`;
+    return `https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/?text=${ text }&mode=spell`;
 }
 
 async function getWebRequest(url: string, key: string): Promise<WebRequest.Response<string>> {
@@ -20,8 +20,8 @@ async function getWebRequest(url: string, key: string): Promise<WebRequest.Respo
 export class SpellCheck implements Middleware {
     public text: string;
     public key: string;
-    constructor(public serviceKey: string) {
-        this.key = serviceKey;
+    public constructor(key: string) {
+        this.key = key;
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if (context.activity.type === ActivityTypes.Message) {
@@ -43,7 +43,7 @@ export class SpellCheck implements Middleware {
                     }
                 }
             } catch (e) {
-                throw new Error(`Failed to process spellcheck on ${context.activity.text}. Error: ${e}`);
+                throw new Error(`Failed to process spellcheck on ${ context.activity.text }. Error: ${ e }`);
             }
         }
         await next();
