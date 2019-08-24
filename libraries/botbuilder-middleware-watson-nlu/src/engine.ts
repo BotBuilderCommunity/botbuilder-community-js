@@ -10,7 +10,7 @@ export class WatsonEngine extends Engine {
     private _url: string;
     private _options: any;
     private _nlu: any;
-    constructor(apikey: string, url: string, opts?: any) {
+    public constructor(apikey: string, url: string, opts?: any) {
         super();
         this._apikey = apikey;
         this._url = url;
@@ -35,7 +35,7 @@ export class WatsonEngine extends Engine {
         return await this.recognize(input, 'keywords');
     }
     public async detectLanguage(input: string): Promise<any> {
-        return Promise.reject('[detectLanguage] is not supported by this engine.');
+        return Promise.reject(`[detectLanguage] is not supported by this engine. "${ input }" cannot be processed`);
     }
     public async sentiment(input: string): Promise<any> {
         return await this.recognize(input, 'sentiment');
@@ -52,15 +52,15 @@ export class WatsonEngine extends Engine {
 }
 
 async function watsonRecognizer(nlu: any, text: string, type: string): Promise<any> {
-    const input = (typeof text === 'string') ? text : (<any>text).documents[0].text;
+    const input = (typeof text === 'string') ? text : (text as any).documents[0].text;
     const opts = {
         html: input,
         features: {
             [type]: {}
         }
     };
-    return new Promise((resolve, reject) => {
-        nlu.analyze(opts, (err, res) => {
+    return new Promise((resolve, reject): any => {
+        nlu.analyze(opts, (err, res): any => {
             if(err != null) {
                 reject(err);
             }

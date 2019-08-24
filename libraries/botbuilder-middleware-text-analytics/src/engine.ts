@@ -17,7 +17,7 @@ import {
 export class CognitiveServiceEngine extends Engine {
     public credentials: CognitiveServicesCredentials;
     public client: TextAnalyticsClient;
-    constructor(serviceKey: string, endpoint: string, options?: ServiceClientOptions) {
+    public constructor(serviceKey: string, endpoint: string, options?: ServiceClientOptions) {
         super();
         this.credentials = new CognitiveServicesCredentials(serviceKey);
         this.client = new TextAnalyticsClient(this.credentials, endpoint, options);
@@ -35,12 +35,12 @@ export class CognitiveServiceEngine extends Engine {
         return await this.client.sentiment(input);
     }
     public async categories(input: string): Promise<any> {
-        return Promise.reject('[categories] is not supported by this engine.');
+        return Promise.reject(`[categories] is not supported by this engine. "${ input }" cannot be processed`);
     }
     public async concepts(input: string): Promise<any> {
-        return Promise.reject('[concepts] is not supported by this engine.');
+        return Promise.reject(`[concepts] is not supported by this engine. "${ input }" cannot be processed`);
     }
     public async emotion(input: string): Promise<any> {
-        return Promise.reject('[emotion] is not supported by this engine.');
+        return Promise.reject(`[emotion] is not supported by this engine. "${ input }" cannot be processed`);
     }
 }
