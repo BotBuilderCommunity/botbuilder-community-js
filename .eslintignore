@@ -2,6 +2,4 @@
 
 libraries/botbuilder-dialog-prompts/**/*
 libraries/botbuilder-storage/**/*
-libraries/botbuilder-text-analytics-middleware/**/*
-libraries/botbuilder-middleware-text-analytics/**/*
-libraries/botbuilder-middleware-watson-nlu/**/*
+
