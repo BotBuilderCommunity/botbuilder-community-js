@@ -10,7 +10,7 @@
 /libraries/botbuilder-adapter-console/ @szul
 /libraries/botbuilder-adapter-twilio-whatsapp/ @imicknl
 /libraries/botbuilder-dialog-prompts/ @szul
-/libraries/botbuilder-storage/ @szul
+/libraries/botbuilder-storage-ats/ @szul
 /libraries/botbuilder-middleware-engine-core/ @szul
 /libraries/botbuilder-middleware-spell-check/ @stephanbisser
 /libraries/botbuilder-middleware-text-analytics/ @szul
