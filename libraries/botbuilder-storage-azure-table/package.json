@@ -1,5 +1,5 @@
 {
-  "name": "@botbuildercommunity/storage-ats",
+  "name": "@botbuildercommunity/storage-azure-table",
   "version": "1.0.0",
   "description": "Additional storage options for the Microsoft Bot Framework, including Azure Table Storage",
   "keywords": [

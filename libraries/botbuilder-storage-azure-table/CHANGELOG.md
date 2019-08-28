@@ -7,4 +7,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2019-08
 ### Added
 - Version bump to 1.0.0
-- Renamed to `storage-ats` to keep separate from other storage components
+- Renamed to `storage-azure-table` to keep separate from other storage components

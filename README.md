@@ -25,7 +25,7 @@ The following alternative storage implementations are currently available;
 
 | Name | Description | NPM |
 | ---- | ----------- | ----- |
-| [@botbuildercommunity/storage-ats](libraries/botbuilder-storage-ats/README.md) | Use Azure Table Storage in your bot. | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-ats.svg) |
+| [@botbuildercommunity/storage-azure-table](libraries/botbuilder-storage-azure-table/README.md) | Use Azure Table Storage in your bot. | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-azure-table.svg) |
 
 > The Azure Table Storage package has been deprecated from Microsoft's `botbuilder-js` repository, and is being taken over by the community.
 
