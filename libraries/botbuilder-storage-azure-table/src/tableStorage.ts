@@ -1,5 +1,5 @@
 /**
- * @module @botbuildercommunity/storage
+ * @module @botbuildercommunity/storage-azure-table
  */
 /**
  * Initial code copyright (c) Microsoft Corporation. All rights reserved.
