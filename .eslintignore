@@ -1,4 +1,3 @@
 **/node_modules/**
 
-libraries/botbuilder-dialog-prompts/**/*
 libraries/botbuilder-storage-azure-table/**/*
