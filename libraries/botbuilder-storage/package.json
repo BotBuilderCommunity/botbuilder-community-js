@@ -30,10 +30,13 @@
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "dependencies": {
+    "@types/mongodb": "^3.3.1",
     "azure-storage": "^2.10.3",
     "botbuilder": "^4.5.3",
     "botbuilder-azure": "^4.5.3",
-    "flat": "^4.1.0"
+    "botbuilder-core": "^4.5.3",
+    "flat": "^4.1.0",
+    "mongodb": "^3.3.2"
   },
   "devDependencies": {
     "@types/node": "^7.10.6",
