@@ -1,0 +1,45 @@
+{
+  "name": "@botbuildercommunity/storage-mssql",
+  "version": "0.1.0",
+  "description": "Microsoft SQL Server storage option for the Microsoft Bot Framework",
+  "keywords": [
+    "botbuilder",
+    "bots",
+    "chatbots",
+    "mssql",
+    "microsoft sql server",
+    "storage"
+  ],
+  "contributors": [
+    "Bot Builder Community"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha"
+  },
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "dependencies": {
+    "botbuilder": "^4.5.3",
+    "botbuilder-core": "^4.5.3",
+    "mssql": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/mssql": "^4.3.0",
+    "@types/node": "^7.10.6",
+    "mocha": "^6.2.0",
+    "rewire": "^4.0.1",
+    "typescript": "^3.5.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
