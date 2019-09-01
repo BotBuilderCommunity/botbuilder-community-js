@@ -3,21 +3,45 @@
  */
 
 import { Storage, StoreItems } from 'botbuilder-core';
+import { config as msconfig, ConnectionPool, NVarChar } from 'mssql';
 
 export class MSSQLStorage implements Storage {
-    public connectionString: string;
-    public databaseName: string;
-    public tableName: string;
-    public options: any;
+    private _connection: msconfig;
+    public dbuser: string;
+    public dbpassword: string;
+    public dbserver: string;
+    public db: string;
+    public dbtable: string;
 
-    public constructor(connectionString: string, databaseName: string, tableName: string, options?: any) {
-        this.connectionString = connectionString;
-        this.databaseName = databaseName;
-        this.tableName = tableName;
-        this.options = (options !== undefined) ? options : null;
+    public constructor(dbuser: string, dbpassword: string, dbserver: string, db: string, dbtable: string) {
+        this.dbuser = dbuser;
+        this.dbpassword = dbpassword;
+        this.dbserver = dbserver;
+        this.db = db;
+        this.dbtable = dbtable;
+        this._connection = {
+            user: this.dbuser,
+            password: this.dbpassword,
+            server: this.dbserver,
+            database: this.db
+        }
     }
 
     public async read(keys: string[]): Promise<StoreItems> {
+        const pool = await this.getConnectionPool();
+        try {
+            const result = await pool.request()
+                .input("", NVarChar, keys)
+                .query(``);
+            pool.close();
+            return Promise.resolve(result.recordset);
+        }
+        catch(e) {
+            if(pool != null && pool.connected) {
+                pool.close();
+            }
+            return Promise.reject(e);
+        }
     }
 
     public async write(changes: StoreItems): Promise<void> {
@@ -26,6 +50,12 @@ export class MSSQLStorage implements Storage {
     public async delete(keys: string[]): Promise<void> {
     }
 
-    private async getConnection(): Promise<T> {
+    private async getConnectionPool(): Promise<ConnectionPool> {
+        try {
+            return await new ConnectionPool(this._connection);
+        }
+        catch(e) {
+            console.log(e);
+        }
     }
 }
