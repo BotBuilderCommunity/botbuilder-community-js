@@ -1,35 +1,71 @@
 import { Engine } from '@botbuildercommunity/middleware-engine-core';
-import {
-    EntitiesBatchResult,
-    MultiLanguageBatchInput,
-    KeyPhraseBatchResult,
-    SentimentBatchResult,
-    LanguageBatchResult
-} from 'azure-cognitiveservices-textanalytics/lib/models';
+import * as aws from "aws-sdk";
 
 /**
  * @module botbuildercommunity/middleware-aws-comprehend
  */
 
-export class CognitiveServiceEngine extends Engine {
-    public credentials: CognitiveServicesCredentials;
-    public client: TextAnalyticsClient;
-    constructor(serviceKey: string, endpoint: string, options?: ServiceClientOptions) {
+export class AWSComprehendEngine extends Engine {
+    public client: aws.Comprehend;
+    public constructor() {
         super();
-        this.credentials = new CognitiveServicesCredentials(serviceKey);
-        this.client = new TextAnalyticsClient(this.credentials, endpoint, options);
+        this.client = new aws.Comprehend({ apiVersion: '2017-11-27', region: 'us-east-1' });
     }
-    public async entities(input: MultiLanguageBatchInput): Promise<EntitiesBatchResult> {
-        return await this.client.entities(input);
+    public async entities(input: any): Promise<aws.Comprehend.DetectEntitiesResponse> {
+        const params = {
+            LanguageCode: 'en',
+            Text: input.documents[0].text
+        };
+        return new Promise((resolve, reject) => {
+            this.client.detectEntities(params, (err, data) => {
+                if(err) {
+                    reject(err);
+                }
+                resolve(data);
+            });
+        });
     }
-    public async keyPhrases(input: MultiLanguageBatchInput): Promise<KeyPhraseBatchResult> {
-        return await this.client.keyPhrases(input);
+    public async keyPhrases(input: any): Promise<aws.Comprehend.DetectKeyPhrasesResponse> {
+        const params = {
+            LanguageCode: 'en',
+            Text: input.documents[0].text
+        };
+        return new Promise((resolve, reject) => {
+            this.client.detectKeyPhrases(params, (err, data) => {
+                if(err) {
+                    reject(err);
+                }
+                resolve(data);
+            });
+        });
     }
-    public async detectLanguage(input: MultiLanguageBatchInput): Promise<LanguageBatchResult> {
-        return await this.client.detectLanguage(input);
+    public async detectLanguage(input: any): Promise<aws.Comprehend.DetectDominantLanguageResponse> {
+        const params = {
+            LanguageCode: 'en',
+            Text: input.documents[0].text
+        };
+        return new Promise((resolve, reject) => {
+            this.client.detectDominantLanguage(params, (err, data) => {
+                if(err) {
+                    reject(err);
+                }
+                resolve(data);
+            });
+        });
     }
-    public async sentiment(input: MultiLanguageBatchInput): Promise<SentimentBatchResult> {
-        return await this.client.sentiment(input);
+    public async sentiment(input: any): Promise<aws.Comprehend.DetectSentimentResponse> {
+        const params = {
+            LanguageCode: 'en',
+            Text: input.documents[0].text
+        };
+        return new Promise((resolve, reject) => {
+            this.client.detectSentiment(params, (err, data) => {
+                if(err) {
+                    reject(err);
+                }
+                resolve(data);
+            });
+        });
     }
     public async categories(input: string): Promise<any> {
         return Promise.reject('[categories] is not supported by this engine.');

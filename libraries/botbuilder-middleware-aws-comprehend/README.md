@@ -6,6 +6,13 @@ The AWS Comprehend Middleware offers Bot Framework middleware components for the
 
     npm install @botbuildercommunity/middleware-aws-comprehend --save
 
+## Authentication
+
+This package assumes that your AWS credentials are set in the environment variables. The following environment variables are required:
+
+    AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY
+
 ## Usage
 
 All middleware is created and used in the same way. For example, for sentiment analysis, import the `SentimentAnalysis` class from the package, and add it to your bot adapter:
