@@ -4,4 +4,6 @@ Microsoft's [botbuilder-js](https://github.com/Microsoft/botbuilder-js) team rec
 
 ## Installation
 
-    npm install @botbuildercommunity/storage --save
+```cmd
+npm install @botbuildercommunity/storage --save
+```
