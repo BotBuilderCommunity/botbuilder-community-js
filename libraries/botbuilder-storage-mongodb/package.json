@@ -1,19 +1,16 @@
 {
-  "name": "@botbuildercommunity/storage",
-  "version": "0.2.8",
-  "description": "Additional storage options for the Microsoft Bot Framework, including Azure Table Storage",
+  "name": "@botbuildercommunity/storage-mongodb",
+  "version": "0.1.0",
+  "description": "MongoDB storage option for the Microsoft Bot Framework",
   "keywords": [
     "botbuilder",
     "bots",
     "chatbots",
-    "azure table storage",
-    "table storage",
+    "mongodb",
     "storage"
   ],
   "contributors": [
-    "Microsoft Corp.",
-    "Bot Builder Community",
-    "Michael Szul <michael@szul.us>"
+    "Bot Builder Community"
   ],
   "license": "MIT",
   "bugs": {
@@ -30,15 +27,15 @@
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "dependencies": {
-    "azure-storage": "^2.10.3",
     "botbuilder": "^4.5.3",
-    "botbuilder-azure": "^4.5.3",
     "botbuilder-core": "^4.5.3",
-    "flat": "^4.1.0"
+    "flat": "^4.1.0",
+    "mongodb": "^3.3.2"
   },
   "devDependencies": {
     "@types/node": "^7.10.6",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.2",
+    "@types/mongodb": "^3.3.1"
   },
   "publishConfig": {
     "access": "public"
