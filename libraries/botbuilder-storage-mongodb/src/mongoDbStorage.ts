@@ -1,10 +1,7 @@
 /**
- * @module @botbuildercommunity/storage
+ * @module @botbuildercommunity/storage-mongodb
  */
-/**
- * Initial code copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
+
 import { MongoClient, MongoClientOptions, Collection } from 'mongodb';
 import { Storage, StoreItems } from 'botbuilder-core';
 
@@ -24,10 +21,10 @@ import { Storage, StoreItems } from 'botbuilder-core';
  * ```
 */
 export class MongoDbStorage implements Storage {
-    url: string;
-    db: string;
-    collection: string;
-    mongoOptions: MongoClientOptions;
+    public url: string;
+    public db: string;
+    public collection: string;
+    public mongoOptions: MongoClientOptions;
 
     /**
      * Creates a new CosmosDbStorage instance.
@@ -53,7 +50,7 @@ export class MongoDbStorage implements Storage {
     public async read(keys: string[]): Promise<StoreItems> {
         const client = await this.getClient();
         try {
-            var col = await this.getCollection(client);
+            const col = await this.getCollection(client);
 
             const data = {};
             await Promise.all(keys.map(async (key: string): Promise<void> => {
@@ -69,7 +66,7 @@ export class MongoDbStorage implements Storage {
     public async write(changes: StoreItems): Promise<void> {
         const client = await this.getClient();
         try {
-            var col = await this.getCollection(client);
+            const col = await this.getCollection(client);
 
             await Promise.all(Object.keys(changes).map(async (key: string): Promise<void> => {
                 const changesCopy = { ...changes[key] };
@@ -95,7 +92,7 @@ export class MongoDbStorage implements Storage {
     public async delete(keys: string[]): Promise<void> {
         const client = await this.getClient();
         try {
-            var col = await this.getCollection(client);
+            const col = await this.getCollection(client);
 
             await Promise.all(Object.keys(keys).map(async (key: string): Promise<void> => {
                 await col.deleteOne({ _id: key });
@@ -107,7 +104,7 @@ export class MongoDbStorage implements Storage {
 
     private async getClient(): Promise<MongoClient> {
         const client = await MongoClient.connect(this.url, this.mongoOptions)
-            .catch(err => { throw err; });
+            .catch((err): any => { throw err; });
 
         if (!client) throw new Error('Unable to create MongoDB client');
 
@@ -117,4 +114,4 @@ export class MongoDbStorage implements Storage {
     private async getCollection(client: MongoClient): Promise<Collection> {
         return await client.db(this.db).collection(this.collection);
     }
-};
+}

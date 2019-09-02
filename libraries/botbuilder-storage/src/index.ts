@@ -7,4 +7,3 @@
  * All additional code is licensed under the MIT License by the community.
  */
 export * from './tableStorage';
-export * from './mongoDbStorage';
