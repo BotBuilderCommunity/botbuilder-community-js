@@ -11,7 +11,7 @@ export class AWSComprehendEngine extends Engine {
         super();
         this.client = new aws.Comprehend({ apiVersion: '2017-11-27', region: 'us-east-1' });
     }
-    public async entities(input: any): Promise<aws.Comprehend.DetectEntitiesResponse> {
+    public async entities(input: any): Promise<any> {
         const params = {
             LanguageCode: 'en',
             Text: input.documents[0].text
@@ -21,11 +21,23 @@ export class AWSComprehendEngine extends Engine {
                 if(err) {
                     reject(err);
                 }
-                resolve(data);
+                try {
+                    const entities = data.Entities.map((e) => e.Text);
+                    resolve({
+                        documents: [
+                            {
+                                entities: entities
+                            }
+                        ]
+                    });
+                }
+                catch(e) {
+                    reject(e);
+                }
             });
         });
     }
-    public async keyPhrases(input: any): Promise<aws.Comprehend.DetectKeyPhrasesResponse> {
+    public async keyPhrases(input: any): Promise<any> {
         const params = {
             LanguageCode: 'en',
             Text: input.documents[0].text
@@ -35,11 +47,23 @@ export class AWSComprehendEngine extends Engine {
                 if(err) {
                     reject(err);
                 }
-                resolve(data);
+                try {
+                    const keyPhrases = data.KeyPhrases.map((e) => e.Text);
+                    resolve({
+                        documents: [
+                            {
+                                keyPhrases: keyPhrases
+                            }
+                        ]
+                    });
+                }
+                catch(e) {
+                    reject(e);
+                }
             });
         });
     }
-    public async detectLanguage(input: any): Promise<aws.Comprehend.DetectDominantLanguageResponse> {
+    public async detectLanguage(input: any): Promise<any> {
         const params = {
             LanguageCode: 'en',
             Text: input.documents[0].text
@@ -49,11 +73,23 @@ export class AWSComprehendEngine extends Engine {
                 if(err) {
                     reject(err);
                 }
-                resolve(data);
+                try {
+                    const vals = Object.values(data.Languages).sort((a, b) => b.Score - a.Score);
+                    resolve({
+                        documents: [
+                            {
+                                detectedLanguages: vals[0].LanguageCode
+                            }
+                        ]
+                    });
+                }
+                catch(e) {
+                    reject(e);
+                }
             });
         });
     }
-    public async sentiment(input: any): Promise<aws.Comprehend.DetectSentimentResponse> {
+    public async sentiment(input: any): Promise<any> {
         const params = {
             LanguageCode: 'en',
             Text: input.documents[0].text
@@ -63,7 +99,20 @@ export class AWSComprehendEngine extends Engine {
                 if(err) {
                     reject(err);
                 }
-                resolve(data);
+                try {
+                    const vals = Object.values(data.SentimentScore).sort((a, b) => b - a);
+                    resolve({
+                        documents: [
+                            {
+                                sentiment: data.Sentiment.toLowerCase(),
+                                score: vals[0]
+                            }
+                        ]
+                    });
+                }
+                catch(e) {
+                    reject(e);
+                }
             });
         });
     }

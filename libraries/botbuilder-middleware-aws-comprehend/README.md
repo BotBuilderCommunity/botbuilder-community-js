@@ -20,12 +20,12 @@ All middleware is created and used in the same way. For example, for sentiment a
 ```typescript
 import { SentimentAnalysis } from '@botbuildercommunity/middleware-aws-comprehend';
 
-adapter.use(new SentimentAnalysis(___, ___, OPTIONS));
+adapter.use(new SentimentAnalysis());
 ```
 
-The `OPTIONS` parameter is optional.
-
 When used, the `turnState` on the `TurnContext` will have a property named `sentimentScore` between 0 and 1. A full example can be seen in the [`app-aws.js`](example/app-aws.js) bot test file.
+
+> Differences from Cognitive Services and Watson: AWS Comprehend does not return a 0 - 1 response on the sentiment. Instead, it returns 0 - 1 for each possible sentiment. You can access the sentiment through the `sentimentType` property on the `turnState`.
 
 Supported middleware classes include:
 
@@ -34,11 +34,10 @@ Supported middleware classes include:
 * `KeyPhrases`
 * `EntityExtraction`
 
-Each class takes the two required parameters in the example usage above (with the OPTIONS parameter being optional).
-
 In each case, properties are added to the `turnState` of the `TurnContext`. You can retrieve them in your bot via:
 
 * `context.turnState.get('sentimentScore')` //This is a number for `SentimentAnalysis`
+* `context.turnState.get('sentimentType')` //This is a string for `SentimentAnalysis`
 * `context.turnState.get('language')` //This is a string for `LanguageDetection`
 * `context.turnState.get('keyPhrases')` //This is an array of strings for `KeyPhrases`
-* `context.turnState.get('textEntities')` //This is an array of `EntityRecord` types` for `EntityExtraction`
+* `context.turnState.get('textEntities')` //This is an array of strings for `EntityExtraction`

@@ -24,7 +24,9 @@ export class SentimentAnalysis implements Middleware {
             try {
                 const result = await this.engine.sentiment(input);
                 const s = result.documents[0].score;
+                const t = result.documents[0].sentiment;
                 context.turnState.set('sentimentScore', s);
+                context.turnState.set('sentimentType', t);
             }
             catch(e) {
                 throw new Error(`Failed to process sentiment on ${ context.activity.text }. Error: ${ e }`);
