@@ -1,5 +1,5 @@
 import { Middleware, TurnContext, ActivityTypes } from 'botbuilder';
-import { Engine } from '@botbuildercommunity/middleware-engine-core'
+import { Engine } from '@botbuildercommunity/middleware-engine-core';
 import { AWSComprehendEngine } from './engine';
 
 /**
@@ -11,7 +11,7 @@ export class EntityExtraction implements Middleware {
     public constructor() {
         this.engine = new AWSComprehendEngine();
     }
-    public async onTurn(context: TurnContext, next: () => Promise<void>) {
+    public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if(context.activity.type === ActivityTypes.Message) {
             const input = {
                 documents: [

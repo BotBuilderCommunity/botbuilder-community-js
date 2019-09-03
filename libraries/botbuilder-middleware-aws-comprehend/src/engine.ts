@@ -1,5 +1,5 @@
 import { Engine } from '@botbuildercommunity/middleware-engine-core';
-import * as aws from "aws-sdk";
+import * as aws from 'aws-sdk';
 
 /**
  * @module botbuildercommunity/middleware-aws-comprehend
@@ -16,13 +16,13 @@ export class AWSComprehendEngine extends Engine {
             LanguageCode: 'en',
             Text: input.documents[0].text
         };
-        return new Promise((resolve, reject) => {
-            this.client.detectEntities(params, (err, data) => {
+        return new Promise((resolve, reject): void => {
+            this.client.detectEntities(params, (err: aws.AWSError, data: aws.Comprehend.DetectEntitiesResponse): void => {
                 if(err) {
                     reject(err);
                 }
                 try {
-                    const entities = data.Entities.map((e) => e.Text);
+                    const entities = data.Entities.map((e: aws.Comprehend.Entity): string => e.Text);
                     resolve({
                         documents: [
                             {
@@ -42,13 +42,13 @@ export class AWSComprehendEngine extends Engine {
             LanguageCode: 'en',
             Text: input.documents[0].text
         };
-        return new Promise((resolve, reject) => {
-            this.client.detectKeyPhrases(params, (err, data) => {
+        return new Promise((resolve, reject): void => {
+            this.client.detectKeyPhrases(params, (err: aws.AWSError, data: aws.Comprehend.DetectKeyPhrasesResponse): void => {
                 if(err) {
                     reject(err);
                 }
                 try {
-                    const keyPhrases = data.KeyPhrases.map((e) => e.Text);
+                    const keyPhrases = data.KeyPhrases.map((e: aws.Comprehend.KeyPhrase): string => e.Text);
                     resolve({
                         documents: [
                             {
@@ -68,13 +68,13 @@ export class AWSComprehendEngine extends Engine {
             LanguageCode: 'en',
             Text: input.documents[0].text
         };
-        return new Promise((resolve, reject) => {
-            this.client.detectDominantLanguage(params, (err, data) => {
+        return new Promise((resolve, reject): void => {
+            this.client.detectDominantLanguage(params, (err: aws.AWSError, data: aws.Comprehend.DetectDominantLanguageResponse): void => {
                 if(err) {
                     reject(err);
                 }
                 try {
-                    const vals = Object.values(data.Languages).sort((a, b) => b.Score - a.Score);
+                    const vals = Object.values(data.Languages).sort((a: aws.Comprehend.DominantLanguage, b: aws.Comprehend.DominantLanguage): number => b.Score - a.Score);
                     resolve({
                         documents: [
                             {
@@ -94,13 +94,13 @@ export class AWSComprehendEngine extends Engine {
             LanguageCode: 'en',
             Text: input.documents[0].text
         };
-        return new Promise((resolve, reject) => {
-            this.client.detectSentiment(params, (err, data) => {
+        return new Promise((resolve, reject): void => {
+            this.client.detectSentiment(params, (err: aws.AWSError, data: aws.Comprehend.DetectSentimentResponse): void => {
                 if(err) {
                     reject(err);
                 }
                 try {
-                    const vals = Object.values(data.SentimentScore).sort((a, b) => b - a);
+                    const vals = Object.values(data.SentimentScore).sort((a: number, b: number): number => b - a);
                     resolve({
                         documents: [
                             {
@@ -117,12 +117,12 @@ export class AWSComprehendEngine extends Engine {
         });
     }
     public async categories(input: string): Promise<any> {
-        return Promise.reject('[categories] is not supported by this engine.');
+        return Promise.reject(`[categories] is not supported by this engine. "${ input }" cannot be processed`);
     }
     public async concepts(input: string): Promise<any> {
-        return Promise.reject('[concepts] is not supported by this engine.');
+        return Promise.reject(`[concepts] is not supported by this engine. "${ input }" cannot be processed`);
     }
     public async emotion(input: string): Promise<any> {
-        return Promise.reject('[emotion] is not supported by this engine.');
+        return Promise.reject(`[emotion] is not supported by this engine. "${ input }" cannot be processed`);
     }
 }

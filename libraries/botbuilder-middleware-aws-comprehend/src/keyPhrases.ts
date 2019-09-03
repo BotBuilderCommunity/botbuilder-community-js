@@ -11,7 +11,7 @@ export class KeyPhrases implements Middleware {
     public constructor() {
         this.engine = new AWSComprehendEngine();
     }
-    public async onTurn(context: TurnContext, next: () => Promise<void>) {
+    public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if(context.activity.type === ActivityTypes.Message) {
             const input = {
                 documents: [
