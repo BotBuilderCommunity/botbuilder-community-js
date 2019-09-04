@@ -1,28 +1,33 @@
 import { Engine } from '@botbuildercommunity/middleware-engine-core';
-import * as aws from 'aws-sdk';
+import { AWSComprehendOptions } from './schema';
+import { AWSError, Comprehend } from 'aws-sdk';
 
 /**
  * @module botbuildercommunity/middleware-aws-comprehend
  */
 
 export class AWSComprehendEngine extends Engine {
-    public client: aws.Comprehend;
-    public constructor() {
+    public client: Comprehend;
+    public options: AWSComprehendOptions;
+    public lang: string;
+    public constructor(options?: AWSComprehendOptions) {
         super();
-        this.client = new aws.Comprehend({ apiVersion: '2017-11-27', region: 'us-east-1' });
+        this.options = options || { apiVersion: '2017-11-27', region: 'us-east-1' };
+        this.lang = this.options.lang || 'en';
+        this.client = new Comprehend({ apiVersion: this.options.apiVersion, region: this.options.region });
     }
     public async entities(input: any): Promise<any> {
         const params = {
-            LanguageCode: 'en',
+            LanguageCode: this.options.lang,
             Text: input.documents[0].text
         };
         return new Promise((resolve, reject): void => {
-            this.client.detectEntities(params, (err: aws.AWSError, data: aws.Comprehend.DetectEntitiesResponse): void => {
+            this.client.detectEntities(params, (err: AWSError, data: Comprehend.DetectEntitiesResponse): void => {
                 if(err) {
                     reject(err);
                 }
                 try {
-                    const entities = data.Entities.map((e: aws.Comprehend.Entity): string => e.Text);
+                    const entities = data.Entities.map((e: Comprehend.Entity): string => e.Text);
                     resolve({
                         documents: [
                             {
@@ -39,16 +44,16 @@ export class AWSComprehendEngine extends Engine {
     }
     public async keyPhrases(input: any): Promise<any> {
         const params = {
-            LanguageCode: 'en',
+            LanguageCode: this.options.lang,
             Text: input.documents[0].text
         };
         return new Promise((resolve, reject): void => {
-            this.client.detectKeyPhrases(params, (err: aws.AWSError, data: aws.Comprehend.DetectKeyPhrasesResponse): void => {
+            this.client.detectKeyPhrases(params, (err: AWSError, data: Comprehend.DetectKeyPhrasesResponse): void => {
                 if(err) {
                     reject(err);
                 }
                 try {
-                    const keyPhrases = data.KeyPhrases.map((e: aws.Comprehend.KeyPhrase): string => e.Text);
+                    const keyPhrases = data.KeyPhrases.map((e: Comprehend.KeyPhrase): string => e.Text);
                     resolve({
                         documents: [
                             {
@@ -65,16 +70,16 @@ export class AWSComprehendEngine extends Engine {
     }
     public async detectLanguage(input: any): Promise<any> {
         const params = {
-            LanguageCode: 'en',
+            LanguageCode: this.options.lang,
             Text: input.documents[0].text
         };
         return new Promise((resolve, reject): void => {
-            this.client.detectDominantLanguage(params, (err: aws.AWSError, data: aws.Comprehend.DetectDominantLanguageResponse): void => {
+            this.client.detectDominantLanguage(params, (err: AWSError, data: Comprehend.DetectDominantLanguageResponse): void => {
                 if(err) {
                     reject(err);
                 }
                 try {
-                    const vals = Object.values(data.Languages).sort((a: aws.Comprehend.DominantLanguage, b: aws.Comprehend.DominantLanguage): number => b.Score - a.Score);
+                    const vals = Object.values(data.Languages).sort((a: Comprehend.DominantLanguage, b: Comprehend.DominantLanguage): number => b.Score - a.Score);
                     resolve({
                         documents: [
                             {
@@ -91,11 +96,11 @@ export class AWSComprehendEngine extends Engine {
     }
     public async sentiment(input: any): Promise<any> {
         const params = {
-            LanguageCode: 'en',
+            LanguageCode: this.options.lang,
             Text: input.documents[0].text
         };
         return new Promise((resolve, reject): void => {
-            this.client.detectSentiment(params, (err: aws.AWSError, data: aws.Comprehend.DetectSentimentResponse): void => {
+            this.client.detectSentiment(params, (err: AWSError, data: Comprehend.DetectSentimentResponse): void => {
                 if(err) {
                     reject(err);
                 }

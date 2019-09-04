@@ -27,6 +27,16 @@ When used, the `turnState` on the `TurnContext` will have a property named `sent
 
 > Differences from Cognitive Services and Watson: AWS Comprehend does not return a 0 - 1 response on the sentiment. Instead, it returns 0 - 1 for each possible sentiment. You can access the sentiment through the `sentimentType` property on the `turnState`.
 
+By default, the middleware assumes an East US region and English as the language. You can modify this by passing in `AWSComprehendOptions` to the `SentimentAnalysis`:
+
+```typescript
+import { SentimentAnalysis } from '@botbuildercommunity/middleware-aws-comprehend';
+
+adapter.use(new SentimentAnalysis({ apiVersion: '2017-11-27', region: 'us-east-1', lang: 'en' }));
+```
+
+
+
 Supported middleware classes include:
 
 * `SentimentAnalysis`
