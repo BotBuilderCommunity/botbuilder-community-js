@@ -13,6 +13,7 @@
 /libraries/botbuilder-spell-check-middleware/ @stephanbisser
 /libraries/botbuilder-storage/ @szul
 /libraries/botbuilder-storage-mongodb/ @mdrichardson
+/libraries/botbuilder-middleware-aws-comprehend/ @szul
 /libraries/botbuilder-middleware-engine-core/ @szul
 /libraries/botbuilder-middleware-text-analytics/ @szul
 /libraries/botbuilder-middleware-watson-nlu/ @szul
