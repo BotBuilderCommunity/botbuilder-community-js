@@ -1,9 +1,9 @@
+import { Comprehend } from 'aws-sdk';
+
 /**
  * @module botbuildercommunity/middleware-aws-comprehend
  */
 
-export interface AWSComprehendOptions {
-    apiVersion: string;
-    region: string;
+export interface AWSComprehendOptions extends Comprehend.ClientConfiguration {
     lang?: string;
 }

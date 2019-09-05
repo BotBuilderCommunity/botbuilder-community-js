@@ -12,13 +12,13 @@ export class AWSComprehendEngine extends Engine {
     public lang: string;
     public constructor(options?: AWSComprehendOptions) {
         super();
-        this.options = options || { apiVersion: '2017-11-27', region: 'us-east-1' };
+        this.options = { ...{ apiVersion: '2017-11-27', region: 'us-east-1' }, ...options};
         this.lang = this.options.lang || 'en';
-        this.client = new Comprehend({ apiVersion: this.options.apiVersion, region: this.options.region });
+        this.client = new Comprehend(this.options);
     }
     public async entities(input: any): Promise<any> {
         const params = {
-            LanguageCode: this.options.lang,
+            LanguageCode: this.lang,
             Text: input.documents[0].text
         };
         return new Promise((resolve, reject): void => {
@@ -44,7 +44,7 @@ export class AWSComprehendEngine extends Engine {
     }
     public async keyPhrases(input: any): Promise<any> {
         const params = {
-            LanguageCode: this.options.lang,
+            LanguageCode: this.lang,
             Text: input.documents[0].text
         };
         return new Promise((resolve, reject): void => {
@@ -70,7 +70,7 @@ export class AWSComprehendEngine extends Engine {
     }
     public async detectLanguage(input: any): Promise<any> {
         const params = {
-            LanguageCode: this.options.lang,
+            LanguageCode: this.lang,
             Text: input.documents[0].text
         };
         return new Promise((resolve, reject): void => {
@@ -96,7 +96,7 @@ export class AWSComprehendEngine extends Engine {
     }
     public async sentiment(input: any): Promise<any> {
         const params = {
-            LanguageCode: this.options.lang,
+            LanguageCode: this.lang,
             Text: input.documents[0].text
         };
         return new Promise((resolve, reject): void => {
