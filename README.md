@@ -26,6 +26,7 @@ The following alternative storage implementations are currently available;
 | Name | Description | NPM |
 | ---- | ----------- | ----- |
 | [@botbuildercommunity/storage-azure-table](libraries/botbuilder-storage-azure-table/README.md) | Use Azure Table Storage in your bot. | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-azure-table.svg) |
+| [@botbuildercommunity/storage-mongodb](libraries/botbuilder-storage-mongodb/README.md) | Use MongoDB storage implementation in your bot. | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-mongodb.svg) |
 
 > The Azure Table Storage package has been deprecated from Microsoft's `botbuilder-js` repository, and is being taken over by the community.
 
@@ -42,6 +43,7 @@ The following pieces of middleware are currently available;
 
 | Name | Description | NPM |
 | ---- | ----------- | ------- |
+| [@botbuildercommunity/middleware-aws-comprehend](libraries/botbuilder-middleware-aws-comprehend/README.md) | Use Amazon's AWS Comprehend for sentiment analysis, key phrases, language detection, and entity extraction. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-aws-comprehend.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-aws-comprehend) |
 | [@botbuildercommunity/middleware-text-analytics](libraries/botbuilder-middleware-text-analytics/README.md) | Use Cognitive Services Text Analytics API for sentiment analysis, language detection, key phrases and entity extraction. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-text-analytics.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-text-analytics) |
 | [@botbuildercommunity/middleware-watson-nlu](libraries/botbuilder-middleware-watson-nlu/README.md) | Use IBM Watson's NLU for sentiment analysis, key phrases, categories, concepts, emotion detection, and entity extraction. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-watson-nlu.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-watson-nlu) |
 | [@botbuildercommunity/middleware-spell-check](libraries/botbuilder-middleware-spell-check/README.md) | Use Cognitive Services Spell Check API to detect misspellings and correct these. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-spell-check.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-spell-check) |
