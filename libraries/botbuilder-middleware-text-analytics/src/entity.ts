@@ -1,6 +1,7 @@
 import { Middleware, TurnContext, ActivityTypes } from 'botbuilder';
 import { Engine } from '@botbuildercommunity/middleware-engine-core';
 import { CognitiveServiceEngine } from './engine';
+import { TextAnalysisOptions } from './schema';
 
 /**
  * @module botbuildercommunity/middleware-text-analytics
@@ -8,10 +9,10 @@ import { CognitiveServiceEngine } from './engine';
 
 export class EntityExtraction implements Middleware {
     public engine: Engine;
-    constructor(public serviceKey: string, public endpoint: string, public options?: any) {
-        this.engine = new CognitiveServiceEngine(serviceKey, endpoint, options);
+    public constructor(options: TextAnalysisOptions) {
+        this.engine = new CognitiveServiceEngine(options);
     }
-    public async onTurn(context: TurnContext, next: () => Promise<void>) {
+    public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if(context.activity.type === ActivityTypes.Message) {
             const input = {
                 documents: [

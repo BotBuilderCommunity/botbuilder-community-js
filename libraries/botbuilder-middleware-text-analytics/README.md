@@ -13,10 +13,10 @@ All middleware is created and used in the same way. For example, for sentiment a
 ```typescript
 import { SentimentAnalysis } from '@botbuildercommunity/middleware-text-analytics';
 
-adapter.use(new SentimentAnalysis(YOUR_TEXT_ANALYTICS_KEY, TEXT_ANALYTICS_API_ENDPOINT, SERVICE_CLIENT_OPTIONS));
+adapter.use(new SentimentAnalysis({ serviceKey: YOUR_TEXT_ANALYTICS_KEY, endpoint: TEXT_ANALYTICS_API_ENDPOINT }));
 ```
 
-The `CLIENT_OPTIONS` parameter is optional.
+Additional properties can be passed into the middleware beyond the ones above. These can be any of the options from the `ServiceClientOptions` interface.
 
 > Note that the TEXT_ANALYTICS_API_ENDPOINT will be the Cognitive Services endpoint root. For example: https://eastus.api.cognitive.microsoft.com
 
@@ -28,8 +28,6 @@ Supported middleware classes include:
 * `LanguageDetection`
 * `KeyPhrases`
 * `EntityExtraction`
-
-Each class takes the two required parameters in the example usage above (with the SERVICE_CLIENT_OPTIONS parameter being optional).
 
 In each case, properties are added to the `turnState` of the `TurnContext`. You can retrieve them in your bot via:
 

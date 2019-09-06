@@ -26,7 +26,7 @@ describe('Watson engine tests', () => {
             }
         }
 
-        const entity = new EntityExtraction("not a real key", "Not a real endpoint");
+        const entity = new EntityExtraction({ apiKey: "not a real key", endpoint: "Not a real endpoint", version: '2018-11-16' });
         entity.engine = mock;
 
         it('should extract a name', async () => {
@@ -57,7 +57,7 @@ describe('Watson engine tests', () => {
             }
         }
 
-        const phrases = new KeyPhrases("not a real key", "Not a real endpoint");
+        const phrases = new KeyPhrases({ apiKey: "not a real key", endpoint: "Not a real endpoint", version: '2018-11-16' });
         phrases.engine = mock;
 
         it('should extract some key phrases', async () => {
@@ -85,7 +85,7 @@ describe('Watson engine tests', () => {
             }
         }
 
-        const sentiment = new SentimentAnalysis("not a real key", "Not a real endpoint");
+        const sentiment = new SentimentAnalysis({ apiKey: "not a real key", endpoint: "Not a real endpoint", version: '2018-11-16' });
         sentiment.engine = mock;
 
         it('should have a positive sentiment', async () => {
@@ -114,7 +114,7 @@ describe('Watson engine tests', () => {
             }
         }
 
-        const categories = new CategoryExtraction("not a real key", "Not a real endpoint");
+        const categories = new CategoryExtraction({ apiKey: "not a real key", endpoint: "Not a real endpoint", version: '2018-11-16' });
         categories.engine = mock;
 
         it('should have a category', async () => {
@@ -143,7 +143,7 @@ describe('Watson engine tests', () => {
             }
         }
 
-        const concepts = new ConceptExtraction("not a real key", "Not a real endpoint");
+        const concepts = new ConceptExtraction({ apiKey: "not a real key", endpoint: "Not a real endpoint", version: '2018-11-16' });
         concepts.engine = mock;
 
         it('should have a concept', async () => {
@@ -172,7 +172,7 @@ describe('Watson engine tests', () => {
             }
         }
 
-        const emotions = new EmotionDetection("not a real key", "Not a real endpoint");
+        const emotions = new EmotionDetection({ apiKey: "not a real key", endpoint: "Not a real endpoint", version: '2018-11-16' });
         emotions.engine = mock;
 
         it('should have an emotion', async () => {
