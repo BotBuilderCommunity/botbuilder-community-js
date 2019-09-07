@@ -34,8 +34,8 @@
             "type": "node",
             "request": "launch",
             "name": "(Watson) Debug Text Analytics Middleware",
-            "program": "${workspaceRoot}\\libraries\\botbuilder-text-analytics-middleware\\example\\app-watson.js",
-            "envFile": "${workspaceFolder}/libraries/botbuilder-text-analytics-middleware/example/.env"
+            "program": "${workspaceRoot}\\libraries\\botbuilder-middleware-watson-nlu\\example\\app-watson.js",
+            "envFile": "${workspaceFolder}/libraries/botbuilder-middleware-watson-nlu/example/.env"
         },
         {
             "type": "node",
