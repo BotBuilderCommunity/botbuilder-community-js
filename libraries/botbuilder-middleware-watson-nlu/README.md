@@ -13,7 +13,7 @@ All middleware is created and used in the same way. For example, for emotion det
 ```typescript
 import { EmotionDetection } from '@botbuildercommunity/middleware-watson-nlu';
 
-adapter.use(new EmotionDetection({ apiKey: WATSON_API_KEY, endpoint: WATSON_ENDPOINT, version: '2018-11-16' }));
+adapter.use(new EmotionDetection({ apiKey: WATSON_API_KEY, endpoint: WATSON_ENDPOINT, version: '2019-07-12' }));
 ```
 
 Other properties can be passed in as well. These would be NLU options that you would normally pass to the Watson NLU service.
