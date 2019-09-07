@@ -1,6 +1,7 @@
 import { Middleware, TurnContext, ActivityTypes } from 'botbuilder';
 import { Engine } from '@botbuildercommunity/middleware-engine-core';
 import { CognitiveServiceEngine } from './engine';
+import { TextAnalysisOptions } from './schema';
 
 /**
  * @module botbuildercommunity/middleware-text-analytics
@@ -8,14 +9,8 @@ import { CognitiveServiceEngine } from './engine';
 
 export class LanguageDetection implements Middleware {
     public engine: Engine;
-    public serviceKey: string;
-    public endpoint: string;
-    public options: any;
-    public constructor(serviceKey: string, endpoint: string, options?: any) {
-        this.serviceKey = serviceKey;
-        this.endpoint = endpoint;
-        this.options = options;
-        this.engine = new CognitiveServiceEngine(serviceKey, endpoint, options);
+    public constructor(options: TextAnalysisOptions) {
+        this.engine = new CognitiveServiceEngine(options);
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if(context.activity.type === ActivityTypes.Message) {

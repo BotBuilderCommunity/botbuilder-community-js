@@ -1,6 +1,7 @@
 import { Middleware, TurnContext, ActivityTypes } from 'botbuilder';
 import { Engine } from '@botbuildercommunity/middleware-engine-core';
 import { WatsonEngine } from './engine';
+import { WatsonOptions } from './schema';
 
 /**
  * @module botbuildercommunity/middleware-watson-nlu
@@ -8,14 +9,8 @@ import { WatsonEngine } from './engine';
 
 export class EntityExtraction implements Middleware {
     public engine: Engine;
-    public serviceKey: string;
-    public endpoint: string;
-    public options: any;
-    public constructor(serviceKey: string, endpoint: string, options?: any) {
-        this.serviceKey = serviceKey;
-        this.endpoint = endpoint;
-        this.options = options;
-        this.engine = new WatsonEngine(serviceKey, endpoint, options);
+    public constructor(options: WatsonOptions) {
+        this.engine = new WatsonEngine(options);
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if(context.activity.type === ActivityTypes.Message) {

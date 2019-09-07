@@ -2,6 +2,7 @@
  * @module botbuildercommunity/middleware-watson-nlu
  */
 
+export * from './schema';
 export * from './engine';
 export * from './sentiment';
 export * from './keyPhrases';

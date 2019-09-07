@@ -15,7 +15,7 @@ const adapter = new BotFrameworkAdapter({
     appPassword: process.env.MICROSOFT_APP_PASSWORD 
 });
 
-adapter.use(new SentimentAnalysis(process.env.TEXT_ANALYTICS_KEY, process.env.TEXT_ANALYTICS_ENDPOINT));
+adapter.use(new SentimentAnalysis({ serviceKey: process.env.TEXT_ANALYTICS_KEY, endpoint: process.env.TEXT_ANALYTICS_ENDPOINT }));
 
 server.post("/api/messages", (req, res) => {
     adapter.processActivity(req, res, async (context) => {
