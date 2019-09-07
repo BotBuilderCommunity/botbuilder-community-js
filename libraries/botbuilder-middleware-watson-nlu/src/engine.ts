@@ -19,7 +19,7 @@ export class WatsonEngine extends Engine {
     }
     private init(): any {
         return new nlup({
-            version: '2018-11-16',
+            version: '2019-07-12',
             iam_apikey: this._apikey,
             url: this._url
         });
