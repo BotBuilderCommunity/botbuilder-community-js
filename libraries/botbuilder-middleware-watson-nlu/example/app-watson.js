@@ -14,7 +14,7 @@ const adapter = new BotFrameworkAdapter({
     appPassword: process.env.MICROSOFT_APP_PASSWORD 
 });
 
-adapter.use(new EmotionDetection(process.env.WATSON_API_KEY, process.env.WATSON_ENDPOINT));
+adapter.use(new EmotionDetection({ apiKey: process.env.WATSON_API_KEY, endpoint: process.env.WATSON_ENDPOINT, version: '2019-07-12' }));
 
 server.post("/api/messages", (req, res) => {
     adapter.processActivity(req, res, async (context) => {

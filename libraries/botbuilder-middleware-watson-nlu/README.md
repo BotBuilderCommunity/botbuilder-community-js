@@ -13,10 +13,10 @@ All middleware is created and used in the same way. For example, for emotion det
 ```typescript
 import { EmotionDetection } from '@botbuildercommunity/middleware-watson-nlu';
 
-adapter.use(new EmotionDetection(WATSON_API_KEY, WATSON_ENDPOINT, WATSON_OPTIONS));
+adapter.use(new EmotionDetection({ apiKey: WATSON_API_KEY, endpoint: WATSON_ENDPOINT, version: '2019-07-12' }));
 ```
 
-The `WATSON_OPTIONS` parameter is optional.
+Other properties can be passed in as well. These would be NLU options that you would normally pass to the Watson NLU service.
 
 When used, the `turnState` on the `TurnContext` will have a property named `emotionDetection`, which is an object containing emotions as properties, with scores as their values. An example can be seen in the [`app-watson.js`](example/app-watson.js) bot test file.
 
@@ -28,8 +28,6 @@ Supported middleware classes include:
 * `EntityExtraction`
 * `KeyPhrases`
 * `SentimentAnalysis`
-
-Each class takes the two required parameters in the example usage above (with the WATSON_OPTIONS parameter being optional).
 
 In each case, properties are added to the `turnState` of the `TurnContext`. You can retrieve them in your bot via:
 

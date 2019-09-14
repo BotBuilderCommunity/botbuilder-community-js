@@ -9,3 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Inherits from Text Analysis Core Engine
 - Separated out examples and tests
 - Added exception messages for unsupported analysis methods
+
+## [2.0.0] - 2019-09
+### Added
+- `TextAnalysisOptions` added as a schema item (interface) that extends the `ServiceClientOptions` for single constructor argument
+### Changed
+- Constructor accepts `TextAnalysisOptions` instead of three separate parameters

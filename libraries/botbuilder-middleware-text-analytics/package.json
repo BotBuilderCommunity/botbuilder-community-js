@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/middleware-text-analytics",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Bot Framework middleware component for the Cognitive Services Text Analytics API, including sentiment analysis, language detection, entity extraction, and keyword recognition.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",

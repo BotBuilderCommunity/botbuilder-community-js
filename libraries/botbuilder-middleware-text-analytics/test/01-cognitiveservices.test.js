@@ -24,7 +24,7 @@ describe('Cognitive Service engine tests', () => {
             }
         }
 
-        const entity = new EntityExtraction("not a real key", "Not a real endpoint");
+        const entity = new EntityExtraction({ serviceKey: "not a real key", endpoint: "Not a real endpoint" });
         entity.engine = mock;
 
         it('should extract a name', async () => {
@@ -55,7 +55,7 @@ describe('Cognitive Service engine tests', () => {
             }
         }
 
-        const phrases = new KeyPhrases("not a real key", "Not a real endpoint");
+        const phrases = new KeyPhrases({ serviceKey: "not a real key", endpoint: "Not a real endpoint" });
         phrases.engine = mock;
 
         it('should extract some key phrases', async () => {
@@ -89,7 +89,7 @@ describe('Cognitive Service engine tests', () => {
             }
         }
 
-        const lang = new LanguageDetection("not a real key", "Not a real endpoint");
+        const lang = new LanguageDetection({ serviceKey: "not a real key", endpoint: "Not a real endpoint" });
         lang.engine = mock;
 
         it('should detect language', async () => {
@@ -117,7 +117,7 @@ describe('Cognitive Service engine tests', () => {
             }
         }
 
-        const sentiment = new SentimentAnalysis("not a real key", "Not a real endpoint");
+        const sentiment = new SentimentAnalysis({ serviceKey: "not a real key", endpoint: "Not a real endpoint" });
         sentiment.engine = mock;
 
         it('should have a positive sentiment', async () => {
