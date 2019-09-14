@@ -20,7 +20,7 @@ adapter.use(new SentimentAnalysis());
 server.post("/api/messages", (req, res) => {
     adapter.processActivity(req, res, async (context) => {
         if (context.activity.type === "message") {
-            await context.sendActivity(`You said "${context.activity.text} with a ${context.turnState.get("sentimentType")} sentiment of ${context.turnState.get("sentimentScore")}"`);
+            await context.sendActivity(`You said "${context.activity.text} with a sentiment of ${context.turnState.get("sentimentScore")}"`);
         } else {
             await context.sendActivity(`[${context.activity.type} event detected]`);
         }

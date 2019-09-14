@@ -37,6 +37,7 @@
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
     "@botbuildercommunity/middleware-engine-core": "^1.0.0",
+    "@google-cloud/language": "^3.2.6",
     "botbuilder": "^4.5.3"
   },
   "devDependencies": {

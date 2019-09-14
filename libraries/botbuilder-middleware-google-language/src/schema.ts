@@ -4,4 +4,5 @@
 
 export interface GoogleCloudOptions {
     lang?: string;
+    [x: string]: any;
 }

@@ -1,11 +1,10 @@
 const assert = require("assert");
 const { TestAdapter } = require("botbuilder");
 const { EntityExtraction } = require("../lib/entity");
-const { KeyPhrases } = require("../lib/keyPhrases");
-const { LanguageDetection } = require("../lib/languageDetection");
+const { CategoryExtraction } = require("../lib/categories");
 const { SentimentAnalysis } = require("../lib/sentiment");
 
-describe('Cognitive Service engine tests', () => {
+describe('Google Cloud language engine tests', () => {
 
     describe('Entity middleware tests', function () {
         this.timeout(5000);
@@ -36,16 +35,16 @@ describe('Cognitive Service engine tests', () => {
         });
     });
 
-    describe('Key phrases middleware tests', function () {
+    describe('Categories middleware tests', function () {
         this.timeout(5000);
 
         const mock = {
-            keyPhrases: function(input) {
+            categories: function(input) {
                 return {
                     documents: [
                         {
                             id: "Not real",
-                            keyPhrases: [
+                            categoryEntities: [
                                 "Philadelphia Phillies",
                                 "Bryce Harper"
                             ]
@@ -55,49 +54,15 @@ describe('Cognitive Service engine tests', () => {
             }
         }
 
-        const phrases = new KeyPhrases("not a real key", "Not a real endpoint");
-        phrases.engine = mock;
+        const categories = new CategoryExtraction("not a real key", "Not a real endpoint");
+        categories.engine = mock;
 
-        it('should extract some key phrases', async () => {
+        it('should extract some categories', async () => {
             const adapter = new TestAdapter(async (context) => {
-                await context.sendActivity(context.turnState.get('keyPhrases')[0]);
+                await context.sendActivity(context.turnState.get('categoryEntities')[0]);
             });
-            adapter.use(phrases);
+            adapter.use(categories);
             await adapter.test('The Philadelphia Phillies signed Bryce Harper.', 'Philadelphia Phillies');
-        });
-    });
-
-    describe('Language detection middleware tests', function () {
-        this.timeout(5000);
-
-        const mock = {
-            detectLanguage: function(input) {
-                return {
-                    documents: [
-                        {
-                            id: "Not real",
-                            detectedLanguages: [
-                            {
-                                name: "English",
-                                iso6391Name: "en",
-                                score: 1.0
-                            }
-                            ]
-                        }
-                    ]
-                };
-            }
-        }
-
-        const lang = new LanguageDetection("not a real key", "Not a real endpoint");
-        lang.engine = mock;
-
-        it('should detect language', async () => {
-            const adapter = new TestAdapter(async (context) => {
-                await context.sendActivity(context.turnState.get('language')[0].name);
-            });
-            adapter.use(lang);
-            await adapter.test('I am glorious', 'English');
         });
     });
 

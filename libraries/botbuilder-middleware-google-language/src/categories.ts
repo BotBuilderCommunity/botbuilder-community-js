@@ -1,15 +1,16 @@
 import { Middleware, TurnContext, ActivityTypes } from 'botbuilder';
 import { Engine } from '@botbuildercommunity/middleware-engine-core';
 import { GoogleCloudEngine } from './engine';
+import { GoogleCloudOptions } from './schema';
 
 /**
  * @module botbuildercommunity/middleware-aws-comprehend
  */
 
-export class KeyPhrases implements Middleware {
+export class CategoryExtraction implements Middleware {
     public engine: Engine;
-    public constructor() {
-        this.engine = new GoogleCloudEngine();
+    public constructor(options?: GoogleCloudOptions) {
+        this.engine = new GoogleCloudEngine(options);
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if(context.activity.type === ActivityTypes.Message) {
@@ -22,9 +23,9 @@ export class KeyPhrases implements Middleware {
                 ]
             };
             try {
-                const result = await this.engine.keyPhrases(input);
-                const k = result.documents[0].keyPhrases;
-                context.turnState.set('keyPhrases', k);
+                const result = await this.engine.categories(input);
+                const c = result.documents[0].catgories;
+                context.turnState.set('categoryEntities', c);
             }
             catch(e) {
                 throw new Error(`Failed to process key phrases on ${ context.activity.text }. Error: ${ e }`);

@@ -1,6 +1,7 @@
 import { Middleware, TurnContext, ActivityTypes } from 'botbuilder';
 import { Engine } from '@botbuildercommunity/middleware-engine-core';
 import { GoogleCloudEngine } from './engine';
+import { GoogleCloudOptions } from './schema';
 
 /**
  * @module botbuildercommunity/middleware-google-cloud
@@ -8,8 +9,8 @@ import { GoogleCloudEngine } from './engine';
 
 export class EntityExtraction implements Middleware {
     public engine: Engine;
-    public constructor() {
-        this.engine = new GoogleCloudEngine();
+    public constructor(options?: GoogleCloudOptions) {
+        this.engine = new GoogleCloudEngine(options);
     }
     public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if(context.activity.type === ActivityTypes.Message) {
@@ -23,8 +24,8 @@ export class EntityExtraction implements Middleware {
             };
             try {
                 const result = await this.engine.entities(input);
-                const l = result.documents[0].entities;
-                context.turnState.set('textEntities', l);
+                const e = result.documents[0].entities;
+                context.turnState.set('textEntities', e);
             }
             catch(e) {
                 throw new Error(`Failed to process entities on ${ context.activity.text }. Error: ${ e }`);
