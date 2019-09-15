@@ -9,19 +9,17 @@ import { LanguageServiceClient } from '@google-cloud/language';
 export class GoogleCloudEngine extends Engine {
     public client: any;
     public options: GoogleCloudOptions;
-    public lang: string;
     public constructor(options?: any) {
         super();
         this.options = options;
-        this.lang = this.options.lang || 'en';
         this.client = new LanguageServiceClient(this.options);
     }
     public async entities(input: any): Promise<any> {
-        const params = {
+        const document = {
+            content: input.documents[0].text,
             type: 'PLAIN_TEXT',
-            context: input.documents[0].text
         };
-        const result = await this.client.analyzeEntities({params});
+        const [result] = await this.client.analyzeEntities({document: document});
         return Promise.resolve({
             documents: [
                 {
@@ -37,11 +35,11 @@ export class GoogleCloudEngine extends Engine {
         return Promise.reject(`[detectLanguage] is not supported by this engine. "${ input }" cannot be processed`);
     }
     public async sentiment(input: any): Promise<any> {
-        const params = {
+        const document = {
+            content: input.documents[0].text,
             type: 'PLAIN_TEXT',
-            context: input.documents[0].text
         };
-        const result = await this.client.analyzeSentiment({params});
+        const [result] = await this.client.analyzeSentiment({document: document});
         return Promise.resolve({
             documents: [
                 {
@@ -51,11 +49,11 @@ export class GoogleCloudEngine extends Engine {
         });
     }
     public async categories(input: any): Promise<any> {
-        const params = {
+        const document = {
+            content: input.documents[0].text,
             type: 'PLAIN_TEXT',
-            context: input.documents[0].text
         };
-        const result = await this.client.classifyText({params});
+        const [result] = await this.client.classifyText({document: document});
         return Promise.resolve({
             documents: [
                 {

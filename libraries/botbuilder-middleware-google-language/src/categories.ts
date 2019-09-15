@@ -24,7 +24,7 @@ export class CategoryExtraction implements Middleware {
             };
             try {
                 const result = await this.engine.categories(input);
-                const c = result.documents[0].catgories;
+                const c = result.documents[0].categories;
                 context.turnState.set('categoryEntities', c);
             }
             catch(e) {

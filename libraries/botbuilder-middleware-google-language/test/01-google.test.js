@@ -44,7 +44,7 @@ describe('Google Cloud language engine tests', () => {
                     documents: [
                         {
                             id: "Not real",
-                            categoryEntities: [
+                            categories: [
                                 "Philadelphia Phillies",
                                 "Bryce Harper"
                             ]
