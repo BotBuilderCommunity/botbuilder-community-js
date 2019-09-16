@@ -1,6 +1,6 @@
-# Google Cloud Natural Language Middleware
+# Google Cloud Platform Natural Language API Middleware
 
-The Google Cloud Natural Language Middleware offers Bot Framework middleware components for the Google Cloud Natural Language API. You will need an Google Cloud  account.
+The Google Cloud Platform Natural Language API Middleware offers Bot Framework middleware components for the Google Cloud Platform Natural Language API. You will need an Google Cloud  account.
 
 ## Installing
 
@@ -8,7 +8,7 @@ The Google Cloud Natural Language Middleware offers Bot Framework middleware com
 
 ## Authentication
 
-This package assumes that your Google Cloud credentials are set in the environment variables. The following environment variables are required:
+This package assumes that you have a Google Cloud Platform account. Your Google Cloud key needs to be stored on the filesystem (it's in a JSON file), and a `GOOGLE_APPLICATION_CREDENTIALS` environment variable should point to that file. See [Google's quickstart guide](https://cloud.google.com/natural-language/docs/quickstart-client-libraries) for more information.
 
 ## Usage
 
@@ -25,13 +25,13 @@ When used, the `turnState` on the `TurnContext` will have a property named `sent
 Supported middleware classes include:
 
 * `SentimentAnalysis`
-* `LanguageDetection`
-* `KeyPhrases`
+* `CategoryExtraction`
 * `EntityExtraction`
 
 In each case, properties are added to the `turnState` of the `TurnContext`. You can retrieve them in your bot via:
 
 * `context.turnState.get('sentimentScore')` //This is a number for `SentimentAnalysis`
-* `context.turnState.get('language')` //This is a string for `LanguageDetection`
-* `context.turnState.get('keyPhrases')` //This is an array of strings for `KeyPhrases`
+* `context.turnState.get('categoryEntities')` //This is an array of object containing a `name` property and a `confidence` property for `CategoryExtraction`
 * `context.turnState.get('textEntities')` //This is an array of strings for `EntityExtraction`
+
+> Note that the `CategoryExtraction` middleware component might not return any values if the text is too little, or if the classification cannot find a match.

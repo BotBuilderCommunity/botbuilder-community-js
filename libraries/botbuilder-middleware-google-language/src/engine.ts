@@ -23,7 +23,7 @@ export class GoogleCloudEngine extends Engine {
         return Promise.resolve({
             documents: [
                 {
-                    entities: result.map((e: any): string => e.name)
+                    entities: result.entities.map((e: any): string => e.name)
                 }
             ]
         });
@@ -57,7 +57,7 @@ export class GoogleCloudEngine extends Engine {
         return Promise.resolve({
             documents: [
                 {
-                    categories: result.categories.map((e: any): string => e.name)
+                    categories: result.categories
                 }
             ]
         });
