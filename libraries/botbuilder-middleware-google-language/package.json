@@ -1,9 +1,9 @@
 {
-  "name": "@botbuildercommunity/middleware-spell-check",
-  "version": "0.2.5",
-  "description": "Bot Framework middleware component for the Cognitive Services Spell Check API",
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "name": "@botbuildercommunity/middleware-google-language",
+  "version": "1.0.0",
+  "description": "Bot Framework middleware component for the Google Cloud Natural Language service, including sentiment analysis, language detection, entity extraction, and keyword recognition.",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "directories": {
     "lib": "lib"
   },
@@ -21,13 +21,14 @@
     "bot framework",
     "bot builder",
     "sentiment analysis",
-    "text analytics",
-    "cognitive services",
+    "google cloud",
+    "natural language",
+    "google",
     "middleware"
   ],
   "contributors": [
     "Bot Builder Community",
-    "Stephan Bisser <stephan@bisser.at>"
+    "Michael Szul <michael@szul.us>"
   ],
   "license": "MIT",
   "bugs": {
@@ -35,15 +36,13 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "azure-cognitiveservices-spellcheck": "^1.1.0",
-    "botbuilder": "^4.5.3",
-    "restify": "^8.4.0",
-    "web-request": "^1.0.7"
+    "@botbuildercommunity/middleware-engine-core": "^1.0.0",
+    "@google-cloud/language": "^3.2.6",
+    "botbuilder": "^4.5.3"
   },
   "devDependencies": {
     "mocha": "^6.2.0",
-    "rewire": "^4.0.1",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.3"
   },
   "publishConfig": {
     "access": "public"
