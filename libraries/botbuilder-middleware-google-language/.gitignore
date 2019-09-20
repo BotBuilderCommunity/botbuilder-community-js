@@ -56,12 +56,8 @@ typings/
 
 # dotenv environment variables file
 .env
-key.json
 
 # next.js build output
 .next
 
-.lerna_backup
-
-# junit tests
-*-test-results.xml
+lib/

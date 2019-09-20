@@ -43,6 +43,13 @@
             "name": "(AWS) Debug Text Analytics Middleware",
             "program": "${workspaceRoot}\\libraries\\botbuilder-middleware-aws-comprehend\\example\\app-aws.js",
             "envFile": "${workspaceFolder}/libraries/botbuilder-middleware-aws-comprehend/example/.env"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "(Google) Debug Text Analytics Middleware",
+            "program": "${workspaceRoot}\\libraries\\botbuilder-middleware-google-language\\example\\app-google.js",
+            "envFile": "${workspaceFolder}/libraries/botbuilder-middleware-google-language/example/.env"
         }
     ]
 }
