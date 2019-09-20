@@ -9,3 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - First release of IBM Watson NLU text analysis middleware
 - Inherits from Text Analysis Core Engine
 - Added support for categories, concepts, emotions, entities, keywords, and sentiment
+
+## [1.0.1] - 2019-09
+### Fixed
+- API version was outdated

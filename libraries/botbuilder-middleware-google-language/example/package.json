@@ -1,0 +1,30 @@
+{
+  "name": "botbuilder-sentiment-middleware-testbot",
+  "version": "0.1.0",
+  "description": "Test bot application for verifying sentiment analysis functionality.",
+  "main": "app-google.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sentiment",
+    "analysis",
+    "text",
+    "analytics",
+    "api",
+    "google",
+    "natural language",
+    "google cloud",
+    "bot",
+    "framework",
+    "chatbots"
+  ],
+  "author": "Michael Szul <michael@szul.us>",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/language": "^3.2.6",
+    "botbuilder": "^4.5.3",
+    "dotenv": "^6.2.0",
+    "restify": "^7.7.0"
+  }
+}
