@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/middleware-google-language",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Bot Framework middleware component for the Google Cloud Natural Language service, including sentiment analysis, language detection, entity extraction, and keyword recognition.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",

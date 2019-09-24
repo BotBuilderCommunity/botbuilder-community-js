@@ -1,6 +1,6 @@
-import * as recognizers  from "@microsoft/recognizers-text-number-with-unit";
-import { Activity, InputHints, TurnContext } from "botbuilder-core";
-import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from "botbuilder-dialogs";
+import * as recognizers  from '@microsoft/recognizers-text-number-with-unit';
+import { Activity, InputHints, TurnContext } from 'botbuilder-core';
+import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from 'botbuilder-dialogs';
 
 /**
  * @module botbuildercommunity/dialog-prompts
@@ -9,11 +9,11 @@ import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from "
 export interface NumberWithUnitResult
 {
     unit: string
-    , value: any
+    ; value: any;
 }
 
 export enum NumberWithUnitPromptType
-{
+    {
     Currency = 0,
     Temperature = 1,
     Age = 2,
@@ -23,7 +23,7 @@ export enum NumberWithUnitPromptType
 export class NumberWithUnitPrompt extends Prompt<NumberWithUnitResult> {
     public defaultLocale: string | undefined;
     public promptType: NumberWithUnitPromptType;
-    constructor(dialogId: string, promptType: NumberWithUnitPromptType, validator?: PromptValidator<NumberWithUnitResult>, defaultLocale?: string) {
+    public constructor(dialogId: string, promptType: NumberWithUnitPromptType, validator?: PromptValidator<NumberWithUnitResult>, defaultLocale?: string) {
         super(dialogId, validator);
         this.defaultLocale = defaultLocale;
         this.promptType = promptType;
@@ -37,10 +37,10 @@ export class NumberWithUnitPrompt extends Prompt<NumberWithUnitResult> {
     }
     protected async onRecognize(context: TurnContext, state: any, options: PromptOptions): Promise<PromptRecognizerResult<NumberWithUnitResult>> {
         const result: PromptRecognizerResult<NumberWithUnitResult> = { succeeded: false };
-        var results: any;
+        let results: any;
         const activity: Activity = context.activity;
         const utterance: string = activity.text;
-        const locale: string = activity.locale || this.defaultLocale || "en-us";
+        const locale: string = activity.locale || this.defaultLocale || 'en-us';
         
         switch(this.promptType)
         {
@@ -68,7 +68,9 @@ export class NumberWithUnitPrompt extends Prompt<NumberWithUnitResult> {
                 };
                 result.value = numberWithUnitResult;
             }
-            catch(e) { }
+            catch(e) {
+                console.log(e);
+            }
         }
         return result;
     }
