@@ -10,8 +10,6 @@
 /libraries/botbuilder-adapter-console/ @szul
 /libraries/botbuilder-adapter-twilio-whatsapp/ @imicknl
 /libraries/botbuilder-dialog-prompts/ @szul
-/libraries/botbuilder-storage-azure-table/ @szul
-/libraries/botbuilder-storage-mongodb/ @mdrichardson
 /libraries/botbuilder-middleware-aws-comprehend/ @szul
 /libraries/botbuilder-middleware-engine-core/ @szul
 /libraries/botbuilder-middleware-google-language/ @szul
@@ -19,3 +17,5 @@
 /libraries/botbuilder-middleware-text-analytics/ @szul
 /libraries/botbuilder-middleware-text-recognizer/ @szul
 /libraries/botbuilder-middleware-watson-nlu/ @szul
+/libraries/botbuilder-storage-azure-table/ @szul
+/libraries/botbuilder-storage-mongodb/ @mdrichardson
