@@ -1,0 +1,46 @@
+{
+  "name": "@botbuildercommunity/storage-azure-table",
+  "version": "1.0.0",
+  "description": "Additional storage options for the Microsoft Bot Framework, including Azure Table Storage",
+  "keywords": [
+    "botbuilder",
+    "bots",
+    "chatbots",
+    "azure table storage",
+    "table storage",
+    "storage"
+  ],
+  "contributors": [
+    "Microsoft Corp.",
+    "Bot Builder Community",
+    "Michael Szul <michael@szul.us>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "dependencies": {
+    "azure-storage": "^2.10.3",
+    "botbuilder": "^4.5.3",
+    "botbuilder-azure": "^4.5.3",
+    "botbuilder-core": "^4.5.3",
+    "flat": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^7.10.6",
+    "typescript": "^3.5.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

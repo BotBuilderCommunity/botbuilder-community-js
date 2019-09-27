@@ -8,10 +8,16 @@ import { CognitiveServiceEngine } from './engine';
 
 export class EntityExtraction implements Middleware {
     public engine: Engine;
-    constructor(public serviceKey: string, public endpoint: string, public options?: any) {
+    public serviceKey: string;
+    public endpoint: string;
+    public options: any;
+    public constructor(serviceKey: string, endpoint: string, options?: any) {
+        this.serviceKey = serviceKey;
+        this.endpoint = endpoint;
+        this.options = options;
         this.engine = new CognitiveServiceEngine(serviceKey, endpoint, options);
     }
-    public async onTurn(context: TurnContext, next: () => Promise<void>) {
+    public async onTurn(context: TurnContext, next: () => Promise<void>): Promise<void> {
         if(context.activity.type === ActivityTypes.Message) {
             const input = {
                 documents: [
