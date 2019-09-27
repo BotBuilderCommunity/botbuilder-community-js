@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/middleware-spell-check",
-  "version": "0.2.5",
+  "version": "1.0.0",
   "description": "Bot Framework middleware component for the Cognitive Services Spell Check API",
   "main": "index.js",
   "typings": "index.d.ts",
