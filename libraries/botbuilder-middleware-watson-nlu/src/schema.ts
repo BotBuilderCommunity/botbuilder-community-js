@@ -6,3 +6,8 @@ export interface Emotion {
     name: string;
     score: number;
 }
+
+export interface EmotionOptions {
+    document?: boolean;
+    targets?: string[];
+}

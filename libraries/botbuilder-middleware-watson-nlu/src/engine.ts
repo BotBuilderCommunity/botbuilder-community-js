@@ -1,5 +1,6 @@
 import { Engine } from '@botbuildercommunity/middleware-engine-core';
 import * as nlup from 'ibm-watson/natural-language-understanding/v1.js';
+import { EmotionOptions } from './schema';
 
 /**
  * @module botbuildercommunity/middleware-watson-nlu
@@ -24,8 +25,8 @@ export class WatsonEngine extends Engine {
             url: this._url
         });
     }
-    private async recognize(text: string, type: string): Promise<any> {
-        return await watsonRecognizer(this._nlu, text, type);
+    private async recognize(text: string, type: string, options?: any): Promise<any> {
+        return await watsonRecognizer(this._nlu, text, type, options);
     }
     //The below methods can all be abstracted further. Consider this a TO-DO.
     public async entities(input: string): Promise<any> {
@@ -46,17 +47,39 @@ export class WatsonEngine extends Engine {
     public async concepts(input: string): Promise<any> {
         return await this.recognize(input, 'concepts');
     }
-    public async emotion(input: string): Promise<any> {
-        return await this.recognize(input, 'emotion');
+    /*
+     * The `config` can literally be anything in an object, but comes from `set()`
+     * so should be key/value pairs with the value be `any`.
+     * For emotion detection, you can pass whether or not to show the whole document results,
+     * as well as what words to target.
+     * When passed into Watson's NLU, this has a structure of:
+     *  {
+     *      document: true //Default
+     *      targets: ['lions', 'tigers', 'bears']
+     *  }
+     * Here, we take the config passed into the `emotion()` method, and look for the specific
+     * options.
+     */
+    public async emotion(input: string, config?: any): Promise<any> {
+        let options: EmotionOptions = { };
+        if(config != null) {
+            if(config.document != null) {
+                options.document = config.document;
+            }
+            if(config.targets != null && config.targets instanceof Array) {
+                options.targets = config.targets;
+            }
+        }
+        return await this.recognize(input, 'emotion', options);
     }
 }
 
-async function watsonRecognizer(nlu: any, text: string, type: string): Promise<any> {
+async function watsonRecognizer(nlu: any, text: string, type: string, options: any = { }): Promise<any> {
     const input = (typeof text === 'string') ? text : (text as any).documents[0].text;
     const opts = {
         html: input,
         features: {
-            [type]: {}
+            [type]: options
         }
     };
     return new Promise((resolve, reject): any => {
