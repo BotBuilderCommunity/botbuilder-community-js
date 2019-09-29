@@ -36,6 +36,10 @@ export class EmotionDetection extends TextAnalysisMiddleware implements Middlewa
                 const result = await this.engine.emotion(input, this.config);
                 const l = result.documents[0].emotion;
                 context.turnState.set('emotionDetection', l);
+                const t = result.documents[0].targets;
+                if(t !== undefined) {
+                    context.turnState.set('emotionTargets', t);
+                }
             }
             catch(e) {
                 throw new Error(`Failed to process emotions on ${ context.activity.text }. Error: ${ e }`);
