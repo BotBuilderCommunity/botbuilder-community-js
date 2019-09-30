@@ -42,7 +42,7 @@ export class EmotionDetection extends TextAnalysisMiddleware implements Middlewa
                 }
             }
             catch(e) {
-                throw new Error(`Failed to process emotions on ${ context.activity.text }. Error: ${ e }`);
+                console.error(`Failed to process emotions on ${ context.activity.text }. Error: ${ e }`);
             }
         }
         await next();

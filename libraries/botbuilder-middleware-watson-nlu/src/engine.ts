@@ -87,21 +87,23 @@ async function watsonRecognizer(nlu: any, text: string, type: string, options: a
             if(err != null) {
                 reject(err);
             }
-            const doc = res[type].document[type]; //Needs better checking of properties.
-            if(type === 'keywords') {
-                type = 'keyPhrases';
-            }
-            const result = {
-                documents: [
-                    {
-                        [type]: doc
-                    }
-                ]
-            };
-            if(res[type].targets) { // I don't like this. Need a better schema to match all text analysis with.
-                result.documents[0].targets = res[type].targets;
-            }
+            else {
+                const doc = res[type].document[type]; //Needs better checking of properties.
+                if(type === 'keywords') {
+                    type = 'keyPhrases';
+                }
+                const result = {
+                    documents: [
+                        {
+                            [type]: doc
+                        }
+                    ]
+                };
+                if(res[type].targets) { // I don't like this. Need a better schema to match all text analysis with.
+                    result.documents[0].targets = res[type].targets;
+                }
             resolve(result);
+            }
         });
     });
 }

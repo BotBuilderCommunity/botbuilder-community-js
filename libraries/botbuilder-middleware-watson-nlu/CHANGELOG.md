@@ -13,3 +13,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.1] - 2019-09
 ### Fixed
 - API version was outdated
+
+## [1.1.0] - 2019-10
+### Added
+- Added `getEmotions()` static method
+- Added `rankEmotionKeys()` static method
+- Added `rankEmotions()` static method
+- Added `topEmotion()` static method
+- Added `topEmotionScore()` static method
+- Added `calculateDifference()` static method
+- Added `calculateVariance()` static method
+- Sets 'emotionTargets' in the `TurnState` if targets were requested
+### Changed
+- Passes `config` to the `emotion()` method
+- Failing to process an emotion no longer throws an exception, but instead logs with `console.error()`
