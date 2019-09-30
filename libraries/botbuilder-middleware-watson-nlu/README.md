@@ -39,3 +39,105 @@ In each case, properties are added to the `turnState` of the `TurnContext`. You 
 * `context.turnState.get('textEntities')`
 * `context.turnState.get('keyPhrases')`
 * `context.turnState.get('sentimentScore')`
+
+### Emotion Detection
+
+The package includes additional helper functionality for emotion detection to speed your bot development.
+
+#### Setting Targets
+
+Watson's NLU allows you to set specific target keywords for emotional analysis. You can do this by setting a configuration value for targets to a string array:
+
+```typescript
+import { EmotionDetection } from '@botbuildercommunity/middleware-watson-nlu';
+
+const emotionDetection = new EmotionDetection(WATSON_API_KEY, WATSON_ENDPOINT, WATSON_OPTIONS);
+emotionDetection.set('targets', ['mercury', 'venus', 'mars']);
+
+adapter.use(emotionDetection);
+```
+
+> Note that as of this release of Watson's NLU component, setting targets _expects_ one of those targets to be present, and will throw an exception otherwise.
+
+If you set targets, you can access the emotion objects for each of those targets off of the array that gets set in the `TurnState`:
+
+```typescript
+const targets = context.turnState.get('emotionTargets');
+```
+
+In the above code snippet, `targets` is an array of objects containing the target names and an emotion object per target. It may look something like this:
+
+```typescript
+[
+    {
+        text: 'venus',
+        emotion: {
+            sadness: 0.044599,
+            joy: 0.779204,
+            fear: 0.020602,
+            disgust: 0.016107,
+            anger: 0.020998
+        }
+    },
+    {
+        text: 'mars',
+        emotion: {
+            sadness: 0.044599,
+            joy: 0.779204,
+            fear: 0.020602,
+            disgust: 0.016107,
+            anger: 0.020998
+        }
+    }
+]
+```
+
+#### Setting the Document
+
+You can also choose to turn off document level analysis by setting the document configuration property to `false`.
+
+```typescript
+import { EmotionDetection } from '@botbuildercommunity/middleware-watson-nlu';
+
+const emotionDetection = new EmotionDetection(WATSON_API_KEY, WATSON_ENDPOINT, WATSON_OPTIONS);
+emotionDetection.set('document', false);
+emotionDetection.set('targets', ['mercury', 'venus', 'mars']);
+
+adapter.use(emotionDetection);
+```
+
+#### Static Helper Methods
+
+Since emotion detection returns an object of key/value pairs, we've built a handful of static helper methods off of the `EmotionDetection` class to better enable you to parse and rank results.
+
+* `getEmotions(result: nlup.EntitiesResult | nlup.KeywordsResult): nlup.EmotionScores`
+
+Takes either an `EntitiesResult` or `KeywordsResult` object returned from Watson's NLU and returns an `EmotionScores` object.
+
+* `rankEmotionKeys(emotionScores: nlup.EmotionScores): string[]`
+
+Takes an `EmotionScores` objects and returns a string array of the emotion keys (i.e., names of the emotions) in order of relevance.
+
+* `rankEmotions(emotionScores: nlup.EmotionScores): Emotion[]`
+
+Takes an `EmotionScores` objects and returns a `Emotion` array in order of relevance. The `Emotion` object is an object with a `name` and `score` property.
+
+* `topEmotion(emotionScores: nlup.EmotionScores): string`
+
+Takes an `EmotionScores` object and returns the name of the emotion that is most relevant.
+
+* `topEmotionScore(emotionScores: nlup.EmotionScores): Emotion`
+
+Takes an `EmotionScores` object and returns an `Emotion` object representing the most relevant emotion.
+
+* `calculateDifference(emotionScores: nlup.EmotionScores, firstEmotion?: string, secondEmotion?: string): number`
+
+If called with only the `EmotionScores` object, will return the difference between the top two emotions. If the other two parameters are provided, it'll return the difference between the two specified.
+
+##### Usage
+
+Since these are static methods, you call them directly off of the `EmotionDetection` class. For example:
+
+```typescript
+const emotion: string = EmotionDetection.topEmotion(EMOTIONSCORES_OBJECT);
+```
