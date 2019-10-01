@@ -11,3 +11,13 @@ export interface EmotionOptions {
     document?: boolean;
     targets?: string[];
 }
+
+export interface EntityOptions {
+    sentiment?: boolean;
+    emotion?: boolean;
+}
+
+export enum RANKING {
+    RELEVANCE = 0,
+    CONFIDENCE = 1
+}

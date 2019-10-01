@@ -36,9 +36,11 @@
   "dependencies": {
     "@botbuildercommunity/middleware-engine-core": "^1.1.0",
     "botbuilder": "^4.5.3",
-    "ibm-watson": "^4.3.3"
+    "ibm-watson": "^4.3.3",
+    "mathjs": "^6.2.2"
   },
   "devDependencies": {
+    "@types/mathjs": "^6.0.2",
     "mocha": "^6.1.4",
     "typescript": "^3.5.2"
   }

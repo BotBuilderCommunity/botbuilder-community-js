@@ -1,17 +1,20 @@
 import { Middleware, TurnContext, ActivityTypes } from 'botbuilder';
-import { Engine } from '@botbuildercommunity/middleware-engine-core';
+import { Engine, TextAnalysisMiddleware } from '@botbuildercommunity/middleware-engine-core';
+import * as nlup from 'ibm-watson/natural-language-understanding/v1.js';
 import { WatsonEngine } from './engine';
+import { RANKING } from './schema';
 
 /**
  * @module botbuildercommunity/middleware-watson-nlu
  */
 
-export class EntityExtraction implements Middleware {
+export class EntityExtraction extends TextAnalysisMiddleware implements Middleware {
     public engine: Engine;
     public serviceKey: string;
     public endpoint: string;
     public options: any;
     public constructor(serviceKey: string, endpoint: string, options?: any) {
+        super();
         this.serviceKey = serviceKey;
         this.endpoint = endpoint;
         this.options = options;
@@ -28,7 +31,7 @@ export class EntityExtraction implements Middleware {
                 ]
             };
             try {
-                const result = await this.engine.entities(input);
+                const result = await this.engine.entities(input, this.config);
                 const l = result.documents[0].entities;
                 context.turnState.set('textEntities', l);
             }
@@ -37,5 +40,25 @@ export class EntityExtraction implements Middleware {
             }
         }
         await next();
+    }
+    public static getEntities(entitiesResult: nlup.EntitiesResult[], type?: string): string[] {
+        if(type != null) {
+            return entitiesResult
+                .filter((e: nlup.EntitiesResult) => e.type.toLocaleLowerCase() === type.toLocaleLowerCase())
+                .map((e: nlup.EntitiesResult)  => e.text);
+        }
+        return entitiesResult.map((e: nlup.EntitiesResult)  => e.text);
+    }
+    public static rankEntityKeys(entitiesResult: nlup.EntitiesResult[], ranking: RANKING = RANKING.RELEVANCE): string[] {
+        return null;
+    }
+    public static rankEntities(entitiesResult: nlup.EntitiesResult[], ranking: RANKING = RANKING.RELEVANCE): nlup.EntitiesResult[] {
+        return null;
+    }
+    public static topEntity(entitiesResult: nlup.EntitiesResult[], ranking: RANKING = RANKING.RELEVANCE): string {
+        return null;
+    }
+    public static topEntityResult(entitiesResult: nlup.EntitiesResult[], ranking: RANKING = RANKING.RELEVANCE): nlup.EntitiesResult {
+        return null;
     }
 }

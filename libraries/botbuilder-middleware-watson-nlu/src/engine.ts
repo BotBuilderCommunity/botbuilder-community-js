@@ -1,6 +1,6 @@
 import { Engine } from '@botbuildercommunity/middleware-engine-core';
 import * as nlup from 'ibm-watson/natural-language-understanding/v1.js';
-import { EmotionOptions } from './schema';
+import { EmotionOptions, EntityOptions } from './schema';
 
 /**
  * @module botbuildercommunity/middleware-watson-nlu
@@ -29,8 +29,13 @@ export class WatsonEngine extends Engine {
         return await watsonRecognizer(this._nlu, text, type, options);
     }
     //The below methods can all be abstracted further. Consider this a TO-DO.
-    public async entities(input: string): Promise<any> {
-        return await this.recognize(input, 'entities');
+    public async entities(input: string, config?: any): Promise<any> {
+        const options: EntityOptions = { };
+        if(config != null) {
+            options.sentiment = (config.sentiment) ? true : false;
+            options.emotion = (config.emotion) ? true : false;
+        }
+        return await this.recognize(input, 'entities', options);
     }
     public async keyPhrases(input: string): Promise<any> {
         return await this.recognize(input, 'keywords');

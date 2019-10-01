@@ -1,6 +1,7 @@
 import { TurnContext, ActivityTypes, Middleware } from 'botbuilder';
 import { Engine, TextAnalysisMiddleware } from '@botbuildercommunity/middleware-engine-core';
 import * as nlup from 'ibm-watson/natural-language-understanding/v1.js';
+import * as math from 'mathjs';
 import { WatsonEngine } from './engine';
 import { Emotion } from './schema';
 
@@ -80,7 +81,8 @@ export class EmotionDetection extends TextAnalysisMiddleware implements Middlewa
         }
         return Math.abs(parseFloat(emotionScores[firstEmotion]) - parseFloat(emotionScores[secondEmotion]));
     }
-    public static calculateVariance(): number {
-        return 0;
+    public static calculateVariance(emotionScores: nlup.EmotionScores): number {
+        const scores = EmotionDetection.rankEmotions(emotionScores).map((e: Emotion) => e.score);
+        return math.variance(...scores);
     }
 }
