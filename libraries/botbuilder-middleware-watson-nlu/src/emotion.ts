@@ -1,10 +1,8 @@
 import { TurnContext, ActivityTypes, Middleware } from 'botbuilder';
-import { Engine, TextAnalysisMiddleware } from '../../botbuilder-middleware-engine-core/lib/index';
+import { Engine, TextAnalysisMiddleware } from '@botbuildercommunity/middleware-engine-core';
 import * as nlup from 'ibm-watson/natural-language-understanding/v1.js';
 import { WatsonEngine } from './engine';
 import { Emotion } from './schema';
-
-console.warn("You are loading the core engine from the repo structure and not an NPM module.");
 
 /**
  * @module botbuildercommunity/middleware-watson-nlu
