@@ -134,10 +134,64 @@ Takes an `EmotionScores` object and returns an `Emotion` object representing the
 
 If called with only the `EmotionScores` object, will return the difference between the top two emotions. If the other two parameters are provided, it'll return the difference between the two specified.
 
+* `calculateVariance(emotionScores: nlup.EmotionScores): number`
+
+Takes an `EmotionScores` object and returns the variance between all emotion scores.
+
 ##### Usage
 
 Since these are static methods, you call them directly off of the `EmotionDetection` class. For example:
 
 ```typescript
 const emotion: string = EmotionDetection.topEmotion(EMOTIONSCORES_OBJECT);
+```
+
+### Entity Extraction
+
+The package includes additional helper functionality for entity extraction to speed your bot development.
+
+#### Setting Emotions and Sentiment
+
+Watson's NLU allows you to specify boolean values to turn on emotion detection and sentiment analysis for individual entities. You can set these configuration values using the `set()` method on the middleware:
+
+```typescript
+import { EntityExtraction } from '@botbuildercommunity/middleware-watson-nlu';
+
+const entityExtraction = new EntityExtraction(WATSON_API_KEY, WATSON_ENDPOINT, WATSON_OPTIONS);
+entityExtraction.set('emotion', true);
+entityExtraction.set('sentiment', true);
+
+adapter.use(entityExtraction);
+```
+
+#### Static Helper Methods
+
+We've built a handful of static helper methods off of the `EntityExtraction` class to better enable you to parse and rank results.
+
+* `getEntities(entitiesResult: nlup.EntitiesResult[], type?: string): string[]`
+
+Takes an array of `EntitiesResult` and returns an array of strings which are the text entities that have been extracted.
+
+* `rankEntityKeys(entitiesResult: nlup.EntitiesResult[], ranking: RANKING = RANKING.RELEVANCE): string[]`
+
+Takes an array of `EntitiesResult` objects and an option ranking choice (either relevance or confidence) and returns a string array of the entities in order of ranking.
+
+* `rankEntities(entitiesResult: nlup.EntitiesResult[], ranking: RANKING = RANKING.RELEVANCE): nlup.EntitiesResult[]`
+
+Takes an array of `EntitiesResult` objects and returns an ordered array of `EntitiesResult` objects. As above, your ranking can be either according to relevance or confidence.
+
+* `topEntity(entitiesResult: nlup.EntitiesResult[], ranking: RANKING = RANKING.RELEVANCE): string`
+
+Takes an array of `EntitiesResult` objects and an optional ranking and returns the text of the entity ranked the highest.
+
+* `topEntityResult(entitiesResult: nlup.EntitiesResult[], ranking: RANKING = RANKING.RELEVANCE): nlup.EntitiesResult`
+
+Takes an array of `EntitiesResult` objects and an optional ranking and returns an `EntitiesResult` object representing the highest ranking item.
+
+##### Usage
+
+Since these are static methods, you call them directly off of the `EmotionDetection` class. For example:
+
+```typescript
+const entity: string = EntityExtraction.topEntity(ENTITYRESULT_OBJECT);
 ```

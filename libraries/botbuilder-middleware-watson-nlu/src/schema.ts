@@ -18,6 +18,6 @@ export interface EntityOptions {
 }
 
 export enum RANKING {
-    RELEVANCE = 0,
-    CONFIDENCE = 1
+    RELEVANCE = 'relevance',
+    CONFIDENCE = 'confidence'
 }

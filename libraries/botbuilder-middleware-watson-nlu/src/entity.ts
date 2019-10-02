@@ -44,21 +44,23 @@ export class EntityExtraction extends TextAnalysisMiddleware implements Middlewa
     public static getEntities(entitiesResult: nlup.EntitiesResult[], type?: string): string[] {
         if(type != null) {
             return entitiesResult
-                .filter((e: nlup.EntitiesResult) => e.type.toLocaleLowerCase() === type.toLocaleLowerCase())
-                .map((e: nlup.EntitiesResult)  => e.text);
+                .filter((e: nlup.EntitiesResult): boolean => e.type.toLocaleLowerCase() === type.toLocaleLowerCase())
+                .map((e: nlup.EntitiesResult): string  => e.text);
         }
-        return entitiesResult.map((e: nlup.EntitiesResult)  => e.text);
+        return entitiesResult.map((e: nlup.EntitiesResult): string  => e.text);
     }
     public static rankEntityKeys(entitiesResult: nlup.EntitiesResult[], ranking: RANKING = RANKING.RELEVANCE): string[] {
-        return null;
+        return EntityExtraction
+            .rankEntities(entitiesResult, ranking)
+            .map((e: nlup.EntitiesResult): string => e.text);
     }
     public static rankEntities(entitiesResult: nlup.EntitiesResult[], ranking: RANKING = RANKING.RELEVANCE): nlup.EntitiesResult[] {
-        return null;
+        return entitiesResult.sort((a: nlup.EntitiesResult, b: nlup.EntitiesResult): number => b[ranking] - a[ranking]);
     }
     public static topEntity(entitiesResult: nlup.EntitiesResult[], ranking: RANKING = RANKING.RELEVANCE): string {
-        return null;
+        return EntityExtraction.rankEntityKeys(entitiesResult, ranking)[0];
     }
     public static topEntityResult(entitiesResult: nlup.EntitiesResult[], ranking: RANKING = RANKING.RELEVANCE): nlup.EntitiesResult {
-        return null;
+        return EntityExtraction.rankEntities(entitiesResult, ranking)[0];
     }
 }

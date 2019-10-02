@@ -82,7 +82,7 @@ export class EmotionDetection extends TextAnalysisMiddleware implements Middlewa
         return Math.abs(parseFloat(emotionScores[firstEmotion]) - parseFloat(emotionScores[secondEmotion]));
     }
     public static calculateVariance(emotionScores: nlup.EmotionScores): number {
-        const scores = EmotionDetection.rankEmotions(emotionScores).map((e: Emotion) => e.score);
+        const scores = EmotionDetection.rankEmotions(emotionScores).map((e: Emotion): number => e.score);
         return math.variance(...scores);
     }
 }
