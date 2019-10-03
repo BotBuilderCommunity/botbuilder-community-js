@@ -11,3 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added support for: Send and receive text messages with attachment (`image`, `audio`, `video`, `document`)
 - Added support for: Send proactive notifications
 - Added support for: Track message deliveries (`sent`, `delivered`, `read` receipts)
+
+## [1.0.0] - 2019-09
+### Changed
+- Bumped for v1 release

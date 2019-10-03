@@ -8,3 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - First release of Text Analysis Core Engine
 - Added abstract class with abstract methods that should encompass the scope of modern text analysis NLU capabilities
+
+## [1.1.0] - 2019-10
+### Added
+- Added abstract class for `TextAnalysisMiddleware` to help define configuration options.
+- Added `config` property and `set()` method for handling generic configuration settings to be passed to the engine.

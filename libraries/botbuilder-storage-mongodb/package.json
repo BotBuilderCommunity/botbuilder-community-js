@@ -1,0 +1,43 @@
+{
+  "name": "@botbuildercommunity/storage-mongodb",
+  "version": "1.0.0",
+  "description": "MongoDB storage option for the Microsoft Bot Framework",
+  "keywords": [
+    "botbuilder",
+    "bots",
+    "chatbots",
+    "mongodb",
+    "storage"
+  ],
+  "contributors": [
+    "Bot Builder Community"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "dependencies": {
+    "botbuilder": "^4.5.3",
+    "botbuilder-core": "^4.5.3",
+    "flat": "^4.1.0",
+    "mongodb": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^7.10.6",
+    "typescript": "^3.5.2",
+    "@types/mongodb": "^3.3.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

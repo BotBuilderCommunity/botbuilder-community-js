@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/adapter-twilio-whatsapp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Twilio WhatsApp adapter for use with the Bot Framework.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -11,6 +11,9 @@
     "build": "tsc",
     "test": "tsc && mocha",
     "test-ci": "tsc && mocha --reporter xunit --reporter-options output=./mocha-test-results.xml --reporter-options suiteName=$npm_package_name"
+  },
+  "engines": {
+    "node": ">=10.0.0"
   },
   "repository": {
     "type": "git",

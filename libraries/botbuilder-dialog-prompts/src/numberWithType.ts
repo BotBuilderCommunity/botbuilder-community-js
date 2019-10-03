@@ -1,13 +1,13 @@
-import * as recognizers  from "@microsoft/recognizers-text-number";
-import { Activity, InputHints, TurnContext } from "botbuilder-core";
-import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from "botbuilder-dialogs";
+import * as recognizers  from '@microsoft/recognizers-text-number';
+import { Activity, InputHints, TurnContext } from 'botbuilder-core';
+import { Prompt, PromptOptions, PromptRecognizerResult, PromptValidator } from 'botbuilder-dialogs';
 
 /**
  * @module botbuildercommunity/dialog-prompts
  */
 
 export enum NumberWithTypePromptType
-{
+    {
     Ordinal = 0,
     Percentage = 1
 }
@@ -15,7 +15,7 @@ export enum NumberWithTypePromptType
 export class NumberWithTypePrompt extends Prompt<NumberWithTypePromptType> {
     public defaultLocale: string | undefined;
     public promptType: NumberWithTypePromptType;
-    constructor(dialogId: string, promptType: NumberWithTypePromptType, validator?: PromptValidator<number>, defaultLocale?: string) {
+    public constructor(dialogId: string, promptType: NumberWithTypePromptType, validator?: PromptValidator<number>, defaultLocale?: string) {
         super(dialogId, validator);
         this.defaultLocale = defaultLocale;
         this.promptType = promptType;
@@ -29,10 +29,10 @@ export class NumberWithTypePrompt extends Prompt<NumberWithTypePromptType> {
     }
     protected async onRecognize(context: TurnContext, state: any, options: PromptOptions): Promise<PromptRecognizerResult<number>> {
         const result: PromptRecognizerResult<number> = { succeeded: false };
-        var results: any;
+        let results: any;
         const activity: Activity = context.activity;
         const utterance: string = activity.text;
-        const locale: string = activity.locale || this.defaultLocale || "en-us";
+        const locale: string = activity.locale || this.defaultLocale || 'en-us';
         
         switch(this.promptType)
         {
@@ -48,7 +48,9 @@ export class NumberWithTypePrompt extends Prompt<NumberWithTypePromptType> {
                 result.succeeded = true;
                 result.value = parseFloat(results[0].resolution.value);
             }
-            catch(e) { }
+            catch(e) {
+                console.log(e);
+            }
         }
         return result;
     }
