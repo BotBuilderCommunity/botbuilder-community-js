@@ -1,9 +1,9 @@
+import { Storage, StoreItems } from 'botbuilder-core';
+import { config as msconfig, ConnectionPool, NVarChar } from 'mssql';
+
 /**
  * @module @botbuildercommunity/storage-mssql
  */
-
-import { Storage, StoreItems } from 'botbuilder-core';
-import { config as msconfig, ConnectionPool, NVarChar } from 'mssql';
 
 export class MSSQLStorage implements Storage {
     private _connection: msconfig;
@@ -12,7 +12,6 @@ export class MSSQLStorage implements Storage {
     public dbserver: string;
     public db: string;
     public dbtable: string;
-
     public constructor(dbuser: string, dbpassword: string, dbserver: string, db: string, dbtable: string) {
         this.dbuser = dbuser;
         this.dbpassword = dbpassword;
@@ -24,14 +23,14 @@ export class MSSQLStorage implements Storage {
             password: this.dbpassword,
             server: this.dbserver,
             database: this.db
-        }
+        };
     }
 
     public async read(keys: string[]): Promise<StoreItems> {
         const pool = await this.getConnectionPool();
         try {
             const result = await pool.request()
-                .input("", NVarChar, keys)
+                .input('', NVarChar, keys)
                 .query(``);
             pool.close();
             return Promise.resolve(result.recordset);
