@@ -24,6 +24,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `calculateDifference()` static method
 - Added `calculateVariance()` static method
 - Sets 'emotionTargets' in the `TurnState` if targets were requested
+- Added `getEntities()` static method
+- Added `rankEntityKeys()` static method
+- Added `rankEntities()` static method
+- Added `topEntity()` static method
+- Added `topEntityResult()` static method
+- Added `rankKeywordKeys()` static method
+- Added `rankKeywords()` static method
+- Added `topKeyword()` static method
+- Added `topKeywordResult()` static method
 ### Changed
 - Passes `config` to the `emotion()` method
 - Failing to process an emotion no longer throws an exception, but instead logs with `console.error()`

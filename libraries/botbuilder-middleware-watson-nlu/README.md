@@ -190,8 +190,54 @@ Takes an array of `EntitiesResult` objects and an optional ranking and returns a
 
 ##### Usage
 
-Since these are static methods, you call them directly off of the `EmotionDetection` class. For example:
+Since these are static methods, you call them directly off of the `EntityExtraction` class. For example:
 
 ```typescript
 const entity: string = EntityExtraction.topEntity(ENTITYRESULT_OBJECT);
+```
+
+### Keywords/Key Phrases
+
+The package includes additional helper functionality for handling key phrases to speed your bot development.
+
+#### Setting Emotions and Sentiment
+
+Watson's NLU allows you to specify boolean values to turn on emotion detection and sentiment analysis for individual keywords and phrases. You can set these configuration values using the `set()` method on the middleware:
+
+```typescript
+import { KeyPhrases } from '@botbuildercommunity/middleware-watson-nlu';
+
+const keyPhrases = new KeyPhrases(WATSON_API_KEY, WATSON_ENDPOINT, WATSON_OPTIONS);
+keyPhrases.set('emotion', true);
+keyPhrases.set('sentiment', true);
+
+adapter.use(keyPhrases);
+```
+
+#### Static Helper Methods
+
+We've built a handful of static helper methods off of the `KeyPhrases` class to better enable you to parse and rank results.
+
+* `rankKeywordKeys(keywordsResult: nlup.KeywordsResult[]): string[]`
+
+Takes an array of `KeywordsResult` objects and returns a string array of the keywords in order of relevance.
+
+* `rankKeywords(keywordsResult: nlup.KeywordsResult[]): nlup.KeywordsResult[]`
+
+Takes an array of `KeywordsResult` objects and returns an ordered array of `KeywordsResult` objects by relevance.
+
+* `topKeyword(keywordsResult: nlup.KeywordsResult[]): string`
+
+Takes an array of `KeywordsResult` objects and returns the text of the keyword ranked the highest.
+
+* `topKeywordResult(keywordsResult: nlup.KeywordsResult[]): nlup.KeywordsResult`
+
+Takes an array of `KeywordsResult` objects and returns a `KeywordsResult` object representing the highest ranking item.
+
+##### Usage
+
+Since these are static methods, you call them directly off of the `KeywordsResult` class. For example:
+
+```typescript
+const keyword: string = KeywordsResult.topKeyword(KEYWORDRESULT_OBJECT);
 ```
