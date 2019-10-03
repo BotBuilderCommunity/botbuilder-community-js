@@ -3,3 +3,4 @@
  */
 
 export * from './engine';
+export * from './middleware';
