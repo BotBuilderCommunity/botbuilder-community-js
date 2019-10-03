@@ -1,15 +1,16 @@
 {
-  "name": "@botbuildercommunity/middleware-engine-core",
-  "version": "1.1.0",
-  "description": "Bot Framework middleware core engine builder for text analysis.",
-  "main": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
+  "name": "@botbuildercommunity/middleware-activity-type",
+  "version": "1.0.0",
+  "description": "Bot Framework middleware component to handle incoming activities based on a specific activity type",
+  "main": "index.js",
+  "typings": "index.d.ts",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
     "build": "tsc",
-    "test": "mocha"
+    "test": "tsc && mocha",
+    "test-ci": "tsc && mocha --reporter xunit --reporter-options output=./mocha-test-results.xml --reporter-options suiteName=$npm_package_name"
   },
   "repository": {
     "type": "git",
@@ -19,9 +20,7 @@
     "chatbots",
     "bot framework",
     "bot builder",
-    "sentiment analysis",
-    "text analytics",
-    "cognitive services",
+    "activity type",
     "middleware"
   ],
   "contributors": [
@@ -33,7 +32,14 @@
     "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
+  "dependencies": {
+    "botbuilder": "^4.5.3"
+  },
   "devDependencies": {
+    "mocha": "^6.2.0",
     "typescript": "^3.5.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

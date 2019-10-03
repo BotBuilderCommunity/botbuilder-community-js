@@ -1,5 +1,6 @@
 import { Engine } from '@botbuildercommunity/middleware-engine-core';
 import * as nlup from 'ibm-watson/natural-language-understanding/v1.js';
+import { EmotionOptions, EntityOptions } from './schema';
 
 /**
  * @module botbuildercommunity/middleware-watson-nlu
@@ -24,12 +25,17 @@ export class WatsonEngine extends Engine {
             url: this._url
         });
     }
-    private async recognize(text: string, type: string): Promise<any> {
-        return await watsonRecognizer(this._nlu, text, type);
+    private async recognize(text: string, type: string, options?: any): Promise<any> {
+        return await watsonRecognizer(this._nlu, text, type, options);
     }
     //The below methods can all be abstracted further. Consider this a TO-DO.
-    public async entities(input: string): Promise<any> {
-        return await this.recognize(input, 'entities');
+    public async entities(input: string, config?: any): Promise<any> {
+        const options: EntityOptions = { };
+        if(config != null) {
+            options.sentiment = (config.sentiment) ? true : false;
+            options.emotion = (config.emotion) ? true : false;
+        }
+        return await this.recognize(input, 'entities', options);
     }
     public async keyPhrases(input: string): Promise<any> {
         return await this.recognize(input, 'keywords');
@@ -46,17 +52,39 @@ export class WatsonEngine extends Engine {
     public async concepts(input: string): Promise<any> {
         return await this.recognize(input, 'concepts');
     }
-    public async emotion(input: string): Promise<any> {
-        return await this.recognize(input, 'emotion');
+    /*
+     * The `config` can literally be anything in an object, but comes from `set()`
+     * so should be key/value pairs with the value be `any`.
+     * For emotion detection, you can pass whether or not to show the whole document results,
+     * as well as what words to target.
+     * When passed into Watson's NLU, this has a structure of:
+     *  {
+     *      document: true //Default
+     *      targets: ['lions', 'tigers', 'bears']
+     *  }
+     * Here, we take the config passed into the `emotion()` method, and look for the specific
+     * options.
+     */
+    public async emotion(input: string, config?: any): Promise<any> {
+        const options: EmotionOptions = { };
+        if(config != null) {
+            if(config.document != null) {
+                options.document = config.document;
+            }
+            if(config.targets != null && config.targets instanceof Array) {
+                options.targets = config.targets;
+            }
+        }
+        return await this.recognize(input, 'emotion', options);
     }
 }
 
-async function watsonRecognizer(nlu: any, text: string, type: string): Promise<any> {
+async function watsonRecognizer(nlu: any, text: string, type: string, options: any = { }): Promise<any> {
     const input = (typeof text === 'string') ? text : (text as any).documents[0].text;
     const opts = {
         html: input,
         features: {
-            [type]: {}
+            [type]: options
         }
     };
     return new Promise((resolve, reject): any => {
@@ -64,17 +92,23 @@ async function watsonRecognizer(nlu: any, text: string, type: string): Promise<a
             if(err != null) {
                 reject(err);
             }
-            const result = res[type].document[type]; //Needs better checking of properties.
-            if(type === 'keywords') {
-                type = 'keyPhrases';
+            else {
+                const doc = res[type].document[type]; //Needs better checking of properties.
+                if(type === 'keywords') {
+                    type = 'keyPhrases';
+                }
+                const result = {
+                    documents: [
+                        {
+                            [type]: doc
+                        }
+                    ]
+                };
+                if(res[type].targets) { // I don't like this. Need a better schema to match all text analysis with.
+                    result.documents[0].targets = res[type].targets;
+                }
+                resolve(result);
             }
-            resolve({
-                documents: [
-                    {
-                        [type]: result
-                    }
-                ]
-            });
         });
     });
 }
