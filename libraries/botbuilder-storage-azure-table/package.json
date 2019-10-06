@@ -27,7 +27,7 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "main": "./lib/index.js",
+  "main": "./src/index.ts",
   "typings": "./lib/index.d.ts",
   "dependencies": {
     "azure-storage": "^2.10.3",

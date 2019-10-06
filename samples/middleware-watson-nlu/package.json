@@ -2,7 +2,7 @@
   "name": "botbuilder-emotion-middleware-testbot",
   "version": "0.1.0",
   "description": "Test bot application for verifying emotion analysis functionality.",
-  "main": "bot.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
