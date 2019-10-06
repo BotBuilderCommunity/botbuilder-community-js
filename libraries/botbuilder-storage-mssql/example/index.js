@@ -1,4 +1,5 @@
-const { BotFrameworkAdapter } = require("botbuilder");
+const { BotFrameworkAdapter, ConversationState } = require("botbuilder");
+const { DialogSet, DialogContext, WaterfallDialog, WaterfallStepContext, TextPrompt, DialogTurnResult } = require("botbuilder-dialogs");
 const restify = require("restify");
 const { MSSQLStorage } = require("../lib/index");
 
@@ -15,22 +16,34 @@ const adapter = new BotFrameworkAdapter({
 });
 
 const storage = new MSSQLStorage({ 
-    dbuser: "",
-    dbpassword: "",
-    dbserver: "",
-    db: "",
-    dbtable: ""
+    user: process.env.dbuser,
+    password: process.env.dbpassword,
+    server: process.env.dbserver,
+    database: process.env.dbname,
+    table: process.env.dbtable
 });
 const conversationState = new ConversationState(storage);
 
 const dialogs = new DialogSet(conversationState.createProperty("dialogState"));
 
+dialogs.add(new WaterfallDialog("hello", [
+    async (step) => {
+        return await step.prompt("textPrompt", "Hello. How are you doing today?");
+    },
+    async (step) => {
+        return await step.context.sendActivity("That's great!");
+    }
+]));
+
+dialogs.add(new TextPrompt("textPrompt"));
+
 server.post("/api/messages", (req, res) => {
     adapter.processActivity(req, res, async (context) => {
-        if (context.activity.type === "message") {
-            await context.sendActivity(`You said "${context.activity.text}`);
-        } else {
-            await context.sendActivity(`[${context.activity.type} event detected]`);
+        const dialogContext = await dialogs.createContext(context);
+        await dialogContext.continueDialog();
+        if(!context.responded) {
+            await dialogContext.beginDialog("hello");
         }
+        await conversationState.saveChanges(context);
     });
 });

@@ -6,7 +6,7 @@ import { MSSQLOptions } from './schema';
  * @module @botbuildercommunity/storage-mssql
  */
 
-function getConnectionPool(connection): ConnectionPool {
+function getConnectionPool(connection: msconfig): ConnectionPool {
     try {
         return new ConnectionPool(connection);
     }
@@ -16,29 +16,28 @@ function getConnectionPool(connection): ConnectionPool {
 }
 
 export class MSSQLStorage implements Storage {
-    private options: MSSQLOptions;
-    private connection: msconfig;
+    private table: string;
+    private options: msconfig;
     public constructor(options: MSSQLOptions) {
+        this.table = options.table;
         this.options = options;
-        this.connection = {
-            user: options.dbuser,
-            password: options.dbpassword,
-            server: options.dbserver,
-            database: options.db
-        };
     }
-    public async read(keys: string[]): Promise<StoreItems> { //Should this be an array of numbers?
+    public async read(keys: string[]): Promise<StoreItems> {
         if(keys == null || keys.length === 0) {
             return Promise.resolve({});
         }
-        const pool = await getConnectionPool(this.connection).connect();
+        const pool = await this.getConnectionPool(this.options).connect();
         try {
+            /*
+             * According to the package documentation (https://www.npmjs.com/package/mssql), all ES6 tagged template
+             * literals are automatically sanitized against SQL injection.
+             */
             const result: IResult<any> = await pool.request()
                 .query(`SELECT
                             id,
                             data
-                        FROM ${ this.options.dbtable }
-                        WHERE id in (${ keys.join(',') })`); //Need to sanitize this.
+                        FROM ${ this.table }
+                        WHERE id in (${ keys.join(',') })`);
             const res = result.recordset.reduce((acc: StoreItem, record: any): StoreItem => {
                 acc[record.id] = acc[record.data];
                 return acc;
@@ -54,7 +53,7 @@ export class MSSQLStorage implements Storage {
         if (changes == null || changes[0] == null) {
             return Promise.resolve(null);
         }
-        const pool = await getConnectionPool(this.connection).connect();
+        const pool = await this.getConnectionPool(this.options).connect();
         const keys = Object.keys(changes);
         keys.forEach(async (key: string): Promise<void> => {
             try {
@@ -63,7 +62,7 @@ export class MSSQLStorage implements Storage {
                     .input('Data', NVarChar, JSON.stringify(changes[key]))
                     .query(`IF EXISTS(
                             UPDATE
-                                ${ this.options.dbtable }
+                                ${ this.table }
                                 SET data = @Data
                                 WHERE id = @Key;
                         )
@@ -73,7 +72,7 @@ export class MSSQLStorage implements Storage {
                         ELSE
                         BEGIN
                             INSERT
-                                INTO ${ this.options.dbtable }
+                                INTO ${ this.table }
                                 (id, data)
                             VALUES
                                 (@Key, @Data);
@@ -90,16 +89,28 @@ export class MSSQLStorage implements Storage {
         if(keys == null || keys.length === 0) {
             return Promise.resolve(null);
         }
-        const pool = await getConnectionPool(this.connection).connect();
+        const pool = await this.getConnectionPool(this.options).connect();
         try {
+            /*
+             * According to the package documentation (https://www.npmjs.com/package/mssql), all ES6 tagged template
+             * literals are automatically sanitized against SQL injection.
+             */
             await pool.request()
                 .query(`DELETE
-                            FROM ${ this.options.dbtable }
-                        WHERE id in (${ keys.join(',') })`); //Need to sanitize this.
+                            FROM ${ this.table }
+                        WHERE id in (${ keys.join(',') })`);
             return Promise.resolve(null);
         }
         catch(e) {
             return Promise.reject(e);
+        }
+    }
+    private getConnectionPool(connection: msconfig): ConnectionPool {
+        try {
+            return getConnectionPool(connection);
+        }
+        catch(e) {
+            console.error(e);
         }
     }
 }

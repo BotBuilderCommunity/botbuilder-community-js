@@ -1,11 +1,9 @@
+import { config as msconfig, config } from 'mssql';
+
 /**
  * @module @botbuildercommunity/storage-mssql
  */
 
-export interface MSSQLOptions {
-    dbuser: string;
-    dbpassword: string;
-    dbserver: string;
-    db: string;
-    dbtable: string;
+export interface MSSQLOptions extends config {
+    table: string;
 }
