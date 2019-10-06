@@ -1,5 +1,5 @@
 const { BotFrameworkAdapter, ActivityTypes } = require("botbuilder");
-const { HandleActivityType } = require("../lib/index");
+const { HandleActivityType } = require("../../libraries/botbuilder-middleware-activity-type/src/index");
 const restify = require("restify");
 
 const server = restify.createServer();
