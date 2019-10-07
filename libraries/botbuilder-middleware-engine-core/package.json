@@ -2,7 +2,7 @@
   "name": "@botbuildercommunity/middleware-engine-core",
   "version": "1.1.0",
   "description": "Bot Framework middleware core engine builder for text analysis.",
-  "main": "./lib/index.js",
+  "main": "./src/index.ts",
   "typings": "./lib/index.d.ts",
   "directories": {
     "lib": "lib"
