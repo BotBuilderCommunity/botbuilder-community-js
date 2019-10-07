@@ -22,6 +22,7 @@
   "author": "Michael Szul <michael@szul.us>",
   "license": "MIT",
   "dependencies": {
+    "@botbuildercommunity/middleware-google-language": "^1.0.0",
     "@google-cloud/language": "^3.2.6",
     "botbuilder": "^4.5.3",
     "dotenv": "^6.2.0",

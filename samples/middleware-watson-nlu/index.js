@@ -1,6 +1,6 @@
 const { BotFrameworkAdapter } = require("botbuilder");
 const restify = require("restify");
-const { EmotionDetection } = require("../../libraries/botbuilder-middleware-watson-nlu/src/index");
+const { EmotionDetection } = require("@botbuildercommunity/middleware-watson-nlu");
 
 require("dotenv").config();
 
