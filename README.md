@@ -27,6 +27,7 @@ The following alternative storage implementations are currently available;
 | ---- | ----------- | ----- |
 | [@botbuildercommunity/storage-azure-table](libraries/botbuilder-storage-azure-table/README.md) | Use Azure Table Storage in your bot. | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-azure-table.svg) |
 | [@botbuildercommunity/storage-mongodb](libraries/botbuilder-storage-mongodb/README.md) | Use MongoDB storage implementation in your bot. | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-mongodb.svg) |
+| [@botbuildercommunity/storage-mssql](libraries/botbuilder-storage-mssql/README.md) | Use Microsoft SQL Server storage implementation in your bot. | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-mssql.svg) |
 
 > The Azure Table Storage package has been deprecated from Microsoft's `botbuilder-js` repository, and is being taken over by the community.
 
