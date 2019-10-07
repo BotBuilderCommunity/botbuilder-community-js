@@ -38,9 +38,9 @@ export class MSSQLStorage implements Storage {
                             data
                         FROM ${ this.table }
                         WHERE id in ('${ keys.join('\',\'') }')`);
-            const res = result.recordset.reduce((acc: StoreItem, record: any): StoreItem => {
-                acc[record.id] = JSON.parse(record.data);
-                return acc;
+            const res = result.recordset.reduce((storeItem: StoreItem, record: any): StoreItem => {
+                storeItem[record.id] = JSON.parse(record.data);
+                return storeItem;
             }, { });
             return Promise.resolve(res);
         }
