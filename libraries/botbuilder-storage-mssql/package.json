@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/storage-mssql",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Microsoft SQL Server storage option for the Microsoft Bot Framework",
   "keywords": [
     "botbuilder",

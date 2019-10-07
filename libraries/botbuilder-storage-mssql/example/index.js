@@ -1,4 +1,4 @@
-const { BotFrameworkAdapter, ConversationState } = require("botbuilder");
+const { BotFrameworkAdapter, ConversationState, MemoryStorage } = require("botbuilder");
 const { DialogSet, DialogContext, WaterfallDialog, WaterfallStepContext, TextPrompt, DialogTurnResult } = require("botbuilder-dialogs");
 const restify = require("restify");
 const { MSSQLStorage } = require("../lib/index");
@@ -22,6 +22,7 @@ const storage = new MSSQLStorage({
     database: process.env.dbname,
     table: process.env.dbtable
 });
+
 const conversationState = new ConversationState(storage);
 
 const dialogs = new DialogSet(conversationState.createProperty("dialogState"));
@@ -40,9 +41,11 @@ dialogs.add(new TextPrompt("textPrompt"));
 server.post("/api/messages", (req, res) => {
     adapter.processActivity(req, res, async (context) => {
         const dialogContext = await dialogs.createContext(context);
-        await dialogContext.continueDialog();
-        if(!context.responded) {
-            await dialogContext.beginDialog("hello");
+        const cd = await dialogContext.continueDialog();
+        if(context.activity.type === "message") {
+            if(!context.responded) {
+                await dialogContext.beginDialog("hello");
+            }
         }
         await conversationState.saveChanges(context);
     });

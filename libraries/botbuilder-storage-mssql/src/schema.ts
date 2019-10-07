@@ -1,4 +1,4 @@
-import { config as msconfig, config } from 'mssql';
+import { config } from 'mssql';
 
 /**
  * @module @botbuildercommunity/storage-mssql

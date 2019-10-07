@@ -37,9 +37,9 @@ export class MSSQLStorage implements Storage {
                             id,
                             data
                         FROM ${ this.table }
-                        WHERE id in (${ keys.join(',') })`);
+                        WHERE id in ('${ keys.join('\',\'') }')`);
             const res = result.recordset.reduce((acc: StoreItem, record: any): StoreItem => {
-                acc[record.id] = acc[record.data];
+                acc[record.id] = JSON.parse(record.data);
                 return acc;
             }, { });
             return Promise.resolve(res);
@@ -50,24 +50,27 @@ export class MSSQLStorage implements Storage {
     }
 
     public async write(changes: StoreItems): Promise<void> {
-        if (changes == null || changes[0] == null) {
+        if (changes == null || Object.keys(changes).length === 0) {
             return Promise.resolve(null);
         }
         const pool = await this.getConnectionPool(this.options).connect();
         const keys = Object.keys(changes);
-        keys.forEach(async (key: string): Promise<void> => {
+        for (const key of keys) {
             try {
                 await pool.request()
-                    .input('Key', Int, key)
+                    .input('Key', NVarChar, key)
                     .input('Data', NVarChar, JSON.stringify(changes[key]))
                     .query(`IF EXISTS(
+                            SELECT
+                                id
+                                FROM ${ this.table }
+                                WHERE id = @Key
+                        )
+                        BEGIN
                             UPDATE
                                 ${ this.table }
                                 SET data = @Data
                                 WHERE id = @Key;
-                        )
-                        BEGIN
-                            
                         END
                         ELSE
                         BEGIN
@@ -82,7 +85,7 @@ export class MSSQLStorage implements Storage {
             catch(e) {
                 return Promise.reject(e);
             }
-        });
+        }
         return Promise.resolve(null);
     }
     public async delete(keys: string[]): Promise<void> {
@@ -98,7 +101,7 @@ export class MSSQLStorage implements Storage {
             await pool.request()
                 .query(`DELETE
                             FROM ${ this.table }
-                        WHERE id in (${ keys.join(',') })`);
+                        WHERE id in ('${ keys.join('\',\'') }')`);
             return Promise.resolve(null);
         }
         catch(e) {
