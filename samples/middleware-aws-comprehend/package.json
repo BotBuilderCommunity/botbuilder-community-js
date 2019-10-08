@@ -2,7 +2,7 @@
   "name": "botbuilder-sentiment-middleware-testbot",
   "version": "0.1.0",
   "description": "Test bot application for verifying sentiment analysis functionality.",
-  "main": "bot.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,9 +12,9 @@
     "text",
     "analytics",
     "api",
-    "cognitive",
-    "services",
-    "azure",
+    "amazon",
+    "aws",
+    "comprehend",
     "bot",
     "framework",
     "chatbots"
@@ -22,10 +22,9 @@
   "author": "Michael Szul <michael@szul.us>",
   "license": "MIT",
   "dependencies": {
-    "azure-cognitiveservices-textanalytics": "^2.1.0",
+    "aws-sdk": "^2.521.0",
     "botbuilder": "^4.5.3",
     "dotenv": "^6.2.0",
-    "ms-rest-azure": "^2.6.0",
     "restify": "^7.7.0"
   }
 }
