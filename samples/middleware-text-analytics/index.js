@@ -1,7 +1,7 @@
 const { BotFrameworkAdapter } = require("botbuilder");
 const restify = require("restify");
 const { config } = require("dotenv");
-const { SentimentAnalysis } = require("../lib/index");
+const { SentimentAnalysis } = require("@botbuildercommunity/middleware-text-analytics");
 
 config();
 
