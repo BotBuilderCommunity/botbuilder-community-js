@@ -1,0 +1,16 @@
+{
+  "name": "middleware-spell-check-test",
+  "version": "0.1.0",
+  "description": "Test bot for spell check middleware.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bot Builder Community",
+  "license": "MIT",
+  "dependencies": {
+    "@botbuildercommunity/middleware-spell-check": "^1.0.0",
+    "botbuilder": "^4.5.3",
+    "restify": "^8.4.0"
+  }
+}

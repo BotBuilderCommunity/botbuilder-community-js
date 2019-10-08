@@ -22,6 +22,7 @@
   "author": "Michael Szul <michael@szul.us>",
   "license": "MIT",
   "dependencies": {
+    "@botbuildercommunity/middleware-watson-nlu": "^1.1.0",
     "botbuilder": "^4.5.3",
     "dotenv": "^6.2.0",
     "ibm-watson": "^4.3.0",

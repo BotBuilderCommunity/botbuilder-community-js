@@ -22,6 +22,7 @@
   "author": "Michael Szul <michael@szul.us>",
   "license": "MIT",
   "dependencies": {
+    "@botbuildercommunity/middleware-aws-comprehend": "^1.0.0",
     "aws-sdk": "^2.521.0",
     "botbuilder": "^4.5.3",
     "dotenv": "^6.2.0",

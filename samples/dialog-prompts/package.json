@@ -9,7 +9,7 @@
   "author": "Michael Szul <michael@szul.us>",
   "license": "MIT",
   "dependencies": {
-    "@botbuildercommunity/dialog-prompts": "^4.3.4",
+    "@botbuildercommunity/dialog-prompts": "^1.0.0",
     "botbuilder": "^4.3.4",
     "botbuilder-dialogs": "^4.3.4",
     "restify": "^7.2.1"
