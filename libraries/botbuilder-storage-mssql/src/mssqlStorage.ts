@@ -1,5 +1,5 @@
 import { Storage, StoreItem, StoreItems } from 'botbuilder-core';
-import { config as msconfig, ConnectionPool, NVarChar, IResult, Int } from 'mssql';
+import { config as msconfig, ConnectionPool, NVarChar, IResult } from 'mssql';
 import { MSSQLOptions } from './schema';
 
 /**

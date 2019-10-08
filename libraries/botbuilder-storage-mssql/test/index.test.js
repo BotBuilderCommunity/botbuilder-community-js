@@ -27,7 +27,7 @@ describe('MSSQL Storage tests', function() {
 									recordset: [ ]
 								};
 							}
-						}
+						};
 					}
 				}
 			}
