@@ -1,6 +1,6 @@
 const { BotFrameworkAdapter } = require("botbuilder");
 const { restify } = require("restify");
-const { SpellCheck } = require("../src/index");
+const { SpellCheck } = require("@botbuildercommunity/middleware-spell-check");
 
 const server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {

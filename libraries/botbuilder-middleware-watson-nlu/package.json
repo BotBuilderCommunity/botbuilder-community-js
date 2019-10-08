@@ -2,7 +2,7 @@
   "name": "@botbuildercommunity/middleware-watson-nlu",
   "version": "1.1.0",
   "description": "Bot Framework middleware component for the IBM Watson NLU service.",
-  "main": "./lib/index.js",
+  "main": "./src/index.ts",
   "typings": "./lib/index.d.ts",
   "directories": {
     "lib": "lib"

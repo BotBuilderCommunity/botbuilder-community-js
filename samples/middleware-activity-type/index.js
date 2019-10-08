@@ -1,9 +1,6 @@
-const { BotFrameworkAdapter } = require("botbuilder");
+const { BotFrameworkAdapter, ActivityTypes } = require("botbuilder");
+const { HandleActivityType } = require("@botbuildercommunity/middleware-activity-type");
 const restify = require("restify");
-const { config } = require("dotenv");
-const { SentimentAnalysis } = require("../lib/index");
-
-config();
 
 const server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
@@ -15,14 +12,14 @@ const adapter = new BotFrameworkAdapter({
     appPassword: process.env.MICROSOFT_APP_PASSWORD 
 });
 
-adapter.use(new SentimentAnalysis());
+adapter.use(new HandleActivityType(ActivityTypes.Message, async (context, next) => {
+    await context.sendActivity('Hello, middleware!');
+}));
 
 server.post("/api/messages", (req, res) => {
     adapter.processActivity(req, res, async (context) => {
         if (context.activity.type === "message") {
-            await context.sendActivity(`You said "${context.activity.text} with a sentiment of ${context.turnState.get("sentimentScore")}"`);
-        } else {
-            await context.sendActivity(`[${context.activity.type} event detected]`);
+            await context.sendActivity("You sent me a message!");
         }
     });
 });
