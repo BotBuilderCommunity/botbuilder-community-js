@@ -2,7 +2,7 @@
   "name": "@botbuildercommunity/adapter-console",
   "version": "1.0.0",
   "description": "Console adapter for the Bot Framework SDK v4.",
-  "main": "./src/index.ts",
+  "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "directories": {
     "lib": "lib"

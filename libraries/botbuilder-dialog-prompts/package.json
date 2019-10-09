@@ -2,7 +2,7 @@
   "name": "@botbuildercommunity/dialog-prompts",
   "version": "1.0.0",
   "description": "A collection of dialog prompts for the Microsoft Bot Framework that implements Microsoft's text recognizer suite.",
-  "main": "./src/index.ts",
+  "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "directories": {
     "lib": "lib"
