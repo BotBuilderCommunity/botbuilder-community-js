@@ -1,0 +1,25 @@
+{
+  "name": "botbuilder-mssql-testbot",
+  "version": "0.1.0",
+  "description": "Test bot application for MSSQL.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mssql",
+    "sql",
+    "text",
+    "bot",
+    "framework",
+    "chatbots"
+  ],
+  "author": "Michael Szul <michael@szul.us>",
+  "license": "MIT",
+  "dependencies": {
+    "botbuilder": "^4.5.3",
+    "botbuilder-dialogs": "^4.5.3",
+    "dotenv": "^6.2.0",
+    "restify": "^8.4.0"
+  }
+}

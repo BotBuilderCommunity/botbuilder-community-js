@@ -23,42 +23,43 @@ We welcome and encourage contributions to this project, in the form of bug fixes
 
 The following alternative storage implementations are currently available;
 
-| Name | Description | NPM |
-| ---- | ----------- | ----- |
-| [@botbuildercommunity/storage-azure-table](libraries/botbuilder-storage-azure-table/README.md) | Use Azure Table Storage in your bot. | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-azure-table.svg) |
-| [@botbuildercommunity/storage-mongodb](libraries/botbuilder-storage-mongodb/README.md) | Use MongoDB storage implementation in your bot. | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-mongodb.svg) |
+| Name | Description | Sample? | NPM |
+| ---- | ----------- | ------- | --- |
+| [@botbuildercommunity/storage-azure-table](libraries/botbuilder-storage-azure-table/README.md) | Use Azure Table Storage in your bot. | | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-azure-table.svg) |
+| [@botbuildercommunity/storage-mongodb](libraries/botbuilder-storage-mongodb/README.md) | Use MongoDB storage implementation in your bot. | | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-mongodb.svg) |
+| [@botbuildercommunity/storage-mssql](libraries/botbuilder-storage-mssql/README.md) | Use Microsoft SQL Server storage implementation in your bot. | [Sample](https://github.com/BotBuilderCommunity/botbuilder-community-js/tree/master/samples/storage-mssql) | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-mssql.svg) |
 
 > The Azure Table Storage package has been deprecated from Microsoft's `botbuilder-js` repository, and is being taken over by the community.
 
 ## Dialogs and Prompts
 The following dialogs are currently available;
 
-| Name | Description | NPM |
-| ---- | ----------- | ----- |
-| [@botbuildercommunity/dialog-prompts](libraries/botbuilder-dialog-prompts/README.md) | A variety of prompts using the [Microsoft Recognizers Text](https://github.com/microsoft/Recognizers-Text) suite, such as currency, temperature, age and dimension.  | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/dialog-prompts.svg)](https://www.npmjs.com/package/@botbuildercommunity/dialog-prompts) |
+| Name | Description | Sample? | NPM |
+| ---- | ----------- | ------- | --- |
+| [@botbuildercommunity/dialog-prompts](libraries/botbuilder-dialog-prompts/README.md) | A variety of prompts using the [Microsoft Recognizers Text](https://github.com/microsoft/Recognizers-Text) suite, such as currency, temperature, age and dimension.  | [Sample](https://github.com/BotBuilderCommunity/botbuilder-community-js/tree/master/samples/dialog-prompts) | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/dialog-prompts.svg)](https://www.npmjs.com/package/@botbuildercommunity/dialog-prompts) |
 
 ## Middleware
 
 The following pieces of middleware are currently available;
 
-| Name | Description | NPM |
-| ---- | ----------- | ------- |
-| [@botbuildercommunity/middleware-activity-type](libraries/botbuilder-middleware-activity-type/README.md) | Simple middleware component for intercepting and automatically handling messages based on activity type. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-activity-type.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-activity-type) |
-| [@botbuildercommunity/middleware-aws-comprehend](libraries/botbuilder-middleware-aws-comprehend/README.md) | Use Amazon's AWS Comprehend for sentiment analysis, key phrases, language detection, and entity extraction. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-aws-comprehend.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-aws-comprehend) |
-| [@botbuildercommunity/middleware-google-language](libraries/botbuilder-middleware-google-language/README.md) | Use Google Cloud Platform's Natural Language API for sentiment analysis, categories, and entity extraction. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-google-language.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-google-language) |
-| [@botbuildercommunity/middleware-spell-check](libraries/botbuilder-middleware-spell-check/README.md) | Use Cognitive Services Spell Check API to detect misspellings and correct these. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-spell-check.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-spell-check) |
-| [@botbuildercommunity/middleware-text-analytics](libraries/botbuilder-middleware-text-analytics/README.md) | Use Cognitive Services Text Analytics API for sentiment analysis, language detection, key phrases and entity extraction. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-text-analytics.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-text-analytics) |
-| [@botbuildercommunity/middleware-text-recognizer](libraries/botbuilder-middleware-text-recognizer/README.md) | Use the [Microsoft Recognizers Text](https://github.com/microsoft/Recognizers-Text) Suite for recognizing certain text sequences. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-text-recognizer.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-text-recognizer) |
-| [@botbuildercommunity/middleware-watson-nlu](libraries/botbuilder-middleware-watson-nlu/README.md) | Use IBM Watson's NLU for sentiment analysis, key phrases, categories, concepts, emotion detection, and entity extraction. | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-watson-nlu.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-watson-nlu) |
+| Name | Description | Sample? | NPM |
+| ---- | ----------- | ------- | --- |
+| [@botbuildercommunity/middleware-activity-type](libraries/botbuilder-middleware-activity-type/README.md) | Simple middleware component for intercepting and automatically handling messages based on activity type. | [Sample](https://github.com/BotBuilderCommunity/botbuilder-community-js/tree/master/samples/middleware-activity-type) | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-activity-type.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-activity-type) |
+| [@botbuildercommunity/middleware-aws-comprehend](libraries/botbuilder-middleware-aws-comprehend/README.md) | Use Amazon's AWS Comprehend for sentiment analysis, key phrases, language detection, and entity extraction. | [Sample](https://github.com/BotBuilderCommunity/botbuilder-community-js/tree/master/samples/middleware-aws-comprehend) | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-aws-comprehend.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-aws-comprehend) |
+| [@botbuildercommunity/middleware-google-language](libraries/botbuilder-middleware-google-language/README.md) | Use Google Cloud Platform's Natural Language API for sentiment analysis, categories, and entity extraction. | [Sample](https://github.com/BotBuilderCommunity/botbuilder-community-js/tree/master/samples/middleware-google-language) | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-google-language.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-google-language) |
+| [@botbuildercommunity/middleware-spell-check](libraries/botbuilder-middleware-spell-check/README.md) | Use Cognitive Services Spell Check API to detect misspellings and correct these. | [Sample](https://github.com/BotBuilderCommunity/botbuilder-community-js/tree/master/samples/middleware-spell-check) | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-spell-check.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-spell-check) |
+| [@botbuildercommunity/middleware-text-analytics](libraries/botbuilder-middleware-text-analytics/README.md) | Use Cognitive Services Text Analytics API for sentiment analysis, language detection, key phrases and entity extraction. | [Sample](https://github.com/BotBuilderCommunity/botbuilder-community-js/tree/master/samples/middleware-text-analytics) | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-text-analytics.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-text-analytics) |
+| [@botbuildercommunity/middleware-text-recognizer](libraries/botbuilder-middleware-text-recognizer/README.md) | Use the [Microsoft Recognizers Text](https://github.com/microsoft/Recognizers-Text) Suite for recognizing certain text sequences. | | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-text-recognizer.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-text-recognizer) |
+| [@botbuildercommunity/middleware-watson-nlu](libraries/botbuilder-middleware-watson-nlu/README.md) | Use IBM Watson's NLU for sentiment analysis, key phrases, categories, concepts, emotion detection, and entity extraction. | [Sample](https://github.com/BotBuilderCommunity/botbuilder-community-js/tree/master/samples/middleware-watson-nlu) | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/middleware-watson-nlu.svg)](https://www.npmjs.com/package/@botbuildercommunity/middleware-watson-nlu) |
 
 ## Adapters
 
 The following adapters can be used to expose your bot on additional channels not supported by the Azure Bot Service, such as Webex and Google Hangouts.
 
-| Name | Description | NPM |
-| ---- | ----------- | ------- |
-| [@botbuildercommunity/adapter-console](libraries/botbuilder-adapter-console/README.md) | A platform adapter for the console / terminal | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/adapter-console.svg)](https://www.npmjs.com/package/@botbuildercommunity/adapter-console) |
-| [@botbuildercommunity/adapter-twilio-whatsapp](libraries/botbuilder-adapter-twilio-whatsapp/README.md) | A platform adapter for Twilio WhatsApp | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/adapter-twilio-whatsapp.svg)](https://www.npmjs.com/package/@botbuildercommunity/adapter-twilio-whatsapp) |
+| Name | Description | Sample? | NPM |
+| ---- | ----------- | ------- | --- |
+| [@botbuildercommunity/adapter-console](libraries/botbuilder-adapter-console/README.md) | A platform adapter for the console / terminal | | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/adapter-console.svg)](https://www.npmjs.com/package/@botbuildercommunity/adapter-console) |
+| [@botbuildercommunity/adapter-twilio-whatsapp](libraries/botbuilder-adapter-twilio-whatsapp/README.md) | A platform adapter for Twilio WhatsApp | [Sample](https://github.com/BotBuilderCommunity/botbuilder-community-js/tree/master/samples/adapter-twilio-whatsapp) | [![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/adapter-twilio-whatsapp.svg)](https://www.npmjs.com/package/@botbuildercommunity/adapter-twilio-whatsapp) |
 
 The following packages are available from [Botkit](https://github.com/howdyai/botkit), and work with both the Bot Framework and Botkit:
 

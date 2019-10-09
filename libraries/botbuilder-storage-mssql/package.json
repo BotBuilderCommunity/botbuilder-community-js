@@ -1,12 +1,13 @@
 {
-  "name": "@botbuildercommunity/storage-mongodb",
+  "name": "@botbuildercommunity/storage-mssql",
   "version": "1.0.0",
-  "description": "MongoDB storage option for the Microsoft Bot Framework",
+  "description": "Microsoft SQL Server storage option for the Microsoft Bot Framework",
   "keywords": [
     "botbuilder",
     "bots",
     "chatbots",
-    "mongodb",
+    "mssql",
+    "microsoft sql server",
     "storage"
   ],
   "contributors": [
@@ -22,20 +23,21 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "dependencies": {
     "botbuilder": "^4.5.3",
     "botbuilder-core": "^4.5.3",
-    "flat": "^4.1.0",
-    "mongodb": "^3.3.2"
+    "mssql": "^5.1.0"
   },
   "devDependencies": {
+    "@types/mssql": "^4.3.0",
     "@types/node": "^7.10.6",
-    "typescript": "^3.5.2",
-    "@types/mongodb": "^3.3.1"
+    "mocha": "^6.2.0",
+    "rewire": "^4.0.1",
+    "typescript": "^3.5.2"
   },
   "publishConfig": {
     "access": "public"
