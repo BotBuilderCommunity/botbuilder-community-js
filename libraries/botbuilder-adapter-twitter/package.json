@@ -1,0 +1,51 @@
+{
+  "name": "@botbuildercommunity/adapter-twitter",
+  "version": "1.0.0",
+  "description": "Twitter adapter for use with the Bot Framework.",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "tsc && mocha",
+    "test-ci": "tsc && mocha --reporter xunit --reporter-options output=./mocha-test-results.xml --reporter-options suiteName=$npm_package_name"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "keywords": [
+    "chatbots",
+    "bot framework",
+    "bot builder",
+    "twitter adapter",
+    "adapters",
+    "twitter"
+  ],
+  "contributors": [
+    "Bot Builder Community",
+    "Michael Szul <michael@szul.us>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
+  "dependencies": {
+    "botbuilder": "^4.5.3",
+    "qs": "^6.9.0"
+  },
+  "devDependencies": {
+    "@types/qs": "^6.5.3",
+    "mocha": "^6.2.0",
+    "typescript": "^3.5.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
