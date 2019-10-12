@@ -1,4 +1,5 @@
 import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
+import * as Twitter from 'twitter';
 import { TwitterSettings } from './schema';
 import { retrieveBody } from './util';
 
@@ -16,7 +17,7 @@ export class TwitterAdapter extends BotAdapter {
         super();
         this.settings = settings;
         try {
-            this.client = this.createTwitterClient();
+            this.client = this.createTwitterClient(settings);
         }
         catch (e) {
             throw new Error(`Error creating Twitter client: ${ e.message }.`);
@@ -35,19 +36,29 @@ export class TwitterAdapter extends BotAdapter {
                     }
                     const message = this.parseActivity(activity);
                     try {
-                        const res: any = await this.client.messages.create(message);
-                        responses.push({ id: res.sid });
+                        /*
+                         * We'll probably need to send the `in_reply_to_status_id` since the bot will be
+                         * in conversation with another user.
+                         */
+                        const res: any = await new Promise((resolve, reject) => {
+                            this.client.post('statuses/update', { status: message }, function(error: string, tweet: string, response: any) {
+                                if(error) {
+                                    reject(error);
+                                }
+                                resolve(response);
+                            });
+                        });
+                        responses.push({ id: res.id });
                     } catch (error) {
                         throw new Error(`Error parsing activity: ${ error.message }.`);
                     }
-
                     break;
                 default:
                     responses.push({} as ResourceResponse);
                     console.warn(`Unsupported activity type: '${ activity.type }'.`);
+                    break;
             }
         }
-
         return responses;
     }
 
@@ -71,9 +82,17 @@ export class TwitterAdapter extends BotAdapter {
 
     public async processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void> {
 
+
+
+
+
         const message = await retrieveBody(req);
 
-        if (!message) {
+
+
+
+
+        if (message == null) {
             res.status(400);
             res.end();
         }
@@ -108,14 +127,6 @@ export class TwitterAdapter extends BotAdapter {
             type: null
         };
 
-        /*
-         * Handle message types
-         */
-
-        /*
-         * Handle event types
-         */
-
         if (activity.type === ActivityTypes.Message) {
 
             //Does it have an attachment?
@@ -137,8 +148,8 @@ export class TwitterAdapter extends BotAdapter {
         return new TurnContext(this as any, request);
     }
 
-    protected createTwitterClient(): any {
-        return { };
+    protected createTwitterClient(settings: TwitterSettings): Twitter {
+        return new Twitter(settings);
     }
 
     protected parseActivity(activity: Partial<Activity>): any {
