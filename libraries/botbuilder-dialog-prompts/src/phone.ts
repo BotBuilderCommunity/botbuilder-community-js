@@ -19,6 +19,7 @@ export class PhoneNumberPrompt extends Prompt<string> {
             await context.sendActivity(options.prompt, undefined, InputHints.ExpectingInput);
         }
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected async onRecognize(context: TurnContext, state: any, options: PromptOptions): Promise<PromptRecognizerResult<string>> {
         const result: PromptRecognizerResult<string> = { succeeded: false };
         const activity: Activity = context.activity;

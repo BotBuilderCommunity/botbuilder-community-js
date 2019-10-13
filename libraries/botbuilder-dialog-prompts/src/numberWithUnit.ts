@@ -35,6 +35,7 @@ export class NumberWithUnitPrompt extends Prompt<NumberWithUnitResult> {
             await context.sendActivity(options.prompt, undefined, InputHints.ExpectingInput);
         }
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected async onRecognize(context: TurnContext, state: any, options: PromptOptions): Promise<PromptRecognizerResult<NumberWithUnitResult>> {
         const result: PromptRecognizerResult<NumberWithUnitResult> = { succeeded: false };
         let results: any;

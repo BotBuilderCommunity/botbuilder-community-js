@@ -34,14 +34,10 @@ export class TwitterAdapter extends BotAdapter {
                     if (!activity.conversation || !activity.conversation.id) {
                         throw new Error(`Activity doesn't contain a conversation id.`);
                     }
-                    const message = this.parseActivity(activity);
                     try {
-                        /*
-                         * We'll probably need to send the `in_reply_to_status_id` since the bot will be
-                         * in conversation with another user.
-                         */
-                        const res: any = await new Promise((resolve, reject) => {
-                            this.client.post('statuses/update', { status: message }, function(error: string, tweet: string, response: any) {
+                        const message = this.parseActivity(activity);
+                        const res: any = await new Promise((resolve, reject): any => {
+                            this.client.post('statuses/update', message, function(error: string, tweet: string, response: any): void {
                                 if(error) {
                                     reject(error);
                                 }
@@ -62,10 +58,12 @@ export class TwitterAdapter extends BotAdapter {
         return responses;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async updateActivity(context: TurnContext, activity: Partial<Activity>): Promise<void> {
         throw new Error('Method not supported by the Twitter API.');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async deleteActivity(context: TurnContext, reference: Partial<ConversationReference>): Promise<void> {
         throw new Error('Method not supported by Twitter API.');
     }
@@ -94,7 +92,7 @@ export class TwitterAdapter extends BotAdapter {
             timestamp: new Date(),
             channelId: this.channel,
             conversation: {
-                id: message.user.screen_name,
+                id: message.id,
                 isGroup: false,
                 conversationType: null,
                 tenantId: null,
@@ -106,7 +104,7 @@ export class TwitterAdapter extends BotAdapter {
             },
             recipient: {
                 id: message.in_reply_to_screen_name,
-                name: ''
+                name: message.in_reply_to_screen_name
             },
             text: message.text,
             channelData: message,
@@ -172,14 +170,22 @@ export class TwitterAdapter extends BotAdapter {
 
     protected parseActivity(activity: Partial<Activity>): any {
 
-        /*
-         * Create Twitter message
-         */
+        const message = { };
+
+        message['status'] = activity.text;
+        message['in_reply_to_status_id'] = activity.conversation.id;
+
+        const mention = activity.recipient.id;
+
+        if(!message['status'].startsWith(mention)) {
+            message['status'] = `$@${ mention } ${ message['status'] }`;
+        }
 
         if (activity.attachments && activity.attachments.length > 0) {
             const attachment = activity.attachments[0];
+            message['attachment_url'] = attachment.contentUrl;
         }
-        return { };
-    }
 
+        return message;
+    }
 }
