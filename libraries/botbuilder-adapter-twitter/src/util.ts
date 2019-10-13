@@ -13,10 +13,12 @@ export function retrieveBody(req: WebRequest): Promise<any> {
         if (req.body) {
             try {
                 resolve(req.body);
-            } catch (err) {
+            }
+            catch (err) {
                 reject(err);
             }
-        } else {
+        }
+        else {
             let requestData = '';
             req.on('data', (chunk: string): void => {
                 requestData += chunk;
@@ -25,12 +27,14 @@ export function retrieveBody(req: WebRequest): Promise<any> {
                 try {
                     if (type.includes('application/x-www-form-urlencoded')) {
                         req.body = parse(requestData);
-                    } else {
+                    }
+                    else {
                         req.body = JSON.parse(requestData);
                     }
 
                     resolve(req.body);
-                } catch (err) {
+                }
+                catch (err) {
                     reject(err);
                 }
             });

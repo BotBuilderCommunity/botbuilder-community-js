@@ -82,15 +82,7 @@ export class TwitterAdapter extends BotAdapter {
 
     public async processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void> {
 
-
-
-
-
         const message = await retrieveBody(req);
-
-
-
-
 
         if (message == null) {
             res.status(400);
@@ -98,39 +90,65 @@ export class TwitterAdapter extends BotAdapter {
         }
 
         const activity: Partial<Activity> = {
-            id: message.MessageSid,
+            id: message.id,
             timestamp: new Date(),
             channelId: this.channel,
             conversation: {
-                id: message.From,
+                id: message.user.screen_name,
                 isGroup: false,
                 conversationType: null,
                 tenantId: null,
                 name: ''
             },
             from: {
-                id: message.From,
-                name: ''
+                id: message.user.id,
+                name: message.user.screen_name
             },
             recipient: {
-                id: message.To,
+                id: message.in_reply_to_screen_name,
                 name: ''
             },
-            text: message.Body,
+            text: message.text,
             channelData: message,
             localTimezone: null,
             callerId: null,
             serviceUrl: null,
             listenFor: null,
-            label: message.MessagingServiceSid,
+            label: message.id,
             valueType: null,
             type: null
         };
 
         if (activity.type === ActivityTypes.Message) {
 
-            //Does it have an attachment?
-
+            if(message.entities.media != null && message.entities.media.length > 0) {
+                const media = message.entities.media;
+                activity.attachments = [];
+                for (const medium of media) {
+                    let contentType: string;
+                    /*
+                     * Likely need to do a little more parsing of the content/mime type.
+                     */
+                    switch(medium.type) {
+                        case 'photo':
+                            contentType = 'image/png';
+                            break;
+                        case 'video':
+                            contentType = 'video/mpeg';
+                            break;
+                        case 'animated_gif':
+                            contentType = 'image/gif';
+                            break;
+                        default:
+                            throw new Error(`Medium doesn't have an associated content type.`);
+                    }
+                    const attachment = {
+                        contentType: contentType,
+                        contentUrl: medium.media_url_https
+                    };
+                    activity.attachments.push(attachment);
+                }
+            }
         }
 
         const context: TurnContext = this.createContext(activity);
