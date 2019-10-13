@@ -2,7 +2,7 @@
 
 const { TestAdapter } = require("botbuilder");
 const rewire = require("rewire");
-const spellchecker = rewire("../lib/spellcheck")
+const spellchecker = rewire("../lib/spellcheck");
 
 const mock = async function getWebRequest(url, string) {
     return Promise.resolve({

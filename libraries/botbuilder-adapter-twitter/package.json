@@ -46,6 +46,7 @@
     "@types/qs": "^6.5.3",
     "@types/twitter": "^1.7.0",
     "mocha": "^6.2.0",
+    "rewire": "^4.0.1",
     "typescript": "^3.5.3"
   },
   "publishConfig": {

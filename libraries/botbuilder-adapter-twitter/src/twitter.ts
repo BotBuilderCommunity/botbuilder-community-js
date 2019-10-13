@@ -7,6 +7,10 @@ import { retrieveBody } from './util';
  * @module botbuildercommunity/adapter-twitter
  */
 
+function createTwitterClient(settings: TwitterSettings): Twitter {
+    return new Twitter(settings);
+}
+
 export class TwitterAdapter extends BotAdapter {
 
     protected readonly settings: TwitterSettings;
@@ -165,7 +169,7 @@ export class TwitterAdapter extends BotAdapter {
     }
 
     protected createTwitterClient(settings: TwitterSettings): Twitter {
-        return new Twitter(settings);
+        return createTwitterClient(settings);
     }
 
     protected parseActivity(activity: Partial<Activity>): any {
