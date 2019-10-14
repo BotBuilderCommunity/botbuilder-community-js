@@ -1,23 +1,23 @@
 import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
 import * as Twitter from 'twitter';
-import { TwitterSettings } from './schema';
+import { TwitterAdapterSettings, TwitterMessage } from './schema';
 import { retrieveBody } from './util';
 
 /**
  * @module botbuildercommunity/adapter-twitter
  */
 
-function createTwitterClient(settings: TwitterSettings): Twitter {
+function createTwitterClient(settings: TwitterAdapterSettings): Twitter {
     return new Twitter(settings);
 }
 
 export class TwitterAdapter extends BotAdapter {
 
-    protected readonly settings: TwitterSettings;
-    protected readonly client: any;
+    protected readonly settings: TwitterAdapterSettings;
+    protected readonly client: Twitter;
     protected readonly channel: string = 'twitter';
 
-    public constructor(settings: TwitterSettings) {
+    public constructor(settings: TwitterAdapterSettings) {
         super();
         this.settings = settings;
         try {
@@ -39,16 +39,17 @@ export class TwitterAdapter extends BotAdapter {
                         throw new Error(`Activity doesn't contain a conversation id.`);
                     }
                     try {
-                        const message = this.parseActivity(activity);
-                        const res: any = await new Promise((resolve, reject): any => {
-                            this.client.post('statuses/update', message, function(error: string, tweet: string, response: any): void {
+                        const message: TwitterMessage = this.parseActivity(activity);
+                        const res: TwitterMessage = await new Promise((resolve, reject): void => {
+                            // eslint-disable-next-line @typescript-eslint/no-angle-bracket-type-assertion
+                            this.client.post('statuses/update', message, <any>function(error: string, tweet: string, response: any): void {
                                 if(error) {
                                     reject(error);
                                 }
                                 resolve(response);
                             });
                         });
-                        responses.push({ id: res.id });
+                        responses.push({ id: res.id_str });
                     } catch (error) {
                         throw new Error(`Error parsing activity: ${ error.message }.`);
                     }
@@ -142,7 +143,7 @@ export class TwitterAdapter extends BotAdapter {
                             contentType = 'image/gif';
                             break;
                         default:
-                            throw new Error(`Medium doesn't have an associated content type.`);
+                            break;
                     }
                     const attachment = {
                         contentType: contentType,
@@ -168,26 +169,26 @@ export class TwitterAdapter extends BotAdapter {
         return new TurnContext(this as any, request);
     }
 
-    protected createTwitterClient(settings: TwitterSettings): Twitter {
+    protected createTwitterClient(settings: TwitterAdapterSettings): Twitter {
         return createTwitterClient(settings);
     }
 
-    protected parseActivity(activity: Partial<Activity>): any {
+    protected parseActivity(activity: Partial<Activity>): TwitterMessage {
 
-        const message = { };
+        let message: TwitterMessage;
 
-        message['status'] = activity.text;
-        message['in_reply_to_status_id'] = activity.conversation.id;
+        message.status = activity.text;
+        message.in_reply_to_status_id = activity.conversation.id;
 
         const mention = activity.recipient.id;
 
-        if(!message['status'].startsWith(mention)) {
-            message['status'] = `$@${ mention } ${ message['status'] }`;
+        if(!message.status.startsWith(mention)) {
+            message.status = `$@${ mention } ${ message.status }`;
         }
 
         if (activity.attachments && activity.attachments.length > 0) {
             const attachment = activity.attachments[0];
-            message['attachment_url'] = attachment.contentUrl;
+            message.attachment_url = attachment.contentUrl;
         }
 
         return message;
