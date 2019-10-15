@@ -1,6 +1,6 @@
 const assert = require('assert');
 const rewire = require("rewire");
-const twitter = rewire("../lib/twitter");
+const twitter = rewire("../lib/twitterAdapter");
 
 const mock = function createTwitterClient(settings) {
     return {

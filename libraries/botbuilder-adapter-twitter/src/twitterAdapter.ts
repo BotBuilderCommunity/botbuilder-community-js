@@ -1,23 +1,23 @@
 import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
 import * as Twitter from 'twitter';
-import { TwitterAdapterSettings, TwitterMessage } from './schema';
+import { TwitterMessage } from './schema';
 import { retrieveBody } from './util';
 
 /**
  * @module botbuildercommunity/adapter-twitter
  */
 
-function createTwitterClient(settings: TwitterAdapterSettings): Twitter {
+function createTwitterClient(settings: Twitter.AccessTokenOptions): Twitter {
     return new Twitter(settings);
 }
 
 export class TwitterAdapter extends BotAdapter {
 
-    protected readonly settings: TwitterAdapterSettings;
+    protected readonly settings: Twitter.AccessTokenOptions;
     protected readonly client: Twitter;
     protected readonly channel: string = 'twitter';
 
-    public constructor(settings: TwitterAdapterSettings) {
+    public constructor(settings: Twitter.AccessTokenOptions) {
         super();
         this.settings = settings;
         try {
@@ -87,7 +87,7 @@ export class TwitterAdapter extends BotAdapter {
 
         const message = await retrieveBody(req);
 
-        if (message == null) {
+        if (message === null) {
             res.status(400);
             res.end();
         }
@@ -124,7 +124,10 @@ export class TwitterAdapter extends BotAdapter {
 
         if (activity.type === ActivityTypes.Message) {
 
-            if(message.entities.media != null && message.entities.media.length > 0) {
+            if(message.entities !== undefined
+                    && message.entities.media !== undefined
+                    && message.entities.media.length > 0) {
+
                 const media = message.entities.media;
                 activity.attachments = [];
                 for (const medium of media) {
@@ -169,7 +172,7 @@ export class TwitterAdapter extends BotAdapter {
         return new TurnContext(this as any, request);
     }
 
-    protected createTwitterClient(settings: TwitterAdapterSettings): Twitter {
+    protected createTwitterClient(settings: Twitter.AccessTokenOptions): Twitter {
         return createTwitterClient(settings);
     }
 

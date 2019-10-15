@@ -3,4 +3,4 @@
  */
 
 export * from './schema';
-export * from './twitter';
+export * from './twitterAdapter';

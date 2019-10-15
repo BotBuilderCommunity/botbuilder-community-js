@@ -1,16 +1,6 @@
-import * as Twitter from 'twitter';
-
 /**
  * @module botbuildercommunity/adapter-twitter
  */
-
-/*
- * Settings below are in snake case because expected Twitter parameters.
- */
-export interface TwitterAdapterSettings extends Twitter.AccessTokenOptions {
-    consumer_key: string;
-    consumer_secret: string;
-}
 
 /*
  * Message properties below are in snake case because expected Twitter parameters.
