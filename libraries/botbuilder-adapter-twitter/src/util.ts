@@ -6,7 +6,7 @@ import { parse } from 'qs';
  */
 
 export function retrieveBody(req: WebRequest): Promise<any> {
-    return new Promise((resolve: any, reject: any): void => {
+    return new Promise((resolve: any, reject: any): any => {
 
         const type = req.headers['content-type'] || req.headers['Content-Type'];
 

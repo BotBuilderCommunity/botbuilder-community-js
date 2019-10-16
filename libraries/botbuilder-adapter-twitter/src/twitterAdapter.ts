@@ -1,7 +1,7 @@
 import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
 import * as Twitter from 'twitter';
 import { TwitterMessage } from './schema';
-import { retrieveBody } from './util';
+import { retrieveBody as rb } from './util';
 
 /**
  * @module botbuildercommunity/adapter-twitter
@@ -9,6 +9,10 @@ import { retrieveBody } from './util';
 
 function createTwitterClient(settings: Twitter.AccessTokenOptions): Twitter {
     return new Twitter(settings);
+}
+
+async function retrieveBody(req: WebRequest): Promise<TwitterMessage> {
+    return await rb(req);
 }
 
 export class TwitterAdapter extends BotAdapter {
@@ -40,17 +44,10 @@ export class TwitterAdapter extends BotAdapter {
                     }
                     try {
                         const message: TwitterMessage = this.parseActivity(activity);
-                        const res: TwitterMessage = await new Promise((resolve, reject): void => {
-                            // eslint-disable-next-line @typescript-eslint/no-angle-bracket-type-assertion
-                            this.client.post('statuses/update', message, <any>function(error: string, tweet: string, response: any): void {
-                                if(error) {
-                                    reject(error);
-                                }
-                                resolve(response);
-                            });
-                        });
+                        const res: Twitter.ResponseData = await this.client.post('statuses/update', message);
                         responses.push({ id: res.id_str });
-                    } catch (error) {
+                    }
+                    catch (error) {
                         throw new Error(`Error parsing activity: ${ error.message }.`);
                     }
                     break;
@@ -93,18 +90,18 @@ export class TwitterAdapter extends BotAdapter {
         }
 
         const activity: Partial<Activity> = {
-            id: message.id,
+            id: message.id_str,
             timestamp: new Date(),
             channelId: this.channel,
             conversation: {
-                id: message.id,
+                id: message.id_str,
                 isGroup: false,
                 conversationType: null,
                 tenantId: null,
                 name: ''
             },
             from: {
-                id: message.user.id,
+                id: <string><any>message.user.id,
                 name: message.user.screen_name
             },
             recipient: {
@@ -117,7 +114,7 @@ export class TwitterAdapter extends BotAdapter {
             callerId: null,
             serviceUrl: null,
             listenFor: null,
-            label: message.id,
+            label: <string><any>message.id,
             valueType: null,
             type: null
         };
@@ -178,7 +175,7 @@ export class TwitterAdapter extends BotAdapter {
 
     protected parseActivity(activity: Partial<Activity>): TwitterMessage {
 
-        let message: TwitterMessage;
+        let message: TwitterMessage = { } as any;
 
         message.status = activity.text;
         message.in_reply_to_status_id = activity.conversation.id;
@@ -186,7 +183,7 @@ export class TwitterAdapter extends BotAdapter {
         const mention = activity.recipient.id;
 
         if(!message.status.startsWith(mention)) {
-            message.status = `$@${ mention } ${ message.status }`;
+            message.status = `@${ mention } ${ message.status }`;
         }
 
         if (activity.attachments && activity.attachments.length > 0) {
