@@ -56,12 +56,13 @@
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
     "@botbuildercommunity/middleware-engine-core": "^1.0.0",
-    "@google-cloud/language": "^3.2.6",
+    "@google-cloud/language": "^3.5.0",
     "botbuilder": "^4.5.3"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
     "mocha": "^6.2.0",
+    "nyc": "^14.1.1",
     "typescript": "^3.5.3"
   },
   "publishConfig": {
