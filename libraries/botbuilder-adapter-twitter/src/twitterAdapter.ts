@@ -101,7 +101,7 @@ export class TwitterAdapter extends BotAdapter {
                 name: ''
             },
             from: {
-                id: <string><any>message.user.id,
+                id: message.user.id as any as string,
                 name: message.user.screen_name
             },
             recipient: {
@@ -114,7 +114,7 @@ export class TwitterAdapter extends BotAdapter {
             callerId: null,
             serviceUrl: null,
             listenFor: null,
-            label: <string><any>message.id,
+            label: message.id as any as string,
             valueType: null,
             type: null
         };
@@ -175,7 +175,7 @@ export class TwitterAdapter extends BotAdapter {
 
     protected parseActivity(activity: Partial<Activity>): TwitterMessage {
 
-        let message: TwitterMessage = { } as any;
+        const message: TwitterMessage = { } as any;
 
         message.status = activity.text;
         message.in_reply_to_status_id = activity.conversation.id;
