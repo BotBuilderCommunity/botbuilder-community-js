@@ -7,12 +7,27 @@ import { retrieveBody as rb } from './util';
  * @module botbuildercommunity/adapter-twitter
  */
 
+
 function createTwitterClient(settings: Twitter.AccessTokenOptions): Twitter {
     return new Twitter(settings);
 }
 
+/*
+ * The below functions are abstracted out so that they can be replaced by `rewire` during
+ * mock unit testing. The `rewire` package looks like it'll replace `require()` generated
+ * variables, but not `import` syntax. Need to update this in a future PR, but don't want to
+ * halt progress on the adapter.
+ */
 async function retrieveBody(req: WebRequest): Promise<TwitterMessage> {
     return await rb(req);
+}
+
+function getWebRequest(req: WebRequest): WebRequest {
+    return req;
+}
+
+function getWebResponse(resp: WebResponse): WebResponse {
+    return resp;
 }
 
 export class TwitterAdapter extends BotAdapter {
@@ -80,7 +95,11 @@ export class TwitterAdapter extends BotAdapter {
         return this.runMiddleware(context, logic);
     }
 
-    public async processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void> {
+    public async processActivity(request: WebRequest, response: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void> {
+
+        //If not a unit test, this just returns itself
+        const req = getWebRequest(request);
+        const res = getWebResponse(response);
 
         const message = await retrieveBody(req);
 

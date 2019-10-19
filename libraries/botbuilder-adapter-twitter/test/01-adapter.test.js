@@ -29,14 +29,34 @@ const client = function createTwitterClient(settings) {
             return msg;
         }
     };
-}
+};
 
 const body = async function retrieveBody(request) {
     return Promise.resolve(msg);
-}
+};
+
+const request = function getWebRequest(request) {
+    return 'This is a fake request';
+};
+
+const response = function getWebResponse(response) {
+    return {
+        status: function(status) {
+            console.log(`Response status is ${status}.`);
+        },
+        send: function(data) {
+            console.log(`The follow response was sent: ${data}`);
+        },
+        end: function() {
+            console.log('Response has ended.');
+        }
+    };
+};
 
 twitter.__set__("createTwitterClient", client);
 twitter.__set__("retrieveBody", body);
+twitter.__set__("getWebRequest", request);
+twitter.__set__("getWebResponse", response);
 
 describe('Tests for Twitter Adapter', () => {
     
@@ -51,5 +71,12 @@ describe('Tests for Twitter Adapter', () => {
         ];
         const resp = await adapter.sendActivities(null, activities);
         assert.equal((resp.length > 0), true);
+    });
+    it('should process activities', async () => {
+        const adapter = new twitter.TwitterAdapter(settings);
+        const logic = function(context) {
+            assert.equal(context._activity.channelId, "twitter");
+        }
+        await adapter.processActivity(null, null, logic);
     });
 });
