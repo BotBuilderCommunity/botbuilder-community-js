@@ -108,6 +108,8 @@ export class TwitterAdapter extends BotAdapter {
             res.end();
         }
 
+        console.error('This needs to consume a webhook response');
+        //This needs to be the Activity API, not what's specified below.
         const activity: Partial<Activity> = {
             id: message.id_str,
             timestamp: new Date(),
