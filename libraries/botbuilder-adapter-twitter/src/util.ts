@@ -1,11 +1,22 @@
 import { WebRequest } from 'botbuilder';
 import { parse } from 'qs';
 import * as crypto from 'crypto';
+import * as Twitter from 'twitter';
 import { TwitterResponseToken } from './schema';
 
 /**
  * @module botbuildercommunity/adapter-twitter
  */
+
+function getChallengeResponse(crcToken: string, consumerSecret: string): string {
+    return crypto.createHmac('sha256', consumerSecret)
+        .update(crcToken)
+        .digest('base64');
+}
+
+function listSubscription(): string[] {
+    return null;
+}
 
 export function retrieveBody(req: WebRequest): Promise<any> {
     return new Promise((resolve: any, reject: any): any => {
@@ -44,12 +55,6 @@ export function retrieveBody(req: WebRequest): Promise<any> {
     });
 }
 
-export function getChallengeResponse(crcToken: string, consumerSecret: string): string {
-    return crypto.createHmac('sha256', consumerSecret)
-        .update(crcToken)
-        .digest('base64');
-}
-
 export function processWebhook(req: WebRequest, consumerSecret: string): TwitterResponseToken {
     const request = req as any;
     let token: string;
@@ -79,9 +84,15 @@ export function registerWebhook() {
    //register webhook, twitter will make a crc token request, acquire id (it's the webhook id)
 }
 
-export function addSubscription() {
-    /* :env/subscriptions 
-     */
-    // add subscription
-    // https://api.twitter.com/1.1/account_activity/all/:ENV_NAME/subscriptions.json 
+export function hasSubscription(client: Twitter, username: string): boolean {
+    const subs = listSubscription();
+    if(subs.find((e: string) => e === username) !== null) {
+        return true;
+    }
+    return false;
+}
+
+export function addSubscription(client: Twitter, username: string, env: string): void {
+    const url = `account_activity/all/{env}/subscriptions.json`;
+    //https://api.twitter.com/1.1/account_activity/all/:ENV_NAME/subscriptions.json 
 }

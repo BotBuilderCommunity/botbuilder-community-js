@@ -1,15 +1,22 @@
+import * as Twitter from 'twitter';
+
 /**
  * @module botbuildercommunity/adapter-twitter
  */
+
+/*
+ * Message properties below are in snake case because of expected Twitter parameters.
+ */
+export interface TwitterAdapterSettings extends Twitter.AccessTokenOptions {
+    username: string;
+    activityEnv: string;
+}
 
 export interface TwitterUser {
     id: number;
     screen_name: string;
 }
 
-/*
- * Message properties below are in snake case because expected Twitter parameters.
- */
 export interface TwitterMessage {
     id?: number;
     id_str?: string;

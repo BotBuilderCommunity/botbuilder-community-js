@@ -1,14 +1,14 @@
 import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
 import * as Twitter from 'twitter';
-import { TwitterMessage } from './schema';
-import { retrieveBody as rb } from './util';
+import { TwitterMessage, TwitterAdapterSettings } from './schema';
+import { retrieveBody as rb, hasSubscription, addSubscription } from './util';
 
 /**
  * @module botbuildercommunity/adapter-twitter
  */
 
 
-function createTwitterClient(settings: Twitter.AccessTokenOptions): Twitter {
+function createTwitterClient(settings: TwitterAdapterSettings): Twitter {
     return new Twitter(settings);
 }
 
@@ -32,11 +32,11 @@ function getWebResponse(resp: WebResponse): WebResponse {
 
 export class TwitterAdapter extends BotAdapter {
 
-    protected readonly settings: Twitter.AccessTokenOptions;
+    protected readonly settings: TwitterAdapterSettings;
     protected readonly client: Twitter;
     protected readonly channel: string = 'twitter';
 
-    public constructor(settings: Twitter.AccessTokenOptions) {
+    public constructor(settings: TwitterAdapterSettings) {
         super();
         this.settings = settings;
         try {
@@ -100,6 +100,11 @@ export class TwitterAdapter extends BotAdapter {
         //If not a unit test, this just returns itself
         const req = getWebRequest(request);
         const res = getWebResponse(response);
+
+        /*
+         * Not sure if we can handle this is a single request.
+         * We're going to find out.
+         */
 
         const message = await retrieveBody(req);
 
@@ -181,8 +186,16 @@ export class TwitterAdapter extends BotAdapter {
         res.status(context.turnState.get('httpStatus'));
         if (context.turnState.get('httpBody')) {
             res.send(context.turnState.get('httpBody'));
-        } else {
+        }
+        else {
             res.end();
+        }
+    }
+
+    public ensureSubscription(client: Twitter, settings: TwitterAdapterSettings): void {
+        //Will have to store the check. Only need this once for lazy development.
+        if(!hasSubscription(client, settings.username)) {
+            addSubscription(client, settings.username, settings.activityEnv);
         }
     }
 
@@ -190,7 +203,7 @@ export class TwitterAdapter extends BotAdapter {
         return new TurnContext(this as any, request);
     }
 
-    protected createTwitterClient(settings: Twitter.AccessTokenOptions): Twitter {
+    protected createTwitterClient(settings: TwitterAdapterSettings): Twitter {
         return createTwitterClient(settings);
     }
 
@@ -214,4 +227,5 @@ export class TwitterAdapter extends BotAdapter {
 
         return message;
     }
+
 }

@@ -1,0 +1,54 @@
+const { BotFrameworkAdapter } = require("botbuilder");
+const restify = require("restify");
+const  { config } = require("dotenv");
+const { TwitterAdapter, processWebhook } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
+
+config();
+
+const server = restify.createServer();
+server.listen(process.env.port || process.env.PORT || 3978, function () {
+    console.log(`${server.name} listening to ${server.url}`);
+});
+
+const adapter = new BotFrameworkAdapter({ 
+    appId: process.env.MICROSOFT_APP_ID, 
+    appPassword: process.env.MICROSOFT_APP_PASSWORD 
+});
+
+const twitterAdapter = new TwitterAdapter({
+    consumer_key: process.env.TWITTER_CONSUMER_KEY,
+    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+    access_token_key: process.env.TWITTER_ACCESS_TOKEN,
+    access_token_secret: process.env.TWITTER_TOKEN_SECRET
+});
+
+server.post("/api/messages", (req, res) => {
+    adapter.processActivity(req, res, async (context) => {
+        console.log(context.activity.text);
+    });
+});
+
+server.post("/api/twitter/messages", (req, res) => {
+    //twitterAdapter.ensureSubscription();
+    twitterAdapter.processActivity(req, res, async (context) => {
+        console.log(context.activity.text);
+    });
+});
+
+/*
+ * This endpoint is hit by Twitter with the crc_token.
+ * Twitter's Activity API expects a formatted response in return.
+ * The TwitterAdapter has utility methods to handle this.
+ * The `processWebhook()` method checks for the crc_token and creates the appropriate response.
+ * This response data should be sent via the Restify or Express response. 
+ */
+server.get('/api/twitter/messages', (req, res) => {
+    try {
+        const webHookResponse = processWebhook(req, process.env.TWITTER_CONSUMER_SECRET)
+        res.send(webHookResponse);
+    }
+    catch(e) {
+        response.status(400);
+        response.send(`Error: ${e}`);
+    }
+});
