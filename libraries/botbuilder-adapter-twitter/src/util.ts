@@ -14,8 +14,19 @@ function getChallengeResponse(crcToken: string, consumerSecret: string): string 
         .digest('base64');
 }
 
-function listSubscription(): string[] {
-    return null;
+async function handleSubscription(func: Function, env: string): Promise<boolean> {
+    const p: Promise<boolean> = new Promise((resolve, reject) => {
+        func(`account_activity/all/${env}/subscriptions.json`, null, (err: string, res: any, raw: any): void => {
+            if(raw.statusCode === '204') {
+                resolve(true);
+            }
+            else {
+                reject(false);
+            }
+        });
+    });
+    const result: boolean = await p;
+    return result;
 }
 
 export function retrieveBody(req: WebRequest): Promise<any> {
@@ -84,15 +95,17 @@ export function registerWebhook() {
    //register webhook, twitter will make a crc token request, acquire id (it's the webhook id)
 }
 
-export function hasSubscription(client: Twitter, username: string): boolean {
-    const subs = listSubscription();
-    if(subs.find((e: string) => e === username) !== null) {
-        return true;
+export async function manageSubscription(client: Twitter, env: string): Promise<void> {
+    const isSubscribed: boolean = await hasSubscription(client, env);
+    if(!isSubscribed) {
+        await addSubscription(client, env);
     }
-    return false;
 }
 
-export function addSubscription(client: Twitter, username: string, env: string): void {
-    const url = `account_activity/all/{env}/subscriptions.json`;
-    //https://api.twitter.com/1.1/account_activity/all/:ENV_NAME/subscriptions.json 
+export async function hasSubscription(client: Twitter, env: string): Promise<boolean> {
+    return await handleSubscription(client.get, env);
+}
+
+export async function addSubscription(client: Twitter, env: string): Promise<boolean> {
+    return await handleSubscription(client.post, env);
 }

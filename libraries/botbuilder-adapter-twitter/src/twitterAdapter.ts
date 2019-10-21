@@ -1,14 +1,14 @@
 import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
 import * as Twitter from 'twitter';
-import { TwitterMessage, TwitterAdapterSettings } from './schema';
-import { retrieveBody as rb, hasSubscription, addSubscription } from './util';
+import { TwitterMessage } from './schema';
+import { retrieveBody as rb } from './util';
 
 /**
  * @module botbuildercommunity/adapter-twitter
  */
 
 
-function createTwitterClient(settings: TwitterAdapterSettings): Twitter {
+function createTwitterClient(settings: Twitter.AccessTokenOptions): Twitter {
     return new Twitter(settings);
 }
 
@@ -32,11 +32,11 @@ function getWebResponse(resp: WebResponse): WebResponse {
 
 export class TwitterAdapter extends BotAdapter {
 
-    protected readonly settings: TwitterAdapterSettings;
+    protected readonly settings: Twitter.AccessTokenOptions;
     protected readonly client: Twitter;
     protected readonly channel: string = 'twitter';
 
-    public constructor(settings: TwitterAdapterSettings) {
+    public constructor(settings: Twitter.AccessTokenOptions) {
         super();
         this.settings = settings;
         try {
@@ -192,18 +192,11 @@ export class TwitterAdapter extends BotAdapter {
         }
     }
 
-    public ensureSubscription(client: Twitter, settings: TwitterAdapterSettings): void {
-        //Will have to store the check. Only need this once for lazy development.
-        if(!hasSubscription(client, settings.username)) {
-            addSubscription(client, settings.username, settings.activityEnv);
-        }
-    }
-
     protected createContext(request: Partial<Activity>): TurnContext {
         return new TurnContext(this as any, request);
     }
 
-    protected createTwitterClient(settings: TwitterAdapterSettings): Twitter {
+    protected createTwitterClient(settings: Twitter.AccessTokenOptions): Twitter {
         return createTwitterClient(settings);
     }
 

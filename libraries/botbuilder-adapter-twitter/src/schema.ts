@@ -7,11 +7,6 @@ import * as Twitter from 'twitter';
 /*
  * Message properties below are in snake case because of expected Twitter parameters.
  */
-export interface TwitterAdapterSettings extends Twitter.AccessTokenOptions {
-    username: string;
-    activityEnv: string;
-}
-
 export interface TwitterUser {
     id: number;
     screen_name: string;

@@ -1,7 +1,7 @@
 const { BotFrameworkAdapter } = require("botbuilder");
 const restify = require("restify");
 const  { config } = require("dotenv");
-const { TwitterAdapter, processWebhook } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
+const { TwitterAdapter, processWebhook, manageSubscription } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
 
 config();
 
@@ -29,7 +29,6 @@ server.post("/api/messages", (req, res) => {
 });
 
 server.post("/api/twitter/messages", (req, res) => {
-    //twitterAdapter.ensureSubscription();
     twitterAdapter.processActivity(req, res, async (context) => {
         console.log(context.activity.text);
     });
@@ -48,7 +47,24 @@ server.get('/api/twitter/messages', (req, res) => {
         res.send(webHookResponse);
     }
     catch(e) {
-        response.status(400);
-        response.send(`Error: ${e}`);
+        response.status(500);
+        response.send({ error: e });
+    }
+});
+
+/*
+ * This endpoint is for kicking off the subscription process.
+ * It will first check that the current credentials in your enviroment are registered to use
+ * the Activity API. If not, it will subscribe that account.
+ * If this was a production application, you'd probably want better security on this endpoint.
+ */
+server.get('/api/twitter/subscription', async (req, res) => {
+    try {
+        await manageSubscription(twitterAdapter.client, process.env.TWITTER_ACTIVITY_ENV);
+        res.send({ success: true });
+    }
+    catch(e) {
+        response.status(500);
+        response.send({ error: e });
     }
 });
