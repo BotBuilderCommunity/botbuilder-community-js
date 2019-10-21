@@ -51,3 +51,10 @@ export interface TwitterActivityAPIDirectMessage {
 export interface TwitterResponseToken {
     response_token: string;
 }
+
+export interface TwitterWebhookResponse {
+    id: number;
+    url: string;
+    valid: boolean;
+    created_at: Date;
+}

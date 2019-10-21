@@ -1,7 +1,7 @@
 const { BotFrameworkAdapter } = require("botbuilder");
 const restify = require("restify");
 const  { config } = require("dotenv");
-const { TwitterAdapter, processWebhook, manageSubscription } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
+const { TwitterAdapter, processWebhook, manageSubscription, registerWebhook } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
 
 config();
 
@@ -45,6 +45,22 @@ server.get('/api/twitter/messages', (req, res) => {
     try {
         const webHookResponse = processWebhook(req, process.env.TWITTER_CONSUMER_SECRET)
         res.send(webHookResponse);
+    }
+    catch(e) {
+        response.status(500);
+        response.send({ error: e });
+    }
+});
+
+
+/*
+ * This endpoint is for registering the webhook URL where Twitter will send the messages.
+ * This is only for an example. If this is a production application, you should secure this.
+ */
+server.get('/api/twitter/webhook', async (req, res) => {
+    try {
+        const webhookID = await registerWebhook(twitterAdapter.client, process.env.TWITTER_ACTIVITY_ENV, process.env.TWITTER_WEBHOOK_URL);
+        res.send({ webhookID: webhookID });
     }
     catch(e) {
         response.status(500);

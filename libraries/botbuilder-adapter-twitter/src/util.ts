@@ -2,7 +2,7 @@ import { WebRequest } from 'botbuilder';
 import { parse } from 'qs';
 import * as crypto from 'crypto';
 import * as Twitter from 'twitter';
-import { TwitterResponseToken } from './schema';
+import { TwitterResponseToken, TwitterWebhookResponse } from './schema';
 
 /**
  * @module botbuildercommunity/adapter-twitter
@@ -89,10 +89,9 @@ export function processWebhook(req: WebRequest, consumerSecret: string): Twitter
     };
 }
 
-export function registerWebhook() {
-    /* /:env/webhooks.json?url=
-     */
-   //register webhook, twitter will make a crc token request, acquire id (it's the webhook id)
+export async function registerWebhook(client: Twitter, env: string, callbackUrl: string): Promise<number> {
+    const result: TwitterWebhookResponse = await client.post(`/account_activity/all/${env}/webhooks.json`, { url: callbackUrl }) as TwitterWebhookResponse;
+    return result.id;
 }
 
 export async function manageSubscription(client: Twitter, env: string): Promise<void> {
