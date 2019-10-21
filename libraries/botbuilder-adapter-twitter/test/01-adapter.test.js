@@ -23,6 +23,25 @@ const msg = {
     }
 };
 
+const activityMsg = {
+    for_user_id: 1,
+    tweet_create_events: [
+        {
+            id: 1,
+            id_str: "1",
+            user: {
+                id: 1,
+                screen_name: "szul"
+            },
+            in_reply_to_screen_name: "imicknl",
+            text: "Sending a tweet from a chatbot",
+            entities: {
+                media: []
+            }
+        }
+    ]
+};
+
 const client = function createTwitterClient(settings) {
     return {
         post: async function (endpoint, message, callback) {
@@ -32,7 +51,7 @@ const client = function createTwitterClient(settings) {
 };
 
 const body = async function retrieveBody(request) {
-    return Promise.resolve(msg);
+    return Promise.resolve(activityMsg);
 };
 
 const request = function getWebRequest(request) {

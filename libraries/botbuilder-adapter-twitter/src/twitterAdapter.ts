@@ -1,6 +1,6 @@
 import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
 import * as Twitter from 'twitter';
-import { TwitterMessage } from './schema';
+import { TwitterMessage, TwitterDirectMessage, TwitterActivityAPIMessage, TwitterActivityAPIDirectMessage } from './schema';
 import { retrieveBody as rb } from './util';
 
 /**
@@ -18,7 +18,7 @@ function createTwitterClient(settings: Twitter.AccessTokenOptions): Twitter {
  * variables, but not `import` syntax. Need to update this in a future PR, but don't want to
  * halt progress on the adapter.
  */
-async function retrieveBody(req: WebRequest): Promise<TwitterMessage> {
+async function retrieveBody(req: WebRequest): Promise<TwitterActivityAPIMessage & TwitterActivityAPIDirectMessage> {
     return await rb(req);
 }
 
@@ -106,79 +106,29 @@ export class TwitterAdapter extends BotAdapter {
          * We're going to find out.
          */
 
-        const message = await retrieveBody(req);
+        const body = await retrieveBody(req);
+        let message: TwitterMessage;
+
+        try {
+            if(body.tweet_create_events !== undefined && body.tweet_create_events.length > 0) {
+                message = body.tweet_create_events[0];
+            }
+            if(body.direct_message_events !== undefined && body.direct_message_events.length > 0) {
+                message = body.direct_message_events[0].message_create.message_data;
+            }
+        }
+        catch(e) {
+            res.status(500);
+            res.send(`Failed to retrieve message body: ${e}`);
+            res.end();
+        }
 
         if (message === null) {
             res.status(400);
             res.end();
         }
 
-        console.error('This needs to consume a webhook response');
-        //This needs to be the Activity API, not what's specified below.
-        const activity: Partial<Activity> = {
-            id: message.id_str,
-            timestamp: new Date(),
-            channelId: this.channel,
-            conversation: {
-                id: message.id_str,
-                isGroup: false,
-                conversationType: null,
-                tenantId: null,
-                name: ''
-            },
-            from: {
-                id: message.user.id as any as string,
-                name: message.user.screen_name
-            },
-            recipient: {
-                id: message.in_reply_to_screen_name,
-                name: message.in_reply_to_screen_name
-            },
-            text: message.text,
-            channelData: message,
-            localTimezone: null,
-            callerId: null,
-            serviceUrl: null,
-            listenFor: null,
-            label: message.id as any as string,
-            valueType: null,
-            type: null
-        };
-
-        if (activity.type === ActivityTypes.Message) {
-
-            if(message.entities !== undefined
-                    && message.entities.media !== undefined
-                    && message.entities.media.length > 0) {
-
-                const media = message.entities.media;
-                activity.attachments = [];
-                for (const medium of media) {
-                    let contentType: string;
-                    /*
-                     * Likely need to do a little more parsing of the content/mime type.
-                     */
-                    switch(medium.type) {
-                        case 'photo':
-                            contentType = 'image/png';
-                            break;
-                        case 'video':
-                            contentType = 'video/mpeg';
-                            break;
-                        case 'animated_gif':
-                            contentType = 'image/gif';
-                            break;
-                        default:
-                            break;
-                    }
-                    const attachment = {
-                        contentType: contentType,
-                        contentUrl: medium.media_url_https
-                    };
-                    activity.attachments.push(attachment);
-                }
-            }
-        }
+        const activity = this.getActivityFromTwitterMessage(message);
 
         const context: TurnContext = this.createContext(activity);
         context.turnState.set('httpStatus', 200);
@@ -219,6 +169,74 @@ export class TwitterAdapter extends BotAdapter {
         }
 
         return message;
+    }
+
+    protected getActivityFromTwitterMessage(message: TwitterMessage): Partial<Activity> {
+        const activity: Partial<Activity> = {
+            id: message.id_str,
+            timestamp: new Date(),
+            channelId: this.channel,
+            conversation: {
+                id: message.id_str,
+                isGroup: false,
+                conversationType: null,
+                tenantId: null,
+                name: ''
+            },
+            from: {
+                id: message.user.id as any as string,
+                name: message.user.screen_name
+            },
+            recipient: {
+                id: message.in_reply_to_screen_name,
+                name: message.in_reply_to_screen_name
+            },
+            text: message.text,
+            channelData: message,
+            localTimezone: null,
+            callerId: null,
+            serviceUrl: null,
+            listenFor: null,
+            label: message.id as any as string,
+            valueType: null,
+            type: null
+        };
+        
+        if (activity.type === ActivityTypes.Message) {
+        
+            if(message.entities !== undefined
+                    && message.entities.media !== undefined
+                    && message.entities.media.length > 0) {
+        
+                const media = message.entities.media;
+                activity.attachments = [];
+                for (const medium of media) {
+                    let contentType: string;
+                    /*
+                     * Likely need to do a little more parsing of the content/mime type.
+                     */
+                    switch(medium.type) {
+                        case 'photo':
+                            contentType = 'image/png';
+                            break;
+                        case 'video':
+                            contentType = 'video/mpeg';
+                            break;
+                        case 'animated_gif':
+                            contentType = 'image/gif';
+                            break;
+                        default:
+                            break;
+                    }
+                    const attachment = {
+                        contentType: contentType,
+                        contentUrl: medium.media_url_https
+                    };
+                    activity.attachments.push(attachment);
+                }
+            }
+        }
+        return activity;
     }
 
 }
