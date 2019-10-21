@@ -32,8 +32,8 @@ function getWebResponse(resp: WebResponse): WebResponse {
 
 export class TwitterAdapter extends BotAdapter {
 
+    public readonly client: Twitter;
     protected readonly settings: Twitter.AccessTokenOptions;
-    protected readonly client: Twitter;
     protected readonly channel: string = 'twitter';
 
     public constructor(settings: Twitter.AccessTokenOptions) {

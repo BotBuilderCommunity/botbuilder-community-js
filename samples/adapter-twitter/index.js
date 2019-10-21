@@ -1,3 +1,5 @@
+//@ts-check
+
 const { BotFrameworkAdapter } = require("botbuilder");
 const restify = require("restify");
 const  { config } = require("dotenv");
@@ -47,8 +49,8 @@ server.get('/api/twitter/messages', (req, res) => {
         res.send(webHookResponse);
     }
     catch(e) {
-        response.status(500);
-        response.send({ error: e });
+        res.status(500);
+        res.send({ error: e });
     }
 });
 
@@ -63,8 +65,8 @@ server.get('/api/twitter/webhook', async (req, res) => {
         res.send({ webhookID: webhookID });
     }
     catch(e) {
-        response.status(500);
-        response.send({ error: e });
+        res.status(500);
+        res.send({ error: e });
     }
 });
 
@@ -80,7 +82,11 @@ server.get('/api/twitter/subscription', async (req, res) => {
         res.send({ success: true });
     }
     catch(e) {
-        response.status(500);
-        response.send({ error: e });
+        res.status(500);
+        res.send({ error: e });
     }
+});
+
+server.get('/api/messages/ping', (req, res) => {
+    res.send({ isThisWebServiceUp: true });
 });
