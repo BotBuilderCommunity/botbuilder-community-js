@@ -90,3 +90,7 @@ server.get('/api/twitter/subscription', async (req, res) => {
 server.get('/api/messages/ping', (req, res) => {
     res.send({ isThisWebServiceUp: true });
 });
+
+server.get('/', (req, res) => {
+    res.send({ message: 'Why are you here?' });
+});
