@@ -14,21 +14,6 @@ function getChallengeResponse(crcToken: string, consumerSecret: string): string 
         .digest('base64');
 }
 
-async function handleSubscription(func: Function, env: string): Promise<boolean> {
-    const p: Promise<boolean> = new Promise((resolve, reject) => {
-        func(`account_activity/all/${env}/subscriptions.json`, null, (err: string, res: any, raw: any): void => {
-            if(raw.statusCode === '204') {
-                resolve(true);
-            }
-            else {
-                reject(false);
-            }
-        });
-    });
-    const result: boolean = await p;
-    return result;
-}
-
 export function processWebhook(req: WebRequest, consumerSecret: string): TwitterResponseToken {
     const request = req as any;
     let token: string;
@@ -57,17 +42,18 @@ export async function registerWebhook(client: Twitter, env: string, callbackUrl:
     return result.id;
 }
 
-export async function manageSubscription(client: Twitter, env: string): Promise<void> {
-    const isSubscribed: boolean = await hasSubscription(client, env);
-    if(!isSubscribed) {
-        await addSubscription(client, env);
+export async function listWebhooks(client: Twitter, env: string): Promise<string[]> {
+    const result: any = await client.post(`/account_activity/all/webhooks.json `, { });
+    if(result != null) {
+        try {
+            const envs: any = result.environments;
+            const currentEnv: any = envs.find((e: any) => e.environment_name === env);
+            const webhooks: TwitterWebhookResponse[] = currentEnv;
+            return webhooks.map((e: TwitterWebhookResponse) => e.url);
+        }
+        catch(e) {
+            return [];
+        }
     }
-}
-
-export async function hasSubscription(client: Twitter, env: string): Promise<boolean> {
-    return await handleSubscription(client.get, env);
-}
-
-export async function addSubscription(client: Twitter, env: string): Promise<boolean> {
-    return await handleSubscription(client.post, env);
+    return [];
 }

@@ -58,3 +58,13 @@ export interface TwitterWebhookResponse {
     valid: boolean;
     created_at: Date;
 }
+
+export interface TwitterSubscriptionResponse {
+    environment: string;
+    application_id: number;
+    subscriptions: TwitterSubscription[];
+}
+
+export interface TwitterSubscription {
+    user_id: number;
+}

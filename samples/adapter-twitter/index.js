@@ -31,6 +31,7 @@ server.post("/api/messages", (req, res) => {
 });
 
 server.post("/api/twitter/messages", (req, res) => {
+    console.log(JSON.stringify(req.body));
     twitterAdapter.processActivity(req, res, async (context) => {
         console.log(context.activity.text);
     });
@@ -87,10 +88,6 @@ server.get('/api/twitter/subscription', async (req, res) => {
     }
 });
 
-server.get('/api/messages/ping', (req, res) => {
-    res.send({ isThisWebServiceUp: true });
-});
-
 server.get('/', (req, res) => {
-    res.send({ message: 'Why are you here?' });
+    res.send({ message: 'This service is up.' });
 });

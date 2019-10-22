@@ -1,6 +1,6 @@
 import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
 import * as Twitter from 'twitter';
-import { TwitterMessage, TwitterDirectMessage, TwitterActivityAPIMessage, TwitterActivityAPIDirectMessage } from './schema';
+import { TwitterMessage, TwitterActivityAPIMessage, TwitterActivityAPIDirectMessage } from './schema';
 import { retrieveBody as rb } from './util';
 
 /**
