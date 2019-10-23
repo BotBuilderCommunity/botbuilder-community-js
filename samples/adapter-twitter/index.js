@@ -31,9 +31,14 @@ server.post("/api/messages", (req, res) => {
 });
 
 server.post("/api/twitter/messages", (req, res) => {
-    console.log(JSON.stringify(req.body));
     twitterAdapter.processActivity(req, res, async (context) => {
-        console.log(context.activity.text);
+        /*
+         * Use the below to force a message to Twitter.
+         * But really, you'd be checking the `context.activity.type` here.
+         */
+        if(context.activity.text != null) {
+            await context.sendActivity("Posting a tweet from the adapter");
+        }
     });
 });
 

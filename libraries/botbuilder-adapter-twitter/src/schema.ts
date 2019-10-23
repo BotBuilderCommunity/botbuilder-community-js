@@ -12,6 +12,11 @@ export interface TwitterUser {
     screen_name: string;
 }
 
+export enum TwitterActivityType {
+    TWEET = 'tweet',
+    DIRECTMESSAGE = 'directMessage'
+}
+
 export interface TwitterMessage {
     id?: number;
     id_str?: string;

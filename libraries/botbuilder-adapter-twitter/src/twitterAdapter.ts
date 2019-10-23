@@ -1,6 +1,6 @@
 import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
 import * as Twitter from 'twitter';
-import { TwitterMessage, TwitterActivityAPIMessage, TwitterActivityAPIDirectMessage } from './schema';
+import { TwitterMessage, TwitterActivityAPIMessage, TwitterActivityAPIDirectMessage, TwitterActivityType } from './schema';
 import { retrieveBody as rb } from './util';
 
 /**
@@ -107,14 +107,20 @@ export class TwitterAdapter extends BotAdapter {
          */
 
         const body = await retrieveBody(req);
-        let message: TwitterMessage;
+        let message: TwitterMessage = { } as any;
+        let messageType: TwitterActivityType;
 
         try {
             if(body.tweet_create_events !== undefined && body.tweet_create_events.length > 0) {
                 message = body.tweet_create_events[0];
+                messageType = TwitterActivityType.TWEET;
             }
-            if(body.direct_message_events !== undefined && body.direct_message_events.length > 0) {
+            else if(body.direct_message_events !== undefined && body.direct_message_events.length > 0) {
                 message = body.direct_message_events[0].message_create.message_data;
+                messageType = TwitterActivityType.DIRECTMESSAGE;
+            }
+            else {
+                message = body as any;
             }
         }
         catch(e) {
@@ -128,7 +134,7 @@ export class TwitterAdapter extends BotAdapter {
             res.end();
         }
 
-        const activity = this.getActivityFromTwitterMessage(message);
+        const activity = this.getActivityFromTwitterMessage(message, messageType);
 
         const context: TurnContext = this.createContext(activity);
         context.turnState.set('httpStatus', 200);
@@ -155,11 +161,13 @@ export class TwitterAdapter extends BotAdapter {
         const message: TwitterMessage = { } as any;
 
         message.status = activity.text;
-        message.in_reply_to_status_id = activity.conversation.id;
+        if(activity.conversation.id.indexOf("-") === -1) {
+            message.in_reply_to_status_id = activity.conversation.id;
+        }
 
         const mention = activity.recipient.id;
 
-        if(!message.status.startsWith(mention)) {
+        if(mention !== null && !message.status.startsWith(mention)) {
             message.status = `@${ mention } ${ message.status }`;
         }
 
@@ -171,21 +179,22 @@ export class TwitterAdapter extends BotAdapter {
         return message;
     }
 
-    protected getActivityFromTwitterMessage(message: TwitterMessage): Partial<Activity> {
+    protected getActivityFromTwitterMessage(message: TwitterMessage, messageType: TwitterActivityType): Partial<Activity> {
+
         const activity: Partial<Activity> = {
-            id: message.id_str,
+            id: (message.id_str !== undefined) ? message.id_str : message.id as any as string,
             timestamp: new Date(),
             channelId: this.channel,
             conversation: {
-                id: message.id_str,
+                id: (message.id_str !== undefined) ? message.id_str : message.id as any as string,
                 isGroup: false,
                 conversationType: null,
                 tenantId: null,
                 name: ''
             },
             from: {
-                id: message.user.id as any as string,
-                name: message.user.screen_name
+                id: (message.user !== undefined) ? message.user.id as any as string : null,
+                name: (message.user !== undefined) ? message.user.screen_name : null
             },
             recipient: {
                 id: message.in_reply_to_screen_name,
@@ -199,7 +208,7 @@ export class TwitterAdapter extends BotAdapter {
             listenFor: null,
             label: message.id as any as string,
             valueType: null,
-            type: null
+            type: (messageType != null) ? ActivityTypes.Message : null
         };
         
         if (activity.type === ActivityTypes.Message) {
