@@ -15,6 +15,8 @@ function getChallengeResponse(crcToken: string, consumerSecret: string): string 
 }
 
 export function processWebhook(req: WebRequest, consumerSecret: string): TwitterResponseToken {
+    console.log('processWebhook');
+    console.log(req);
     const request = req as any;
     let token: string;
     if(request.getQuery !== undefined) {
@@ -29,9 +31,11 @@ export function processWebhook(req: WebRequest, consumerSecret: string): Twitter
         }
         catch(e) { }
     }
+    console.log(token);
     if(token === null) {
         throw new Error('No query parameter extraction method found.');
     }
+    console.log(`sha256=${getChallengeResponse(token, consumerSecret)}`);
     return {
         response_token: `sha256=${getChallengeResponse(token, consumerSecret)}`
     };
@@ -39,15 +43,20 @@ export function processWebhook(req: WebRequest, consumerSecret: string): Twitter
 
 export async function registerWebhook(client: Twitter, env: string, callbackUrl: string): Promise<number> {
     const result: TwitterWebhookResponse = await client.post(`/account_activity/all/${env}/webhooks.json`, { url: callbackUrl }) as TwitterWebhookResponse;
+    console.log(result);
     return result.id;
 }
 
 export async function listWebhooks(client: Twitter, env: string): Promise<string[]> {
+    console.log('listWebhooks');
     const result: any = await client.post(`/account_activity/all/webhooks.json `, { });
+    console.log(result);
     if(result != null) {
         try {
             const envs: any = result.environments;
+            console.log(envs);
             const currentEnv: any = envs.find((e: any) => e.environment_name === env);
+            console.log(currentEnv);
             const webhooks: TwitterWebhookResponse[] = currentEnv;
             return webhooks.map((e: TwitterWebhookResponse) => e.url);
         }
