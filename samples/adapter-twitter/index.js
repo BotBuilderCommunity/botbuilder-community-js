@@ -3,7 +3,7 @@
 const { BotFrameworkAdapter } = require("botbuilder");
 const restify = require("restify");
 const  { config } = require("dotenv");
-const { TwitterAdapter, processWebhook, manageSubscription, registerWebhook } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
+const { TwitterAdapter, processWebhook, manageSubscription, registerWebhook } = require("@botbuildercommunity/adapter-twitter");
 
 config();
 
@@ -31,14 +31,16 @@ server.post("/api/messages", (req, res) => {
 });
 
 server.post("/api/twitter/messages", (req, res) => {
+    console.log('server.post: /api/twitter/messages: ');
+    console.log(req);
     twitterAdapter.processActivity(req, res, async (context) => {
+        console.log('processActivity: context: ');
+        console.log(context);
         /*
-         * Use the below to force a message to Twitter.
-         * But really, you'd be checking the `context.activity.type` here.
-         */
         if(context.activity.text != null) {
             await context.sendActivity("Posting a tweet from the adapter");
         }
+        */
     });
 });
 
@@ -50,8 +52,11 @@ server.post("/api/twitter/messages", (req, res) => {
  * This response data should be sent via the Restify or Express response. 
  */
 server.get('/api/twitter/messages', (req, res) => {
+    console.log('server.get: /api/twitter/messages: ');
+    console.log(req);
     try {
-        const webHookResponse = processWebhook(req, process.env.TWITTER_CONSUMER_SECRET)
+        const webHookResponse = processWebhook(req, process.env.TWITTER_CONSUMER_SECRET);
+        console.log(webHookResponse);
         res.send(webHookResponse);
     }
     catch(e) {
@@ -60,14 +65,16 @@ server.get('/api/twitter/messages', (req, res) => {
     }
 });
 
-
 /*
  * This endpoint is for registering the webhook URL where Twitter will send the messages.
  * This is only for an example. If this is a production application, you should secure this.
  */
 server.get('/api/twitter/webhook', async (req, res) => {
+    console.log('server.get: /api/twitter/webhook: ');
+    console.log(req);
     try {
         const webhookID = await registerWebhook(twitterAdapter.client, process.env.TWITTER_ACTIVITY_ENV, process.env.TWITTER_WEBHOOK_URL);
+        console.log(webhookID);
         res.send({ webhookID: webhookID });
     }
     catch(e) {
@@ -83,6 +90,8 @@ server.get('/api/twitter/webhook', async (req, res) => {
  * If this was a production application, you'd probably want better security on this endpoint.
  */
 server.get('/api/twitter/subscription', async (req, res) => {
+    console.log('server.get: /api/twitter/subscription: ');
+    console.log(req);
     try {
         await manageSubscription(twitterAdapter.client, process.env.TWITTER_ACTIVITY_ENV);
         res.send({ success: true });
