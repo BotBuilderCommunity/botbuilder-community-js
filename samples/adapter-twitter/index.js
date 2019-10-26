@@ -3,7 +3,8 @@
 const { BotFrameworkAdapter } = require("botbuilder");
 const restify = require("restify");
 const  { config } = require("dotenv");
-const { TwitterAdapter, processWebhook, manageSubscription, registerWebhook } = require("@botbuildercommunity/adapter-twitter");
+//const { TwitterAdapter, processWebhook, manageSubscription, listSubscriptions, registerWebhook, listWebhooks } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
+const { TwitterAdapter, processWebhook, manageSubscription, listSubscriptions, registerWebhook, listWebhooks } = require("@botbuildercommunity/adapter-twitter");
 
 config();
 
@@ -70,12 +71,24 @@ server.get('/api/twitter/messages', (req, res) => {
  * This is only for an example. If this is a production application, you should secure this.
  */
 server.get('/api/twitter/webhook', async (req, res) => {
-    console.log('server.get: /api/twitter/webhook: ');
-    console.log(req);
     try {
         const webhookID = await registerWebhook(twitterAdapter.client, process.env.TWITTER_ACTIVITY_ENV, process.env.TWITTER_WEBHOOK_URL);
-        console.log(webhookID);
         res.send({ webhookID: webhookID });
+    }
+    catch(e) {
+        res.status(500);
+        res.send({ error: e });
+    }
+});
+
+/*
+ * This endpoint is for listing the webhooks associated with your Twitter Activity API
+ * This is only for an example. If this is a production application, you should secure this.
+ */
+server.get('/api/twitter/webhook/list', async (req, res) => {
+    try {
+        const webhooks = await listWebhooks(process.env.TWITTER_CONSUMER_KEY, process.env.TWITTER_CONSUMER_SECRET, process.env.TWITTER_ACTIVITY_ENV);
+        res.send({ webhooks: webhooks });
     }
     catch(e) {
         res.status(500);
@@ -93,8 +106,32 @@ server.get('/api/twitter/subscription', async (req, res) => {
     console.log('server.get: /api/twitter/subscription: ');
     console.log(req);
     try {
-        await manageSubscription(twitterAdapter.client, process.env.TWITTER_ACTIVITY_ENV);
-        res.send({ success: true });
+        const result = await manageSubscription(
+            process.env.TWITTER_CONSUMER_KEY,
+            process.env.TWITTER_CONSUMER_SECRET,
+            process.env.TWITTER_ACCESS_TOKEN,
+            process.env.TWITTER_TOKEN_SECRET,
+            process.env.TWITTER_ACTIVITY_ENV);
+        res.send({ success: result });
+    }
+    catch(e) {
+        res.status(500);
+        res.send({ error: e });
+    }
+});
+
+/*
+ * This endpoint is for listing the subscriptions associated with your Twitter Activity API
+ * This is only for an example. If this is a production application, you should secure this.
+ */
+server.get('/api/twitter/subscription/list', async (req, res) => {
+    try {
+        const subs = await listSubscriptions(
+            process.env.TWITTER_CONSUMER_KEY,
+            process.env.TWITTER_CONSUMER_SECRET,
+            process.env.TWITTER_ACTIVITY_ENV
+        );
+        res.send({ subs: subs });
     }
     catch(e) {
         res.status(500);

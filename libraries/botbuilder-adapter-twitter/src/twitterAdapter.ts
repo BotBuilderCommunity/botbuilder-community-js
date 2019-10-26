@@ -32,7 +32,7 @@ function getWebResponse(resp: WebResponse): WebResponse {
 
 export class TwitterAdapter extends BotAdapter {
 
-    public readonly client: Twitter;
+    public client: Twitter;
     protected readonly settings: Twitter.AccessTokenOptions;
     protected readonly channel: string = 'twitter';
 
@@ -96,20 +96,12 @@ export class TwitterAdapter extends BotAdapter {
     }
 
     public async processActivity(request: WebRequest, response: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void> {
-        console.log('processActivity');
         //If not a unit test, this just returns itself
         const req = getWebRequest(request);
-        console.log(req);
         const res = getWebResponse(response);
-        console.log(res);
-
-        /*
-         * Not sure if we can handle this is a single request.
-         * We're going to find out.
-         */
 
         const body = await retrieveBody(req);
-        console.log(body);
+
         let message: TwitterMessage = { } as any;
         let messageType: TwitterActivityType;
 
@@ -125,8 +117,6 @@ export class TwitterAdapter extends BotAdapter {
             else {
                 message = body as any;
             }
-            console.log(message);
-            console.log(messageType);
         }
         catch(e) {
             res.status(500);
@@ -140,10 +130,8 @@ export class TwitterAdapter extends BotAdapter {
         }
 
         const activity = this.getActivityFromTwitterMessage(message, messageType);
-        console.log(activity);
 
         const context: TurnContext = this.createContext(activity);
-        console.log(context);
         context.turnState.set('httpStatus', 200);
         await this.runMiddleware(context, logic);
         res.status(context.turnState.get('httpStatus'));
@@ -171,9 +159,7 @@ export class TwitterAdapter extends BotAdapter {
         if(activity.conversation.id.indexOf("-") === -1) {
             message.in_reply_to_status_id = activity.conversation.id;
         }
-        console.log(message);
         const mention = activity.recipient.id;
-        console.log(mention);
         if(mention !== null && !message.status.startsWith(mention)) {
             message.status = `@${ mention } ${ message.status }`;
         }
@@ -182,7 +168,6 @@ export class TwitterAdapter extends BotAdapter {
             const attachment = activity.attachments[0];
             message.attachment_url = attachment.contentUrl;
         }
-        console.log(message);
         return message;
     }
 
