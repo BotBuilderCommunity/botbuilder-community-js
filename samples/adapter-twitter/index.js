@@ -3,27 +3,8 @@
 const { BotFrameworkAdapter } = require("botbuilder");
 const restify = require("restify");
 const  { config } = require("dotenv");
-/*
-const { TwitterAdapter,
-        processWebhook,
-        manageSubscription,
-        removeSubscription,
-        listSubscriptions,
-        removeWebhook,
-        updateWebhook,
-        registerWebhook,
-        listWebhooks } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
-*/
-
-const { TwitterAdapter,
-    processWebhook,
-    manageSubscription,
-    removeSubscription,
-    listSubscriptions,
-    removeWebhook,
-    updateWebhook,
-    registerWebhook,
-    listWebhooks } = require("@botbuildercommunity/adapter-twitter");
+//const { TwitterAdapter, TwitterSubscriptionManager, TwitterWebhookManager } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
+const { TwitterAdapter, TwitterSubscriptionManager, TwitterWebhookManager } = require("@botbuildercommunity/adapter-twitter");
 
 config();
 
@@ -70,7 +51,7 @@ server.post("/api/twitter/messages", (req, res) => {
  */
 server.get('/api/twitter/messages', (req, res) => {
     try {
-        const webHookResponse = processWebhook(req, process.env.TWITTER_CONSUMER_SECRET);
+        const webHookResponse = TwitterWebhookManager.processWebhook(req, process.env.TWITTER_CONSUMER_SECRET);
         res.send(webHookResponse);
     }
     catch(e) {
@@ -85,7 +66,7 @@ server.get('/api/twitter/messages', (req, res) => {
  */
 server.get('/api/twitter/webhook', async (req, res) => {
     try {
-        const webhookID = await registerWebhook(twitterAdapter.client, process.env.TWITTER_ACTIVITY_ENV, process.env.TWITTER_WEBHOOK_URL);
+        const webhookID = await TwitterWebhookManager.registerWebhook(twitterAdapter.client, process.env.TWITTER_ACTIVITY_ENV, process.env.TWITTER_WEBHOOK_URL);
         res.send({ webhookID: webhookID });
     }
     catch(e) {
@@ -100,7 +81,7 @@ server.get('/api/twitter/webhook', async (req, res) => {
  */
 server.get('/api/twitter/webhook/list', async (req, res) => {
     try {
-        const webhooks = await listWebhooks(process.env.TWITTER_CONSUMER_KEY, process.env.TWITTER_CONSUMER_SECRET, process.env.TWITTER_ACTIVITY_ENV);
+        const webhooks = await TwitterWebhookManager.listWebhooks(process.env.TWITTER_CONSUMER_KEY, process.env.TWITTER_CONSUMER_SECRET, process.env.TWITTER_ACTIVITY_ENV);
         res.send({ webhooks: webhooks });
     }
     catch(e) {
@@ -114,11 +95,11 @@ server.get('/api/twitter/webhook/list', async (req, res) => {
  * This is only for an example. If this is a production application, you should secure this.
  */
 server.get('/api/twitter/webhook/update', async (req, res) => {
-    const webhooks = await listWebhooks(process.env.TWITTER_CONSUMER_KEY, process.env.TWITTER_CONSUMER_SECRET, process.env.TWITTER_ACTIVITY_ENV);
+    const webhooks = await TwitterWebhookManager.listWebhooks(process.env.TWITTER_CONSUMER_KEY, process.env.TWITTER_CONSUMER_SECRET, process.env.TWITTER_ACTIVITY_ENV);
     if(webhooks.length > 0) {
         const webhookID = webhooks[0].id;
         try {
-            const success = await updateWebhook(
+            const success = await TwitterWebhookManager.updateWebhook(
                 process.env.TWITTER_CONSUMER_KEY,
                 process.env.TWITTER_CONSUMER_SECRET,
                 process.env.TWITTER_ACCESS_TOKEN,
@@ -142,11 +123,11 @@ server.get('/api/twitter/webhook/update', async (req, res) => {
  * This is only for an example. If this is a production application, you should secure this.
  */
 server.get('/api/twitter/webhook/remove', async (req, res) => {
-    const webhooks = await listWebhooks(process.env.TWITTER_CONSUMER_KEY, process.env.TWITTER_CONSUMER_SECRET, process.env.TWITTER_ACTIVITY_ENV);
+    const webhooks = await TwitterWebhookManager.listWebhooks(process.env.TWITTER_CONSUMER_KEY, process.env.TWITTER_CONSUMER_SECRET, process.env.TWITTER_ACTIVITY_ENV);
     if(webhooks.length > 0) {
         const webhookID = webhooks[0].id;
         try {
-            const success = await removeWebhook(
+            const success = await TwitterWebhookManager.removeWebhook(
                 process.env.TWITTER_CONSUMER_KEY,
                 process.env.TWITTER_CONSUMER_SECRET,
                 process.env.TWITTER_ACCESS_TOKEN,
@@ -173,7 +154,7 @@ server.get('/api/twitter/webhook/remove', async (req, res) => {
  */
 server.get('/api/twitter/subscription', async (req, res) => {
     try {
-        const result = await manageSubscription(
+        const result = await TwitterSubscriptionManager.manageSubscription(
             process.env.TWITTER_CONSUMER_KEY,
             process.env.TWITTER_CONSUMER_SECRET,
             process.env.TWITTER_ACCESS_TOKEN,
@@ -193,7 +174,7 @@ server.get('/api/twitter/subscription', async (req, res) => {
  */
 server.get('/api/twitter/subscription/remove', async (req, res) => {
     try {
-        const success = await removeSubscription(
+        const success = await TwitterSubscriptionManager.removeSubscription(
             process.env.TWITTER_CONSUMER_KEY,
             process.env.TWITTER_CONSUMER_SECRET,
             process.env.TWITTER_ACTIVITY_ENV,
@@ -213,7 +194,7 @@ server.get('/api/twitter/subscription/remove', async (req, res) => {
  */
 server.get('/api/twitter/subscription/list', async (req, res) => {
     try {
-        const subs = await listSubscriptions(
+        const subs = await TwitterSubscriptionManager.listSubscriptions(
             process.env.TWITTER_CONSUMER_KEY,
             process.env.TWITTER_CONSUMER_SECRET,
             process.env.TWITTER_ACTIVITY_ENV
