@@ -44,7 +44,7 @@ export async function registerWebhook(client: Twitter, env: string, callbackUrl:
     return result.id;
 }
 
-export async function listWebhooks(consumerKey: string, consumerSecret: string, env: string): Promise<string[]> {
+export async function listWebhooks(consumerKey: string, consumerSecret: string, env: string): Promise<TwitterWebhookResponse[]> {
     const bearer = await getTwitterBearerToken(consumerKey, consumerSecret);
     const opts = {
         uri: `https://api.twitter.com/1.1/account_activity/all/${env}/webhooks.json`,
@@ -59,11 +59,61 @@ export async function listWebhooks(consumerKey: string, consumerSecret: string, 
     const result: TwitterWebhookResponse[] = JSON.parse(res.body as string);
     if(result != null && result.length > 0) {
         try {
-            return result.map((e: TwitterWebhookResponse) => e.url);
+            return result;
         }
         catch(e) {
             return [];
         }
     }
     return [];
+}
+
+export async function removeWebhook(consumerKey: string, consumerSecret: string, accessToken: string, accessSecret: string, env: string, webhookID: number): Promise<boolean> {
+
+    const opts = {
+        uri: `https://api.twitter.com/1.1/account_activity/all/${env}/webhooks/${webhookID}.json`,
+        method: 'DELETE',
+        oauth: {
+            consumer_key: consumerKey,
+            consumer_secret: consumerSecret,
+            token: accessToken,
+            token_secret: accessSecret
+        },
+        resolveWithFullResponse: true
+    };
+    try {
+        const res: any = await request(opts);
+        if(res.statusCode === 204) {
+            return true;
+        }
+        return false;
+    }
+    catch(e) {
+        return false;
+    }
+}
+
+export async function updateWebhook(consumerKey: string, consumerSecret: string, accessToken: string, accessSecret: string, env: string, webhookID: number): Promise<boolean> {
+
+    const opts = {
+        uri: `https://api.twitter.com/1.1/account_activity/all/${env}/webhooks/${webhookID}.json`,
+        method: 'PUT',
+        oauth: {
+            consumer_key: consumerKey,
+            consumer_secret: consumerSecret,
+            token: accessToken,
+            token_secret: accessSecret
+        },
+        resolveWithFullResponse: true
+    };
+    try {
+        const res: any = await request(opts);
+        if(res.statusCode === 204) {
+            return true;
+        }
+        return false;
+    }
+    catch(e) {
+        return false;
+    }
 }

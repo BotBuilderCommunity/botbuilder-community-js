@@ -19,7 +19,6 @@ export async function manageSubscription(consumerKey: string, consumerSecret: st
 }
 
 export async function hasSubscription(consumerKey: string, consumerSecret: string, accessToken: string, accessSecret: string, env: string): Promise<boolean> {
-
     const opts = {
         uri: `https://api.twitter.com/1.1/account_activity/all/${env}/subscriptions.json`,
         method: 'GET',
@@ -56,6 +55,24 @@ export async function addSubscription(consumerKey: string, consumerSecret: strin
         resolveWithFullResponse: true
     };
           
+    const res: any = await request(opts);
+    if(res.statusCode === 204) {
+        return true;
+    }
+    return false;
+}
+
+export async function removeSubscription(consumerKey: string, consumerSecret: string, env: string, userID: string): Promise<boolean> {
+    const bearer = await getTwitterBearerToken(consumerKey, consumerSecret);
+    const opts = {
+        uri: `https://api.twitter.com/1.1/account_activity/all/${env}/subscriptions/${userID}.json`,
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${bearer}`
+        },
+        resolveWithFullResponse: true
+    };
+        
     const res: any = await request(opts);
     if(res.statusCode === 204) {
         return true;

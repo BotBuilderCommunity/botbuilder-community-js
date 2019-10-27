@@ -3,8 +3,26 @@
 const { BotFrameworkAdapter } = require("botbuilder");
 const restify = require("restify");
 const  { config } = require("dotenv");
-//const { TwitterAdapter, processWebhook, manageSubscription, listSubscriptions, registerWebhook, listWebhooks } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
-const { TwitterAdapter, processWebhook, manageSubscription, listSubscriptions, registerWebhook, listWebhooks } = require("@botbuildercommunity/adapter-twitter");
+/*
+const { TwitterAdapter,
+        processWebhook,
+        manageSubscription,
+        removeSubscription,
+        listSubscriptions,
+        removeWebhook,
+        updateWebhook,
+        registerWebhook,
+        listWebhooks } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
+*/
+const { TwitterAdapter,
+    processWebhook,
+    manageSubscription,
+    removeSubscription,
+    listSubscriptions,
+    removeWebhook,
+    updateWebhook,
+    registerWebhook,
+    listWebhooks } = require("@botbuildercommunity/adapter-twitter");
 
 config();
 
@@ -32,10 +50,7 @@ server.post("/api/messages", (req, res) => {
 });
 
 server.post("/api/twitter/messages", (req, res) => {
-    console.log('server.post: /api/twitter/messages: ');
-    console.log(req);
     twitterAdapter.processActivity(req, res, async (context) => {
-        console.log('processActivity: context: ');
         console.log(context);
         /*
         if(context.activity.text != null) {
@@ -53,11 +68,8 @@ server.post("/api/twitter/messages", (req, res) => {
  * This response data should be sent via the Restify or Express response. 
  */
 server.get('/api/twitter/messages', (req, res) => {
-    console.log('server.get: /api/twitter/messages: ');
-    console.log(req);
     try {
         const webHookResponse = processWebhook(req, process.env.TWITTER_CONSUMER_SECRET);
-        console.log(webHookResponse);
         res.send(webHookResponse);
     }
     catch(e) {
@@ -97,14 +109,68 @@ server.get('/api/twitter/webhook/list', async (req, res) => {
 });
 
 /*
+ * This endpoint is for updating a deactivated webhook associated with your Twitter Activity API
+ * This is only for an example. If this is a production application, you should secure this.
+ */
+server.get('/api/twitter/webhook/update', async (req, res) => {
+    const webhooks = await listWebhooks(process.env.TWITTER_CONSUMER_KEY, process.env.TWITTER_CONSUMER_SECRET, process.env.TWITTER_ACTIVITY_ENV);
+    if(webhooks.length > 0) {
+        const webhookID = webhooks[0].id;
+        try {
+            const success = await updateWebhook(
+                process.env.TWITTER_CONSUMER_KEY,
+                process.env.TWITTER_CONSUMER_SECRET,
+                process.env.TWITTER_ACCESS_TOKEN,
+                process.env.TWITTER_TOKEN_SECRET,
+                process.env.TWITTER_ACTIVITY_ENV,
+                webhookID);
+            res.send({ success: success });
+        }
+        catch(e) {
+            res.status(500);
+            res.send({ error: e });
+        }
+    }
+    else {
+        res.send({ message: 'No webhooks registered.' });
+    }
+});
+
+/*
+ * This endpoint is removing a webhook associated with your Twitter Activity API
+ * This is only for an example. If this is a production application, you should secure this.
+ */
+server.get('/api/twitter/webhook/remove', async (req, res) => {
+    const webhooks = await listWebhooks(process.env.TWITTER_CONSUMER_KEY, process.env.TWITTER_CONSUMER_SECRET, process.env.TWITTER_ACTIVITY_ENV);
+    if(webhooks.length > 0) {
+        const webhookID = webhooks[0].id;
+        try {
+            const success = await removeWebhook(
+                process.env.TWITTER_CONSUMER_KEY,
+                process.env.TWITTER_CONSUMER_SECRET,
+                process.env.TWITTER_ACCESS_TOKEN,
+                process.env.TWITTER_TOKEN_SECRET,
+                process.env.TWITTER_ACTIVITY_ENV,
+                webhookID);
+            res.send({ success: success });
+        }
+        catch(e) {
+            res.status(500);
+            res.send({ error: e });
+        }
+    }
+    else {
+        res.send({ message: 'No webhooks registered.' });
+    }
+});
+
+/*
  * This endpoint is for kicking off the subscription process.
  * It will first check that the current credentials in your enviroment are registered to use
  * the Activity API. If not, it will subscribe that account.
  * If this was a production application, you'd probably want better security on this endpoint.
  */
 server.get('/api/twitter/subscription', async (req, res) => {
-    console.log('server.get: /api/twitter/subscription: ');
-    console.log(req);
     try {
         const result = await manageSubscription(
             process.env.TWITTER_CONSUMER_KEY,
@@ -113,6 +179,26 @@ server.get('/api/twitter/subscription', async (req, res) => {
             process.env.TWITTER_TOKEN_SECRET,
             process.env.TWITTER_ACTIVITY_ENV);
         res.send({ success: result });
+    }
+    catch(e) {
+        res.status(500);
+        res.send({ error: e });
+    }
+});
+
+/*
+ * This endpoint is for deleting a subscription associated with your Twitter Activity API
+ * This is only for an example. If this is a production application, you should secure this.
+ */
+server.get('/api/twitter/subscription/remove', async (req, res) => {
+    try {
+        const success = await removeSubscription(
+            process.env.TWITTER_CONSUMER_KEY,
+            process.env.TWITTER_CONSUMER_SECRET,
+            process.env.TWITTER_ACTIVITY_ENV,
+            process.env.TWITTER_APPLICATION_USERNAME
+        );
+        res.send({ success: success });
     }
     catch(e) {
         res.status(500);
