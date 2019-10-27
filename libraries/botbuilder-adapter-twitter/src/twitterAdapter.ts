@@ -59,7 +59,14 @@ export class TwitterAdapter extends BotAdapter {
                     }
                     try {
                         const message: TwitterMessage = this.parseActivity(activity);
-                        const res: Twitter.ResponseData = await this.client.post('statuses/update', message);
+                        let res: Twitter.ResponseData;
+                        if(activity.valueType === TwitterActivityType.DIRECTMESSAGE) {
+                            //Message not in proper format.
+                            res = await this.client.post('direct_messages/events/new', message);
+                        }
+                        else {
+                            res = await this.client.post('statuses/update', message);
+                        }
                         responses.push({ id: res.id_str });
                     }
                     catch (error) {
@@ -152,7 +159,7 @@ export class TwitterAdapter extends BotAdapter {
     }
 
     protected parseActivity(activity: Partial<Activity>): TwitterMessage {
-
+        //This is only for tweets. Need DM message too.
         const message: TwitterMessage = { } as any;
 
         message.status = activity.text;
@@ -160,7 +167,9 @@ export class TwitterAdapter extends BotAdapter {
             message.in_reply_to_status_id = activity.conversation.id;
         }
         const mention = activity.recipient.id;
-        if(mention !== null && !message.status.startsWith(mention)) {
+        if((activity.valueType == null || activity.valueType === TwitterActivityType.TWEET)
+            && mention !== null
+            && !message.status.startsWith(mention)) {
             message.status = `@${ mention } ${ message.status }`;
         }
 
@@ -199,7 +208,7 @@ export class TwitterAdapter extends BotAdapter {
             serviceUrl: null,
             listenFor: null,
             label: message.id as any as string,
-            valueType: null,
+            valueType: messageType,
             type: (messageType != null) ? ActivityTypes.Message : null
         };
         

@@ -14,6 +14,7 @@ const { TwitterAdapter,
         registerWebhook,
         listWebhooks } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
 */
+
 const { TwitterAdapter,
     processWebhook,
     manageSubscription,
