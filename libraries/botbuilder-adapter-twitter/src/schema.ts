@@ -31,8 +31,8 @@ export interface TwitterMessage {
 
 export interface TwitterMessageCreate {
     target: any;
-    sender_id: number;
-    source_app_id: number;
+    sender_id?: number;
+    source_app_id?: number;
     message_data: TwitterMessage;
 }
 

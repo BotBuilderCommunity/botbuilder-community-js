@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/adapter-twitter",
-  "version": "1.0.0-pre.6",
+  "version": "1.0.0-pre.7",
   "description": "Twitter adapter for use with the Bot Framework.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",

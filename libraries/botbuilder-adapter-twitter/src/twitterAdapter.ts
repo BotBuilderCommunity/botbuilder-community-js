@@ -1,6 +1,6 @@
 import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
 import * as Twitter from 'twitter';
-import { TwitterMessage, TwitterActivityAPIMessage, TwitterActivityAPIDirectMessage, TwitterActivityType } from './schema';
+import { TwitterMessage, TwitterActivityAPIMessage, TwitterActivityAPIDirectMessage, TwitterActivityType, TwitterDirectMessage } from './schema';
 import { retrieveBody as rb } from './util';
 
 /**
@@ -58,15 +58,15 @@ export class TwitterAdapter extends BotAdapter {
                         throw new Error(`Activity doesn't contain a conversation id.`);
                     }
                     try {
-                        const message: TwitterMessage = this.parseActivity(activity);
+                        const message: TwitterMessage | TwitterDirectMessage = this.parseActivity(activity);
                         let res: Twitter.ResponseData;
                         if(activity.valueType === TwitterActivityType.DIRECTMESSAGE) {
-                            //Message not in proper format.
                             res = await this.client.post('direct_messages/events/new', message);
                         }
                         else {
                             res = await this.client.post('statuses/update', message);
                         }
+                        //This is not the DM ID.
                         responses.push({ id: res.id_str });
                     }
                     catch (error) {
@@ -158,8 +158,36 @@ export class TwitterAdapter extends BotAdapter {
         return createTwitterClient(settings);
     }
 
-    protected parseActivity(activity: Partial<Activity>): TwitterMessage {
-        //This is only for tweets. Need DM message too.
+    protected parseActivity(activity: Partial<Activity>): TwitterMessage | TwitterDirectMessage {
+        if(activity.valueType === TwitterActivityType.DIRECTMESSAGE) {
+            return this.createDirectMessage(activity);
+        }
+        return this.createTweet(activity);
+    }
+
+    protected createDirectMessage(activity: Partial<Activity>): TwitterDirectMessage {
+        const message: TwitterDirectMessage = { } as any;
+        message.type = 'message_create';
+        message.message_create = {
+            target: {
+                recipient_id: activity.recipient.id
+            },
+            message_data: {
+                id: activity.id as any as number,
+                id_str: activity.id,
+                in_reply_to_status_id: activity.conversation.id,
+                in_reply_to_screen_name: activity.recipient.name,
+                text: activity.text
+            }
+        }
+        if (activity.attachments && activity.attachments.length > 0) {
+            const attachment = activity.attachments[0];
+            message.message_create.message_data.attachment_url = attachment.contentUrl;
+        }
+        return message;
+    }
+
+    protected createTweet(activity: Partial<Activity>): TwitterMessage {
         const message: TwitterMessage = { } as any;
 
         message.status = activity.text;
@@ -167,9 +195,7 @@ export class TwitterAdapter extends BotAdapter {
             message.in_reply_to_status_id = activity.conversation.id;
         }
         const mention = activity.recipient.id;
-        if((activity.valueType == null || activity.valueType === TwitterActivityType.TWEET)
-            && mention !== null
-            && !message.status.startsWith(mention)) {
+        if(mention !== null && !message.status.startsWith(mention)) {
             message.status = `@${ mention } ${ message.status }`;
         }
 
