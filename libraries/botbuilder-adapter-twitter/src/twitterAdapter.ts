@@ -127,7 +127,7 @@ export class TwitterAdapter extends BotAdapter {
         }
         catch(e) {
             res.status(500);
-            res.send(`Failed to retrieve message body: ${e}`);
+            res.send(`Failed to retrieve message body: ${ e }`);
             res.end();
         }
 
@@ -179,7 +179,7 @@ export class TwitterAdapter extends BotAdapter {
                 in_reply_to_screen_name: activity.recipient.name,
                 text: activity.text
             }
-        }
+        };
         if (activity.attachments && activity.attachments.length > 0) {
             const attachment = activity.attachments[0];
             message.message_create.message_data.attachment_url = attachment.contentUrl;
@@ -191,7 +191,7 @@ export class TwitterAdapter extends BotAdapter {
         const message: TwitterMessage = { } as any;
 
         message.status = activity.text;
-        if(activity.conversation.id.indexOf("-") === -1) {
+        if(activity.conversation.id.indexOf('-') === -1) {
             message.in_reply_to_status_id = activity.conversation.id;
         }
         const mention = activity.recipient.id;

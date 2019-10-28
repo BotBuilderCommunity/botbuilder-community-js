@@ -9,12 +9,12 @@ export class TwitterTokenManager {
 
     }
     public static async getBearerToken(consumerKey: string, consumerSecret: string): Promise<string> {
-        const base: string = Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64');
+        const base: string = Buffer.from(`${ consumerKey }:${ consumerSecret }`).toString('base64');
         const opts = {
             uri: 'https://api.twitter.com/oauth2/token',
             method: 'POST',
             headers: {
-                'Authorization': `Basic ${base}`,
+                'Authorization': `Basic ${ base }`,
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
             },
             body: 'grant_type=client_credentials',

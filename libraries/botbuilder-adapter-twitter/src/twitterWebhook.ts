@@ -39,22 +39,22 @@ export class TwitterWebhookManager {
             throw new Error('No query parameter extraction method found.');
         }
         return {
-            response_token: `sha256=${TwitterWebhookManager.getChallengeResponse(token, consumerSecret)}`
+            response_token: `sha256=${ TwitterWebhookManager.getChallengeResponse(token, consumerSecret) }`
         };
     }
     
     public static async registerWebhook(client: Twitter, env: string, callbackUrl: string): Promise<number> {
-        const result: TwitterWebhookResponse = await client.post(`/account_activity/all/${env}/webhooks.json`, { url: callbackUrl }) as TwitterWebhookResponse;
+        const result: TwitterWebhookResponse = await client.post(`/account_activity/all/${ env }/webhooks.json`, { url: callbackUrl }) as TwitterWebhookResponse;
         return result.id;
     }
     
     public static async listWebhooks(consumerKey: string, consumerSecret: string, env: string): Promise<TwitterWebhookResponse[]> {
         const bearer = await TwitterTokenManager.getBearerToken(consumerKey, consumerSecret);
         const opts = {
-            uri: `https://api.twitter.com/1.1/account_activity/all/${env}/webhooks.json`,
+            uri: `https://api.twitter.com/1.1/account_activity/all/${ env }/webhooks.json`,
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${bearer}`
+                'Authorization': `Bearer ${ bearer }`
             },
             resolveWithFullResponse: true
         };
@@ -74,7 +74,7 @@ export class TwitterWebhookManager {
     
     public static async removeWebhook(consumerKey: string, consumerSecret: string, accessToken: string, accessSecret: string, env: string, webhookID: number): Promise<boolean> {
         const opts = {
-            uri: `https://api.twitter.com/1.1/account_activity/all/${env}/webhooks/${webhookID}.json`,
+            uri: `https://api.twitter.com/1.1/account_activity/all/${ env }/webhooks/${ webhookID }.json`,
             method: 'DELETE',
             oauth: {
                 consumer_key: consumerKey,
@@ -99,7 +99,7 @@ export class TwitterWebhookManager {
     public static async updateWebhook(consumerKey: string, consumerSecret: string, accessToken: string, accessSecret: string, env: string, webhookID: number): Promise<boolean> {
     
         const opts = {
-            uri: `https://api.twitter.com/1.1/account_activity/all/${env}/webhooks/${webhookID}.json`,
+            uri: `https://api.twitter.com/1.1/account_activity/all/${ env }/webhooks/${ webhookID }.json`,
             method: 'PUT',
             oauth: {
                 consumer_key: consumerKey,

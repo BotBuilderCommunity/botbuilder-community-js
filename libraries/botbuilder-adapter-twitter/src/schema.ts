@@ -1,5 +1,3 @@
-import * as Twitter from 'twitter';
-
 /**
  * @module botbuildercommunity/adapter-twitter
  */

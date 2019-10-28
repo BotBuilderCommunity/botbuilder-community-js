@@ -24,7 +24,7 @@ export class TwitterSubscriptionManager {
     
     public static async hasSubscription(consumerKey: string, consumerSecret: string, accessToken: string, accessSecret: string, env: string): Promise<boolean> {
         const opts = {
-            uri: `https://api.twitter.com/1.1/account_activity/all/${env}/subscriptions.json`,
+            uri: `https://api.twitter.com/1.1/account_activity/all/${ env }/subscriptions.json`,
             method: 'GET',
             oauth: {
                 consumer_key: consumerKey,
@@ -48,7 +48,7 @@ export class TwitterSubscriptionManager {
     
     public static async addSubscription(consumerKey: string, consumerSecret: string, accessToken: string, accessSecret: string, env: string): Promise<boolean> {
         const opts = {
-            uri: `https://api.twitter.com/1.1/account_activity/all/${env}/subscriptions.json`,
+            uri: `https://api.twitter.com/1.1/account_activity/all/${ env }/subscriptions.json`,
             method: 'POST',
             oauth: {
                 consumer_key: consumerKey,
@@ -69,10 +69,10 @@ export class TwitterSubscriptionManager {
     public static async removeSubscription(consumerKey: string, consumerSecret: string, env: string, userID: string): Promise<boolean> {
         const bearer = await TwitterTokenManager.getBearerToken(consumerKey, consumerSecret);
         const opts = {
-            uri: `https://api.twitter.com/1.1/account_activity/all/${env}/subscriptions/${userID}.json`,
+            uri: `https://api.twitter.com/1.1/account_activity/all/${ env }/subscriptions/${ userID }.json`,
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${bearer}`
+                'Authorization': `Bearer ${ bearer }`
             },
             resolveWithFullResponse: true
         };
@@ -87,10 +87,10 @@ export class TwitterSubscriptionManager {
     public static async listSubscriptions(consumerKey: string, consumerSecret: string, env: string): Promise<number[]> {
         const bearer = await TwitterTokenManager.getBearerToken(consumerKey, consumerSecret);
         const opts = {
-            uri: `https://api.twitter.com/1.1/account_activity/all/${env}/subscriptions/list.json`,
+            uri: `https://api.twitter.com/1.1/account_activity/all/${ env }/subscriptions/list.json`,
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${bearer}`
+                'Authorization': `Bearer ${ bearer }`
             },
             resolveWithFullResponse: true
         };
@@ -98,7 +98,7 @@ export class TwitterSubscriptionManager {
         const res: request.RequestPromise = await request(opts);
         const list: TwitterSubscriptionResponse = JSON.parse(res.body as string);
         const subs: TwitterSubscription[] = list.subscriptions;
-        return subs.map((e: TwitterSubscription) => e.user_id);
+        return subs.map((e: TwitterSubscription): number => e.user_id);
     }
     
 }
