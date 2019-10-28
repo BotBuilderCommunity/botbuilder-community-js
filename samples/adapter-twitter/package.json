@@ -10,7 +10,7 @@
   "author": "Michael Szul <michael@szul.us>",
   "license": "MIT",
   "dependencies": {
-    "@botbuildercommunity/adapter-twitter": "^1.0.0-pre.5",
+    "@botbuildercommunity/adapter-twitter": "^1.0.0-pre.6",
     "botbuilder": "^4.5.3",
     "dotenv": "^8.2.0",
     "restify": "^8.4.0"

@@ -67,7 +67,7 @@ export class TwitterSubscriptionManager {
     }
     
     public static async removeSubscription(consumerKey: string, consumerSecret: string, env: string, userID: string): Promise<boolean> {
-        const bearer = await TwitterTokenManager.getTwitterBearerToken(consumerKey, consumerSecret);
+        const bearer = await TwitterTokenManager.getBearerToken(consumerKey, consumerSecret);
         const opts = {
             uri: `https://api.twitter.com/1.1/account_activity/all/${env}/subscriptions/${userID}.json`,
             method: 'DELETE',
@@ -85,7 +85,7 @@ export class TwitterSubscriptionManager {
     }
     
     public static async listSubscriptions(consumerKey: string, consumerSecret: string, env: string): Promise<number[]> {
-        const bearer = await TwitterTokenManager.getTwitterBearerToken(consumerKey, consumerSecret);
+        const bearer = await TwitterTokenManager.getBearerToken(consumerKey, consumerSecret);
         const opts = {
             uri: `https://api.twitter.com/1.1/account_activity/all/${env}/subscriptions/list.json`,
             method: 'GET',

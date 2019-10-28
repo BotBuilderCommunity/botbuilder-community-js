@@ -49,7 +49,7 @@ export class TwitterWebhookManager {
     }
     
     public static async listWebhooks(consumerKey: string, consumerSecret: string, env: string): Promise<TwitterWebhookResponse[]> {
-        const bearer = await TwitterTokenManager.getTwitterBearerToken(consumerKey, consumerSecret);
+        const bearer = await TwitterTokenManager.getBearerToken(consumerKey, consumerSecret);
         const opts = {
             uri: `https://api.twitter.com/1.1/account_activity/all/${env}/webhooks.json`,
             method: 'GET',

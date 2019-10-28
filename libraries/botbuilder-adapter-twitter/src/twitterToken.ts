@@ -8,7 +8,7 @@ export class TwitterTokenManager {
     public constructor() {
 
     }
-    public static async getTwitterBearerToken(consumerKey: string, consumerSecret: string): Promise<string> {
+    public static async getBearerToken(consumerKey: string, consumerSecret: string): Promise<string> {
         const base: string = Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64');
         const opts = {
             uri: 'https://api.twitter.com/oauth2/token',
