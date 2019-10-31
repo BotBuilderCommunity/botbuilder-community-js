@@ -10,6 +10,10 @@ import { TwitterTokenManager } from './twitterToken';
  * @module botbuildercommunity/adapter-twitter
  */
 
+async function getBearerToken(consumerKey: string, consumerSecret: string): Promise<string> {
+    return await TwitterTokenManager.getBearerToken(consumerKey, consumerSecret);
+}
+
 export class TwitterWebhookManager {
     public constructor() {
 
@@ -49,7 +53,7 @@ export class TwitterWebhookManager {
     }
     
     public static async listWebhooks(consumerKey: string, consumerSecret: string, env: string): Promise<TwitterWebhookResponse[]> {
-        const bearer = await TwitterTokenManager.getBearerToken(consumerKey, consumerSecret);
+        const bearer = await getBearerToken(consumerKey, consumerSecret);
         const opts = {
             uri: `https://api.twitter.com/1.1/account_activity/all/${ env }/webhooks.json`,
             method: 'GET',
