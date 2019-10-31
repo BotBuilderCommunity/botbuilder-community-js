@@ -89,7 +89,7 @@ export class TwitterAdapter extends BotAdapter {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async deleteActivity(context: TurnContext, reference: Partial<ConversationReference>): Promise<void> {
-        throw new Error('Method not supported by Twitter API.');
+        throw new Error('Method not supported by the Twitter API.');
     }
 
     public async continueConversation(reference: Partial<ConversationReference>, logic: (context: TurnContext) => Promise<void>): Promise<void> {
