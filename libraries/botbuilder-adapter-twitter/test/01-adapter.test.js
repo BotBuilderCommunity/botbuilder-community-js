@@ -200,4 +200,5 @@ describe('Tests for Twitter Adapter', () => {
         assert.notEqual(activity, null);
         assert.equal(activity.id, 1); 
     });
+
 });
