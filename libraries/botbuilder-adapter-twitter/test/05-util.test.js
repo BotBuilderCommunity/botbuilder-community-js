@@ -9,7 +9,7 @@ const request = {
 
 describe('Tests for utilities', () => {
     
-    it('Should return a request body', async () => {
+    it('should return a request body', async () => {
         const res = await twitter.retrieveBody(request);
         assert.notEqual(res, null);
     });

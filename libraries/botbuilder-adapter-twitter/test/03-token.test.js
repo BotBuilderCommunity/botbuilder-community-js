@@ -13,7 +13,7 @@ twitter.__set__('request', request);
 
 describe('Tests for Twitter Tokens', () => {
     
-    it('Should get a bearer token', async () => {
+    it('should get a bearer token', async () => {
         const token = await twitter.TwitterTokenManager.getBearerToken(null, null);
         assert.notEqual(token, null);
         assert.equal(token, '1234567890');

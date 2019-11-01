@@ -11,10 +11,10 @@
     "extends": "@istanbuljs/nyc-config-typescript",
     "all": true,
     "check-coverage": true,
-    "lines": 0,
-    "statements": 0,
-    "functions": 0,
-    "branches": 0,
+    "lines": 25,
+    "statements": 25,
+    "functions": 50,
+    "branches": 25,
     "exclude": [
       "**/*.d.ts",
       "**/*.test.js"

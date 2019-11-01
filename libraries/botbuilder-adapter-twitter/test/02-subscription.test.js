@@ -18,23 +18,23 @@ twitter.__set__('getBearerToken', getBearerToken);
 
 describe('Tests for Twitter Subscriptions', () => {
     
-    it('Should manage your subscription', async () => {
+    it('should manage your subscription', async () => {
         const success = await twitter.TwitterSubscriptionManager.manageSubscription(null, null, null, null, 'production');
         assert.equal(success, true);
     });
-    it('Should check if ', async () => {
+    it('should check if ', async () => {
         const success = await twitter.TwitterSubscriptionManager.hasSubscription(null, null, null, null, 'production');
         assert.equal(success, true);
     });
-    it('Should add a subscription', async () => {
+    it('should add a subscription', async () => {
         const success = await twitter.TwitterSubscriptionManager.addSubscription(null, null, null, null, 'production');
         assert.equal(success, true);
     });
-    it('Should remote a subscription', async () => {
+    it('should remote a subscription', async () => {
         const success = await twitter.TwitterSubscriptionManager.removeSubscription(null, null, 'production', 'szul');
         assert.equal(success, true);
     });
-    it('Should list subscriptions', async () => {
+    it('should list subscriptions', async () => {
         const list = await twitter.TwitterSubscriptionManager.listSubscriptions(null, null, 'production');
         assert.notEqual(list, null);
         assert.notEqual(list.length, 0);
