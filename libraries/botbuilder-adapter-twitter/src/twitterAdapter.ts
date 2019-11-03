@@ -194,7 +194,7 @@ export class TwitterAdapter extends BotAdapter {
         if(activity.conversation.id.indexOf('-') === -1) {
             message.in_reply_to_status_id = activity.conversation.id;
         }
-        const mention = activity.recipient.id;
+        const mention = activity.recipient.name;
         if(mention !== null && !message.status.startsWith(mention)) {
             message.status = `@${ mention } ${ message.status }`;
         }

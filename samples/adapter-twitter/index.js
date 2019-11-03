@@ -33,12 +33,9 @@ server.post("/api/messages", (req, res) => {
 
 server.post("/api/twitter/messages", (req, res) => {
     twitterAdapter.processActivity(req, res, async (context) => {
-        console.log(context);
-        /*
-        if(context.activity.text != null) {
-            await context.sendActivity("Posting a tweet from the adapter");
+        if(context.activity.type === "message") {
+            await context.sendActivity("Posting a tweet from the adapter!");
         }
-        */
     });
 });
 
