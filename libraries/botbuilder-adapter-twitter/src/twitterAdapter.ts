@@ -66,8 +66,8 @@ export class TwitterAdapter extends BotAdapter {
                         else {
                             res = await this.client.post('statuses/update', message);
                         }
-                        //This is not the DM ID.
-                        responses.push({ id: res.id_str });
+                        const id = (res as any).id_str || (res as any).message_create.message_data.id_str;
+                        responses.push({ id: id });
                     }
                     catch (error) {
                         throw new Error(`Error parsing activity: ${ error.message }.`);
@@ -137,7 +137,14 @@ export class TwitterAdapter extends BotAdapter {
         }
 
         const activity = this.getActivityFromTwitterMessage(message, messageType);
-
+        /*
+         * This needs to be better.
+         * The assumption is that if the bot account isn't mentioned, it's an outbound tweet from the bot.
+         */
+        if(activity.valueType === TwitterActivityType.TWEET
+            && activity.text.indexOf(`@${ process.env.TWITTER_APPLICATION_USERNAME }`) === -1) {
+                activity.type = ActivityTypes.Trace;
+            }
         const context: TurnContext = this.createContext(activity);
         context.turnState.set('httpStatus', 200);
         await this.runMiddleware(context, logic);
