@@ -1,6 +1,6 @@
 import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
 import * as Twitter from 'twitter';
-import { TwitterMessage, TwitterActivityAPIMessage, TwitterActivityAPIDirectMessage, TwitterActivityType, TwitterDirectMessage } from './schema';
+import { TwitterAdapterSettings, TwitterMessage, TwitterActivityAPIMessage, TwitterActivityAPIDirectMessage, TwitterActivityType, TwitterDirectMessage } from './schema';
 import { retrieveBody as rb } from './util';
 
 /**
@@ -8,7 +8,7 @@ import { retrieveBody as rb } from './util';
  */
 
 
-function createTwitterClient(settings: Twitter.AccessTokenOptions): Twitter {
+function createTwitterClient(settings: TwitterAdapterSettings): Twitter {
     return new Twitter(settings);
 }
 
@@ -33,10 +33,10 @@ function getWebResponse(resp: WebResponse): WebResponse {
 export class TwitterAdapter extends BotAdapter {
 
     public client: Twitter;
-    protected readonly settings: Twitter.AccessTokenOptions;
+    protected readonly settings: TwitterAdapterSettings;
     protected readonly channel: string = 'twitter';
 
-    public constructor(settings: Twitter.AccessTokenOptions) {
+    public constructor(settings: TwitterAdapterSettings) {
         super();
         this.settings = settings;
         try {
@@ -111,6 +111,7 @@ export class TwitterAdapter extends BotAdapter {
 
         let message: TwitterMessage = { } as any;
         let messageType: TwitterActivityType;
+        let screenName: string;
 
         try {
             if(body.tweet_create_events !== undefined && body.tweet_create_events.length > 0) {
@@ -142,9 +143,12 @@ export class TwitterAdapter extends BotAdapter {
          * The assumption is that if the bot account isn't mentioned, it's an outbound tweet from the bot.
          */
         if(activity.valueType === TwitterActivityType.TWEET
-            && activity.text.indexOf(`@${ process.env.TWITTER_APPLICATION_USERNAME }`) === -1) {
+            && activity.text.indexOf(`@${ this.settings.screen_name }`) === -1) {
                 activity.type = ActivityTypes.Trace;
-            }
+        }
+        if(activity.valueType === TwitterActivityType.DIRECTMESSAGE) {
+
+        }
         const context: TurnContext = this.createContext(activity);
         context.turnState.set('httpStatus', 200);
         await this.runMiddleware(context, logic);
@@ -161,7 +165,7 @@ export class TwitterAdapter extends BotAdapter {
         return new TurnContext(this as any, request);
     }
 
-    protected createTwitterClient(settings: Twitter.AccessTokenOptions): Twitter {
+    protected createTwitterClient(settings: TwitterAdapterSettings): Twitter {
         return createTwitterClient(settings);
     }
 
