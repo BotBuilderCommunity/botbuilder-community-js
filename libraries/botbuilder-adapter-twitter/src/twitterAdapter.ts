@@ -111,15 +111,33 @@ export class TwitterAdapter extends BotAdapter {
 
         let message: TwitterMessage = { } as any;
         let messageType: TwitterActivityType;
-        let screenName: string;
+        let selfMessage: boolean = false;
 
         try {
             if(body.tweet_create_events !== undefined && body.tweet_create_events.length > 0) {
                 message = body.tweet_create_events[0];
+                if(message.user.screen_name === this.settings.screen_name) {
+                    selfMessage = true;
+                }
                 messageType = TwitterActivityType.TWEET;
             }
             else if(body.direct_message_events !== undefined && body.direct_message_events.length > 0) {
                 message = body.direct_message_events[0].message_create.message_data;
+                if(message.user.screen_name === this.settings.screen_name) {
+                    selfMessage = true;
+                }
+                /*
+                let userID: number;
+                const users: any[] = Object.keys((body as any).apps);
+                for(const user of users) {
+                    if(user.screen_name === this.settings.screen_name) {
+                        userID = user.id;
+                    }
+                }
+                if(body.direct_message_events[0].message_create.sender_id === userID) {
+                    selfMessage = true;
+                }
+                */
                 messageType = TwitterActivityType.DIRECTMESSAGE;
             }
             else {
@@ -138,16 +156,8 @@ export class TwitterAdapter extends BotAdapter {
         }
 
         const activity = this.getActivityFromTwitterMessage(message, messageType);
-        /*
-         * This needs to be better.
-         * The assumption is that if the bot account isn't mentioned, it's an outbound tweet from the bot.
-         */
-        if(activity.valueType === TwitterActivityType.TWEET
-            && activity.text.indexOf(`@${ this.settings.screen_name }`) === -1) {
-                activity.type = ActivityTypes.Trace;
-        }
-        if(activity.valueType === TwitterActivityType.DIRECTMESSAGE) {
-
+        if(selfMessage) {
+            activity.type = ActivityTypes.Trace;
         }
         const context: TurnContext = this.createContext(activity);
         context.turnState.set('httpStatus', 200);
