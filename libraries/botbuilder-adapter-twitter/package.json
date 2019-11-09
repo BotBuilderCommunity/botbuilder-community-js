@@ -1,7 +1,7 @@
 {
-  "name": "@botbuildercommunity/middleware-google-language",
-  "version": "1.0.1",
-  "description": "Bot Framework middleware component for the Google Cloud Natural Language service, including sentiment analysis, language detection, entity extraction, and keyword recognition.",
+  "name": "@botbuildercommunity/adapter-twitter",
+  "version": "1.0.0",
+  "description": "Twitter adapter for use with the Bot Framework.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "directories": {
@@ -31,6 +31,9 @@
     "test": "tsc && nyc mocha",
     "test-ci": "tsc && nyc mocha --reporter xunit --reporter-options output=./mocha-test-results.xml --reporter-options suiteName=$npm_package_name"
   },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
@@ -39,14 +42,13 @@
     "chatbots",
     "bot framework",
     "bot builder",
-    "sentiment analysis",
-    "google cloud",
-    "natural language",
-    "google",
-    "middleware"
+    "twitter adapter",
+    "adapters",
+    "twitter"
   ],
   "contributors": [
     "Bot Builder Community",
+    "Mick Vleeshouwer <mick@imick.nl>",
     "Michael Szul <michael@szul.us>"
   ],
   "license": "MIT",
@@ -55,14 +57,21 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "@botbuildercommunity/middleware-engine-core": "^1.0.0",
-    "@google-cloud/language": "^3.5.0",
-    "botbuilder": "^4.5.3"
+    "botbuilder": "^4.5.3",
+    "qs": "^6.9.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "twitter": "^1.7.1"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
+    "@types/qs": "^6.5.3",
+    "@types/request": "^2.48.3",
+    "@types/request-promise": "^4.1.44",
+    "@types/twitter": "^1.7.0",
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",
+    "rewire": "^4.0.1",
     "typescript": "^3.5.3"
   },
   "publishConfig": {
