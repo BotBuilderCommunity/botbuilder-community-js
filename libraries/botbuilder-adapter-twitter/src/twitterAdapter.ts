@@ -110,6 +110,7 @@ export class TwitterAdapter extends BotAdapter {
         const body = await retrieveBody(req);
 
         let message: TwitterMessage = { } as any;
+        let directMessage: TwitterDirectMessage = { } as any;
         let messageType: TwitterActivityType;
         let selfMessage: boolean = false;
 
@@ -122,26 +123,31 @@ export class TwitterAdapter extends BotAdapter {
                 messageType = TwitterActivityType.TWEET;
             }
             else if(body.direct_message_events !== undefined && body.direct_message_events.length > 0) {
+                directMessage  = body.direct_message_events[0];
                 message = body.direct_message_events[0].message_create.message_data;
-                if(message.user.screen_name === this.settings.screen_name) {
-                    selfMessage = true;
-                }
-                /*
-                let userID: number;
-                const users: any[] = Object.keys((body as any).apps);
-                for(const user of users) {
-                    if(user.screen_name === this.settings.screen_name) {
-                        userID = user.id;
+                const users: any[] = (body as any).users;
+                const keys: string[] = Object.keys((body as any).users);
+                for(const user of keys) {
+                    const obj = users[user];
+                    if(obj.screen_name === this.settings.screen_name) {
+                        if(body.direct_message_events[0].message_create.sender_id === obj.id) {
+                            selfMessage = true;
+                        }
+                    }
+                    if(body.direct_message_events[0].message_create.sender_id === obj.id) {
+                        (directMessage as any).sender_id = obj.sender_id;
+                        (directMessage as any).sender_name = obj.screen_name;
+                    }
+                    if(body.direct_message_events[0].message_create.target.recipient_id === obj.id) {
+                        (directMessage as any).recipient_id = obj.id;
+                        (directMessage as any).recipient_name = obj.screen_name;
                     }
                 }
-                if(body.direct_message_events[0].message_create.sender_id === userID) {
-                    selfMessage = true;
-                }
-                */
                 messageType = TwitterActivityType.DIRECTMESSAGE;
             }
             else {
                 message = body as any;
+                selfMessage = true;
             }
         }
         catch(e) {
@@ -155,7 +161,7 @@ export class TwitterAdapter extends BotAdapter {
             res.end();
         }
 
-        const activity = this.getActivityFromTwitterMessage(message, messageType);
+        const activity = this.getActivityFromTwitterMessage(message, directMessage, messageType);
         if(selfMessage) {
             activity.type = ActivityTypes.Trace;
         }
@@ -227,9 +233,8 @@ export class TwitterAdapter extends BotAdapter {
         return message;
     }
 
-    protected getActivityFromTwitterMessage(message: TwitterMessage, messageType: TwitterActivityType): Partial<Activity> {
-
-        const activity: Partial<Activity> = {
+    protected getActivityFromTweet(message: TwitterMessage, messageType: TwitterActivityType): Partial<Activity> {
+        return {
             id: (message.id_str !== undefined) ? message.id_str : message.id as any as string,
             timestamp: new Date(),
             channelId: this.channel,
@@ -258,6 +263,45 @@ export class TwitterAdapter extends BotAdapter {
             valueType: messageType,
             type: (messageType != null) ? ActivityTypes.Message : null
         };
+    }
+
+    protected getActivityFromDirectMessage(message: TwitterMessage, directMessage: TwitterDirectMessage, messageType: TwitterActivityType): Partial<Activity> {
+        return {
+            id: directMessage.id as any as string,
+            timestamp: new Date(),
+            channelId: this.channel,
+            conversation: {
+                id: directMessage.id as any as string,
+                isGroup: false,
+                conversationType: null,
+                tenantId: null,
+                name: ''
+            },
+            from: {
+                id: (directMessage as any).sender_id,
+                name: (directMessage as any).sender_name,
+            },
+            recipient: {
+                id: (directMessage as any).recipient_id,
+                name: (directMessage as any).recipient_name
+            },
+            text: message.text,
+            channelData: message,
+            localTimezone: null,
+            callerId: null,
+            serviceUrl: null,
+            listenFor: null,
+            label: directMessage.id as any as string,
+            valueType: messageType,
+            type: (messageType != null) ? ActivityTypes.Message : null
+        };
+    }
+
+    protected getActivityFromTwitterMessage(message: TwitterMessage, directMessage: TwitterDirectMessage, messageType: TwitterActivityType): Partial<Activity> {
+
+        const activity = (messageType === TwitterActivityType.DIRECTMESSAGE)
+            ? this.getActivityFromDirectMessage(message, directMessage, messageType)
+            : this.getActivityFromTweet(message, messageType);
         
         if (activity.type === ActivityTypes.Message) {
         
