@@ -23,7 +23,7 @@ import { SentimentAnalysis } from '@botbuildercommunity/middleware-aws-comprehen
 adapter.use(new SentimentAnalysis());
 ```
 
-When used, the `turnState` on the `TurnContext` will have a property named `sentimentScore` between 0 and 1. A full example can be seen in the [`app-aws.js`](example/app-aws.js) bot test file.
+When used, the `turnState` on the `TurnContext` will have a property named `sentimentScore` between 0 and 1. A full example can be seen in the [`sample`](../../samples/middleware-aws-comprehend/index.js) bot test file.
 
 > Differences from Cognitive Services and Watson: AWS Comprehend does not return a 0 - 1 response on the sentiment. Instead, it returns 0 - 1 for each possible sentiment. You can access the sentiment through the `sentimentType` property on the `turnState`.
 

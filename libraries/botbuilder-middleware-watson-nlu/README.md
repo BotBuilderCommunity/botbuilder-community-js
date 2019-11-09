@@ -18,7 +18,7 @@ adapter.use(new EmotionDetection(WATSON_API_KEY, WATSON_ENDPOINT, WATSON_OPTIONS
 
 The `WATSON_OPTIONS` parameter is optional.
 
-When used, the `turnState` on the `TurnContext` will have a property named `emotionDetection`, which is an object containing emotions as properties, with scores as their values. An example can be seen in the [`app-watson.js`](example/app-watson.js) bot test file.
+When used, the `turnState` on the `TurnContext` will have a property named `emotionDetection`, which is an object containing emotions as properties, with scores as their values. An example can be seen in the [`sample`](../../samples/middleware-watson-nlu/index.js) bot test file.
 
 Supported middleware classes include:
 

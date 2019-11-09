@@ -27,6 +27,7 @@ export class NumberWithTypePrompt extends Prompt<NumberWithTypePromptType> {
             await context.sendActivity(options.prompt, undefined, InputHints.ExpectingInput);
         }
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected async onRecognize(context: TurnContext, state: any, options: PromptOptions): Promise<PromptRecognizerResult<number>> {
         const result: PromptRecognizerResult<number> = { succeeded: false };
         let results: any;

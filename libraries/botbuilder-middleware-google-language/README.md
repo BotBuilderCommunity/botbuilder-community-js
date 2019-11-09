@@ -20,7 +20,7 @@ import { SentimentAnalysis } from '@botbuildercommunity/middleware-google-cloud'
 adapter.use(new SentimentAnalysis());
 ```
 
-When used, the `turnState` on the `TurnContext` will have a property named `sentimentScore` between 0 and 1. A full example can be seen in the [`app-google.js`](example/app-google.js) bot test file.
+When used, the `turnState` on the `TurnContext` will have a property named `sentimentScore` between 0 and 1. A full example can be seen in the [`sample`](../../samples/middleware-google-language/index.js) bot test file.
 
 Supported middleware classes include:
 
