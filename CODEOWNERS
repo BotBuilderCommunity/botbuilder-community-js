@@ -9,6 +9,7 @@
 # Library Owners
 /libraries/botbuilder-adapter-console/ @szul
 /libraries/botbuilder-adapter-twilio-whatsapp/ @imicknl
+/libraries/botbuilder-adapter-twitter/ @szul
 /libraries/botbuilder-dialog-prompts/ @szul
 /libraries/botbuilder-middleware-activity-type/ @szul
 /libraries/botbuilder-middleware-aws-comprehend/ @szul

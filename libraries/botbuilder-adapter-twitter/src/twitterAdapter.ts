@@ -1,6 +1,7 @@
 import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
 import * as Twitter from 'twitter';
 import { TwitterAdapterSettings, TwitterMessage, TwitterActivityAPIMessage, TwitterActivityAPIDirectMessage, TwitterActivityType, TwitterDirectMessage } from './schema';
+import { TwitterDirectMessageManager } from './twitterDirectMessage';
 import { retrieveBody as rb } from './util';
 
 /**
@@ -60,13 +61,19 @@ export class TwitterAdapter extends BotAdapter {
                     try {
                         const message: TwitterMessage | TwitterDirectMessage = this.parseActivity(activity);
                         let res: Twitter.ResponseData;
-                        if(activity.valueType === TwitterActivityType.DIRECTMESSAGE) {
-                            res = await this.client.post('direct_messages/events/new', message);
+                        if(activity.conversation.conversationType === TwitterActivityType.DIRECTMESSAGE) {
+                            res = await TwitterDirectMessageManager.sendDirectMessage(
+                                this.settings.consumer_key,
+                                this.settings.consumer_secret,
+                                this.settings.access_token_key,
+                                this.settings.access_token_secret,
+                                message as TwitterDirectMessage
+                            );
                         }
                         else {
                             res = await this.client.post('statuses/update', message);
                         }
-                        const id = (res as any).id_str || (res as any).message_create.message_data.id_str;
+                        const id = (res as any).id_str || (res as any).id;
                         responses.push({ id: id });
                     }
                     catch (error) {
@@ -112,7 +119,7 @@ export class TwitterAdapter extends BotAdapter {
         let message: TwitterMessage = { } as any;
         let directMessage: TwitterDirectMessage = { } as any;
         let messageType: TwitterActivityType;
-        let selfMessage: boolean = false;
+        let selfMessage = false;
 
         try {
             if(body.tweet_create_events !== undefined && body.tweet_create_events.length > 0) {
@@ -135,7 +142,7 @@ export class TwitterAdapter extends BotAdapter {
                         }
                     }
                     if(body.direct_message_events[0].message_create.sender_id === obj.id) {
-                        (directMessage as any).sender_id = obj.sender_id;
+                        (directMessage as any).sender_id = obj.id;
                         (directMessage as any).sender_name = obj.screen_name;
                     }
                     if(body.direct_message_events[0].message_create.target.recipient_id === obj.id) {
@@ -186,7 +193,7 @@ export class TwitterAdapter extends BotAdapter {
     }
 
     protected parseActivity(activity: Partial<Activity>): TwitterMessage | TwitterDirectMessage {
-        if(activity.valueType === TwitterActivityType.DIRECTMESSAGE) {
+        if(activity.conversation.conversationType === TwitterActivityType.DIRECTMESSAGE) {
             return this.createDirectMessage(activity);
         }
         return this.createTweet(activity);
@@ -241,7 +248,7 @@ export class TwitterAdapter extends BotAdapter {
             conversation: {
                 id: (message.id_str !== undefined) ? message.id_str : message.id as any as string,
                 isGroup: false,
-                conversationType: null,
+                conversationType: messageType,
                 tenantId: null,
                 name: ''
             },
@@ -260,7 +267,7 @@ export class TwitterAdapter extends BotAdapter {
             serviceUrl: null,
             listenFor: null,
             label: message.id as any as string,
-            valueType: messageType,
+            valueType: null,
             type: (messageType != null) ? ActivityTypes.Message : null
         };
     }
@@ -273,7 +280,7 @@ export class TwitterAdapter extends BotAdapter {
             conversation: {
                 id: directMessage.id as any as string,
                 isGroup: false,
-                conversationType: null,
+                conversationType: messageType,
                 tenantId: null,
                 name: ''
             },
@@ -292,7 +299,7 @@ export class TwitterAdapter extends BotAdapter {
             serviceUrl: null,
             listenFor: null,
             label: directMessage.id as any as string,
-            valueType: messageType,
+            valueType: null,
             type: (messageType != null) ? ActivityTypes.Message : null
         };
     }

@@ -49,7 +49,7 @@ const botActivity = {
     conversation: {
         id: "1",
         isGroup: false,
-        conversationType: null,
+        conversationType: "tweet",
         tenantId: null,
         name: ""
     },
@@ -80,7 +80,7 @@ const botActivity = {
     serviceUrl: null,
     listenFor: null,
     label: 1,
-    valueType: "tweet",
+    valueType: null,
     type: "message"
 };
 

@@ -3,8 +3,8 @@
 const { BotFrameworkAdapter } = require("botbuilder");
 const restify = require("restify");
 const  { config } = require("dotenv");
-//const { TwitterAdapter, TwitterSubscriptionManager, TwitterWebhookManager } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
-const { TwitterAdapter, TwitterSubscriptionManager, TwitterWebhookManager } = require("@botbuildercommunity/adapter-twitter");
+const { TwitterAdapter, TwitterSubscriptionManager, TwitterWebhookManager } = require("../../libraries/botbuilder-adapter-twitter/lib/index");
+//const { TwitterAdapter, TwitterSubscriptionManager, TwitterWebhookManager } = require("@botbuildercommunity/adapter-twitter");
 
 config();
 

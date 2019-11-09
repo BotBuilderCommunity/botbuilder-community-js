@@ -20,7 +20,7 @@ The `CLIENT_OPTIONS` parameter is optional.
 
 > Note that the TEXT_ANALYTICS_API_ENDPOINT will be the Cognitive Services endpoint root. For example: https://eastus.api.cognitive.microsoft.com
 
-When used, the `turnState` on the `TurnContext` will have a property named `sentimentScore` between 0 and 1. A full example can be seen in the [`app-cs.js`](example/app-cs.js) bot test file.
+When used, the `turnState` on the `TurnContext` will have a property named `sentimentScore` between 0 and 1. A full example can be seen in the [`sample`](../../samples/middleware-text-analytics/index.js) bot test file.
 
 Supported middleware classes include:
 

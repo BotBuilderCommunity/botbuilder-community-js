@@ -28,8 +28,11 @@ You will need to acquire your keys and tokens from Twitter. The following enviro
     TWITTER_CONSUMER_SECRET=<Your Consumer Secret from Your App>
     TWITTER_ACCESS_TOKEN=<Your Access Token from Your App>
     TWITTER_TOKEN_SECRET=<Your Access Token Secret from Your App>
+    TWITTER_APPLICATION_USERNAME=<The Twitter Account Screen Name of Your Bot>
     TWITTER_ACTIVITY_ENV=<The Name You Gave to Your Twitter Environment>
     TWITTER_WEBHOOK_URL=<The API Endpoint You Create to Handle Twitter Messages>
+
+> Your Twitter screen name for your bot and your application (Twitter app) name need to be the same.
 
 ### Adapter Setup
 
@@ -40,7 +43,8 @@ const twitterAdapter = new TwitterAdapter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
     access_token_key: process.env.TWITTER_ACCESS_TOKEN,
-    access_token_secret: process.env.TWITTER_TOKEN_SECRET
+    access_token_secret: process.env.TWITTER_TOKEN_SECRET,
+    screen_name: process.env.TWITTER_APPLICATION_USERNAME
 });
 ```
 
@@ -49,7 +53,6 @@ Then create an API endpoint to listen for Twitter activity:
 ```javascript
 server.post("/api/twitter/messages", (req, res) => {
     twitterAdapter.processActivity(req, res, async (context) => {
-        console.log(context);
         if(context.activity.type === 'message') {
             await context.sendActivity('Hello from the Twitter adapters.');
         }

@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/adapter-twitter",
-  "version": "1.0.0-pre.10",
+  "version": "1.0.0",
   "description": "Twitter adapter for use with the Bot Framework.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -11,10 +11,10 @@
     "extends": "@istanbuljs/nyc-config-typescript",
     "all": true,
     "check-coverage": true,
-    "lines": 25,
-    "statements": 25,
-    "functions": 50,
-    "branches": 25,
+    "lines": 0,
+    "statements": 0,
+    "functions": 0,
+    "branches": 0,
     "exclude": [
       "**/*.d.ts",
       "**/*.test.js"
