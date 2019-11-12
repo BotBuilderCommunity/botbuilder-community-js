@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/adapter-twitter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Twitter adapter for use with the Bot Framework.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -57,6 +57,7 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
+    "@types/twitter": "^1.7.0",
     "botbuilder": "^4.5.3",
     "qs": "^6.9.0",
     "request": "^2.88.0",
@@ -68,7 +69,6 @@
     "@types/qs": "^6.5.3",
     "@types/request": "^2.48.3",
     "@types/request-promise": "^4.1.44",
-    "@types/twitter": "^1.7.0",
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",
     "rewire": "^4.0.1",

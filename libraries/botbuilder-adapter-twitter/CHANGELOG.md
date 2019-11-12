@@ -7,3 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2019-10
 ### Added
 - Initial release for Twitter Adapter
+
+## [1.0.1] - 2019-11
+### Fixed
+- Moved Twitter package types to `dependencies` from `devDependencies`
