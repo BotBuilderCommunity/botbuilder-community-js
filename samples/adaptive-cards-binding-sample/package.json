@@ -1,0 +1,35 @@
+{
+    "name": "adaptive-cards-binding-sample",
+    "version": "1.0.0",
+    "description": "Demonstrate how to bind data within dialogs into Adaptive Cards",
+    "author": "Generated using Microsoft Bot Builder Yeoman generator v4.5.0",
+    "license": "MIT",
+    "main": "./lib/index.js",
+    "scripts": {
+        "build": "tsc --build",
+        "lint": "tslint -c tslint.json 'src/**/*.ts'",
+        "postinstall": "npm run build && node ./deploymentScripts/webConfigPrep.js",
+        "start": "tsc --build && node ./lib/index.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "watch": "nodemon --watch ./src -e ts --exec \"npm run start\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com"
+    },
+    "dependencies": {
+        "adaptivecards-templating": "^0.1.1-alpha.0",
+        "botbuilder": "~4.5.1",
+        "dotenv": "~8.0.0",
+        "replace": "~1.1.0",
+        "restify": "~8.3.3",
+        "adaptivecards": "^1.2.3"
+    },
+    "devDependencies": {
+        "@types/dotenv": "6.1.1",
+        "@types/restify": "7.2.12",
+        "nodemon": "~1.19.1",
+        "tslint": "~5.18.0",
+        "typescript": "~3.5.3"
+    }
+}
