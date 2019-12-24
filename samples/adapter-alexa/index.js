@@ -8,7 +8,7 @@ const restify = require('restify');
 // Import required bot services.
 // See https://aka.ms/bot-services to learn more about the different parts of a bot.
 const { BotFrameworkAdapter } = require('botbuilder');
-const { TwilioWhatsAppAdapter } = require('@botbuildercommunity/adapter-twilio-whatsapp');
+const { AlexaAdapter } = require('@botbuildercommunity/adapter-alexa');
 
 // This bot's main dialog.
 const { EchoBot } = require('./bot');
@@ -34,12 +34,7 @@ const adapter = new BotFrameworkAdapter({
 
 // Create Twilio Adapter
 // See README for more details
-const whatsAppAdapter = new TwilioWhatsAppAdapter({
-    accountSid: process.env.TwilioAccountSid,
-    authToken: process.env.TwilioAuthToken,
-    phoneNumber: process.env.TwilioPhoneNumber,
-    endpointUrl: process.env.TwilioEndpointUrl
-});
+const alexaAdapter = new AlexaAdapter();
 
 // Catch-all for errors.
 adapter.onTurnError = async (context, error) => {
@@ -61,8 +56,8 @@ server.post('/api/messages', (req, res) => {
 });
 
 // Listen for incoming request from Twilio
-server.post('/api/whatsapp/messages', (req, res) => {
-    whatsAppAdapter.processActivity(req, res, async (context) => {
+server.post('/api/skillsrequest', (req, res) => {
+    alexaAdapter.processActivity(req, res, async (context) => {
         // Route to main dialog.
         await bot.run(context);
     });

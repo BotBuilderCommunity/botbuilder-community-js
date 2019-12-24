@@ -5,7 +5,7 @@ class EchoBot extends ActivityHandler {
         super();
         // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
         this.onMessage(async (context, next) => {
-            await context.sendActivity(`You said '<i>${context.activity.text}</i>'`);
+            await context.sendActivity(`You said '${context.activity.text}'`);
 
             const replyWithAttachment = {
                 type: ActivityTypes.Message,

@@ -1,0 +1,17 @@
+{
+  "name": "alexa-echobot",
+  "version": "0.1.0",
+  "description": "Botbuild v4 Alexa echo bot sample",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jacob Mayer",
+  "license": "MIT",
+  "devDependencies": {
+    "ask-cli": "^1.7.18"
+  },
+  "dependencies": {
+    "@botbuildercommunity/adapter-alexa": "file:../../libraries/botbuilder-adapter-alexa"
+  }
+}
