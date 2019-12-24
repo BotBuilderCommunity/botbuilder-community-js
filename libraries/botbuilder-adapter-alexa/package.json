@@ -1,0 +1,42 @@
+{
+  "name": "@botbuildercommunity/adapter-alexa",
+  "version": "0.1.0",
+  "description": "Alexa adapter for use with the bot framework",
+  "main": "./lib/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha --require ts-node/register ./test/**/*.test.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "keywords": [
+    "chatbots",
+    "bot",
+    "framework",
+    "alexa",
+    "alexa",
+    "adapter",
+    "adapters"
+  ],
+  "author": "Jacob Mayer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^13.1.0",
+    "mocha": "^6.2.2",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "botbuilder": "^4.7.0"
+  }
+}
