@@ -7,6 +7,8 @@ import {
     WebRequest,
     WebResponse
 } from 'botbuilder';
+import { RequestEnvelope, IntentRequest } from 'ask-sdk-model';
+import { getRequestType } from 'ask-sdk-core';
 
 /**
  * @module botbuildercommunity/adapter-alexa
@@ -30,8 +32,14 @@ export class AdapterAlexa extends BotAdapter {
     }
 
     public async processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void> {
+        const alexaRequest: RequestEnvelope = req.body;
         const activity: Partial<Activity> = {
             channelId: "alexa"
+        }
+
+        if (getRequestType(alexaRequest) === 'IntentRequest') {
+            const intentRequest: IntentRequest = <IntentRequest>alexaRequest.request;
+            activity.text = intentRequest.intent.name;
         }
 
         const context: TurnContext = this.createContext(activity);
