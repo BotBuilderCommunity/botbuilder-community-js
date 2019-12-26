@@ -21,4 +21,12 @@ describe('Tests for Alexa Adapter', () => {
             await alexaAdapter.updateActivity(turn, activity)
         });
     });
+
+    it('should not update activities', async () => {
+        const activity: Partial<Activity> = {};
+        const turn: TurnContext = new TurnContext(alexaAdapter, activity)
+        await rejects(async () => {
+            await alexaAdapter.deleteActivity(turn, activity)
+        });
+    });
 });
