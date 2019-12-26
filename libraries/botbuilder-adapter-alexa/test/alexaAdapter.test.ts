@@ -1,10 +1,15 @@
 import { AdapterAlexa } from "../src";
-import { notEqual, rejects } from "assert";
+import { notEqual, rejects, equal, deepEqual } from "assert";
 import { Activity } from "botbuilder";
-import { TurnContext } from "botbuilder-core";
+import { TurnContext, ResourceResponse } from "botbuilder-core";
 
 describe('Tests for Alexa Adapter', () => {
     let alexaAdapter: AdapterAlexa;
+    const emptyActivity: Partial<Activity> = {};
+
+    function turnContext(activity: Partial<Activity>): TurnContext {
+        return new TurnContext(alexaAdapter, activity);
+    }
 
     before(() => {
         alexaAdapter = new AdapterAlexa();
@@ -15,18 +20,21 @@ describe('Tests for Alexa Adapter', () => {
     });
 
     it('should not update activities', async () => {
-        const activity: Partial<Activity> = {};
-        const turn: TurnContext = new TurnContext(alexaAdapter, activity)
         await rejects(async () => {
-            await alexaAdapter.updateActivity(turn, activity)
+            await alexaAdapter.updateActivity(turnContext(emptyActivity), emptyActivity)
         });
     });
 
     it('should not update activities', async () => {
-        const activity: Partial<Activity> = {};
-        const turn: TurnContext = new TurnContext(alexaAdapter, activity)
         await rejects(async () => {
-            await alexaAdapter.deleteActivity(turn, activity)
+            await alexaAdapter.deleteActivity(turnContext(emptyActivity), emptyActivity)
         });
     });
+
+    describe('sendActivites', () => {
+        it('should send empty resources', async () => {
+            const responses: ResourceResponse[] = await alexaAdapter.sendActivities(turnContext(emptyActivity), [emptyActivity]);
+            deepEqual(responses, [])
+        })
+    })
 });

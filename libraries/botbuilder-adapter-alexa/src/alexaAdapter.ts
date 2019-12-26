@@ -10,8 +10,11 @@ import { BotAdapter, ConversationReference, TurnContext, Activity, ResourceRespo
         throw new Error(`deleteActivity is not implemented for ${AdapterAlexa.name}`)
     }
      public async sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]> {
-         return [];
+        const resourceResponses: ResourceResponse[] = [];
+
+        return resourceResponses;
      }
+
      public async updateActivity(context: TurnContext, activity: Partial<Activity>): Promise<void> {
          throw new Error(`updateActivity is not implemented for ${AdapterAlexa.name}`)
      }
