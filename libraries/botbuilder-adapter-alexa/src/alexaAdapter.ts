@@ -4,18 +4,20 @@ import { BotAdapter, ConversationReference, TurnContext, Activity, ResourceRespo
  * @module botbuildercommunity/adapter-alexa
  */
 
- export class AdapterAlexa extends BotAdapter {
-     public async continueConversation(reference: Partial<ConversationReference>, logic: (revocableContext: TurnContext) => Promise<void>): Promise<void> {}
-     public async deleteActivity(context: TurnContext, reference: Partial<ConversationReference>): Promise<void> {
+export class AdapterAlexa extends BotAdapter {
+    public async continueConversation(reference: Partial<ConversationReference>, logic: (revocableContext: TurnContext) => Promise<void>): Promise<void> { }
+    
+    public async deleteActivity(context: TurnContext, reference: Partial<ConversationReference>): Promise<void> {
         throw new Error(`deleteActivity is not implemented for ${AdapterAlexa.name}`)
     }
-     public async sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]> {
+
+    public async sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]> {
         const resourceResponses: ResourceResponse[] = [];
 
         return resourceResponses;
-     }
+    }
 
-     public async updateActivity(context: TurnContext, activity: Partial<Activity>): Promise<void> {
-         throw new Error(`updateActivity is not implemented for ${AdapterAlexa.name}`)
-     }
- }
+    public async updateActivity(context: TurnContext, activity: Partial<Activity>): Promise<void> {
+        throw new Error(`updateActivity is not implemented for ${AdapterAlexa.name}`)
+    }
+}
