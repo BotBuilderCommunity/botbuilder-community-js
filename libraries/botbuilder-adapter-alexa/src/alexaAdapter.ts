@@ -7,7 +7,7 @@ import {
     WebRequest,
     WebResponse
 } from 'botbuilder';
-import { RequestEnvelope, IntentRequest } from 'ask-sdk-model';
+import { RequestEnvelope, IntentRequest, ResponseEnvelope } from 'ask-sdk-model';
 import { getRequestType } from 'ask-sdk-core';
 
 /**
@@ -15,35 +15,53 @@ import { getRequestType } from 'ask-sdk-core';
  */
 
 export class AdapterAlexa extends BotAdapter {
-    public async continueConversation(reference: Partial<ConversationReference>, logic: (revocableContext: TurnContext) => Promise<void>): Promise<void> { }
+    private readonly alexaVersion: string = '1.0'
 
-    public async deleteActivity(context: TurnContext, reference: Partial<ConversationReference>): Promise<void> {
-        throw new Error(`deleteActivity is not implemented for ${AdapterAlexa.name}`)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public async continueConversation(_reference: Partial<ConversationReference>, _logic: (revocableContext: TurnContext) => Promise<void>): Promise<void> { }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public async deleteActivity(_context: TurnContext, _reference: Partial<ConversationReference>): Promise<void> {
+        throw new Error(`deleteActivity is not implemented for ${ AdapterAlexa.name }`);
     }
 
-    public async sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public async sendActivities(_context: TurnContext, _activities: Partial<Activity>[]): Promise<ResourceResponse[]> {
         const resourceResponses: ResourceResponse[] = [];
 
         return resourceResponses;
     }
 
-    public async updateActivity(context: TurnContext, activity: Partial<Activity>): Promise<void> {
-        throw new Error(`updateActivity is not implemented for ${AdapterAlexa.name}`)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public async updateActivity(_context: TurnContext, _activity: Partial<Activity>): Promise<void> {
+        throw new Error(`updateActivity is not implemented for ${ AdapterAlexa.name }`);
     }
 
     public async processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void> {
         const alexaRequest: RequestEnvelope = req.body;
         const activity: Partial<Activity> = {
-            channelId: "alexa"
-        }
+            channelId: 'alexa'
+        };
 
         if (getRequestType(alexaRequest) === 'IntentRequest') {
-            const intentRequest: IntentRequest = <IntentRequest>alexaRequest.request;
+            const intentRequest: IntentRequest = alexaRequest.request as IntentRequest;
             activity.text = intentRequest.intent.name;
         }
 
         const context: TurnContext = this.createContext(activity);
         await this.runMiddleware(context, logic);
+
+        const alexaResponse: ResponseEnvelope = {
+            version: this.alexaVersion,
+            response: {
+                outputSpeech: {
+                    type: 'PlainText',
+                    text: context.turnState.get('httpBody')
+                }
+            }
+        };
+
+        res.send(alexaResponse);
     }
 
     /**
