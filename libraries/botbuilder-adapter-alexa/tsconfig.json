@@ -7,5 +7,12 @@
     "sourceMap": true,
     "outDir": "./lib",
     "rootDir": "./src"
-  }
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "test",
+    "node_modules"
+  ]
 }
