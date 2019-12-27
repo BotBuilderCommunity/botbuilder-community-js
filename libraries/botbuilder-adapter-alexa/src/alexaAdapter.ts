@@ -7,8 +7,8 @@ import {
     WebRequest,
     WebResponse
 } from 'botbuilder';
-import { RequestEnvelope, IntentRequest } from 'ask-sdk-model';
-import { getRequestType } from 'ask-sdk-core';
+import { RequestEnvelope, IntentRequest, Session, interfaces } from 'ask-sdk-model';
+import { getRequestType, getLocale, getUserId } from 'ask-sdk-core';
 
 /**
  * @module botbuildercommunity/adapter-alexa
@@ -44,36 +44,35 @@ export class AdapterAlexa extends BotAdapter {
 
     public async processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void> {
         const alexaRequest: RequestEnvelope = req.body;
-        if (alexaRequest.session === undefined) {
-            alexaRequest.session = {
-                new: true,
-                sessionId: 'test',
-                user: alexaRequest.context.System.user,
-                application: alexaRequest.context.System.application
-            }
-        }
+        const system: interfaces.system.SystemState = alexaRequest.context.System;
+        const session: Session = alexaRequest.session ? alexaRequest.session : {
+            new: true,
+            sessionId: '',
+            user: alexaRequest.context.System.user,
+            application: alexaRequest.context.System.application
+        };
         const activity: Partial<Activity> = {
             channelId: 'alexa',
-            serviceUrl: `${ alexaRequest.context.System.apiEndpoint }?token=${ alexaRequest.context.System.apiAccessToken }`,
+            serviceUrl: `${ system.apiEndpoint }?token=${ system.apiAccessToken }`,
             recipient: {
-                id: alexaRequest.context.System.application.applicationId,
+                id: system.application.applicationId,
                 name: 'skill'
             },
             from: {
-                id: alexaRequest.context.System.user.userId,
+                id: getUserId(alexaRequest),
                 name: 'user'
             },
             conversation: {
                 isGroup: false,
                 conversationType: 'conversation',
-                id: alexaRequest.session.sessionId,
+                id: session.sessionId,
                 tenantId: 'test',
                 name: 'test'
             },
-            type: alexaRequest.request.type,
+            type: getRequestType(alexaRequest),
             id: alexaRequest.request.requestId,
             timestamp: new Date(alexaRequest.request.timestamp),
-            locale: alexaRequest.request.locale
+            locale: getLocale(alexaRequest)
         };
 
         if (getRequestType(alexaRequest) === 'IntentRequest') {
