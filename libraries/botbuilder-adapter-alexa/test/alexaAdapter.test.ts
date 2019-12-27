@@ -34,7 +34,6 @@ describe('Tests for Alexa Adapter', (): void => {
 
     describe('sendActivites', (): void => {
         const activity: Partial<Activity> = {
-            text: 'Hello Alexa!',
             id: 'test'
         };
 
