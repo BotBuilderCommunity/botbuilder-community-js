@@ -7,7 +7,7 @@ import {
     WebRequest,
     WebResponse
 } from 'botbuilder';
-import { RequestEnvelope, IntentRequest, ResponseEnvelope } from 'ask-sdk-model';
+import { RequestEnvelope, IntentRequest } from 'ask-sdk-model';
 import { getRequestType } from 'ask-sdk-core';
 
 /**
@@ -15,8 +15,6 @@ import { getRequestType } from 'ask-sdk-core';
  */
 
 export class AdapterAlexa extends BotAdapter {
-    private readonly alexaVersion: string = '1.0'
-
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async continueConversation(_reference: Partial<ConversationReference>, _logic: (revocableContext: TurnContext) => Promise<void>): Promise<void> { }
 
@@ -26,8 +24,14 @@ export class AdapterAlexa extends BotAdapter {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public async sendActivities(_context: TurnContext, _activities: Partial<Activity>[]): Promise<ResourceResponse[]> {
+    public async sendActivities(_context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]> {
         const resourceResponses: ResourceResponse[] = [];
+
+        for (const activity of activities) {
+            resourceResponses.push({
+                id: activity.id || ''
+            });
+        }
 
         return resourceResponses;
     }
@@ -50,18 +54,6 @@ export class AdapterAlexa extends BotAdapter {
 
         const context: TurnContext = this.createContext(activity);
         await this.runMiddleware(context, logic);
-
-        const alexaResponse: ResponseEnvelope = {
-            version: this.alexaVersion,
-            response: {
-                outputSpeech: {
-                    type: 'PlainText',
-                    text: context.turnState.get('httpBody')
-                }
-            }
-        };
-
-        res.send(alexaResponse);
     }
 
     /**

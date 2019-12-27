@@ -2,7 +2,7 @@ import { AdapterAlexa } from '../src';
 import { notEqual, rejects, equal, deepEqual } from 'assert';
 import { Activity, WebRequest, WebResponse } from 'botbuilder';
 import { TurnContext, ResourceResponse } from 'botbuilder-core';
-import { RequestEnvelope, IntentRequest, ResponseEnvelope } from 'ask-sdk-model';
+import { RequestEnvelope, IntentRequest } from 'ask-sdk-model';
 
 describe('Tests for Alexa Adapter', (): void => {
     let alexaAdapter: AdapterAlexa;
@@ -33,9 +33,14 @@ describe('Tests for Alexa Adapter', (): void => {
     });
 
     describe('sendActivites', (): void => {
-        it('should send empty resources', async (): Promise<void> => {
-            const responses: ResourceResponse[] = await alexaAdapter.sendActivities(turnContext(emptyActivity), [emptyActivity]);
-            deepEqual(responses, []);
+        const activity: Partial<Activity> = {
+            text: 'Hello Alexa!',
+            id: 'test'
+        };
+
+        it('should list resource responses', async (): Promise<void> => {
+            const responses: ResourceResponse[] = await alexaAdapter.sendActivities(turnContext(activity), [activity]);
+            deepEqual(responses, [{id: 'test'}]);
         });
     });
 
@@ -64,15 +69,6 @@ describe('Tests for Alexa Adapter', (): void => {
                 }
             }
         };
-        const alexaResponseEnvelope: ResponseEnvelope = {
-            version: alexaRequestEnvelope.version,
-            response: {
-                outputSpeech: {
-                    type: 'PlainText',
-                    text: 'Hello World!'
-                }
-            }
-        };
         let alexaRequest: WebRequest;
         let alexaResponse: WebResponse;
 
@@ -94,6 +90,15 @@ describe('Tests for Alexa Adapter', (): void => {
                 equal(context.activity.channelId, 'alexa');
                 equal(context.activity.text, (alexaRequestEnvelope.request as IntentRequest).intent.name);
             });
+        });
+        
+        it('should not return a successful response to the server', async (): Promise<void> => {
+            alexaRequest.body = alexaRequestEnvelope;
+            alexaResponse.status = (status: number): void => {
+                notEqual(status, 200);
+            };
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            await alexaAdapter.processActivity(alexaRequest, alexaResponse, async (_context: TurnContext): Promise<void> => {});
         });
     });
 });
