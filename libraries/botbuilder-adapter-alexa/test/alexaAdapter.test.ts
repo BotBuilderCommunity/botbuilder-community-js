@@ -1,7 +1,7 @@
 import { AdapterAlexa } from '../src';
 import { notEqual, rejects, equal, deepEqual } from 'assert';
 import { Activity, WebRequest, WebResponse } from 'botbuilder';
-import { TurnContext, ResourceResponse } from 'botbuilder-core';
+import { TurnContext, ResourceResponse, ActivityTypes } from 'botbuilder-core';
 import { RequestEnvelope, IntentRequest, LaunchRequest } from 'ask-sdk-model';
 
 describe('Tests for Alexa Adapter', (): void => {
@@ -83,15 +83,16 @@ describe('Tests for Alexa Adapter', (): void => {
             };
         });
         
-        it('should receive alexa request', async (): Promise<void> => {
+        it('should convert intent request to message activity', async (): Promise<void> => {
             alexaRequest.body = alexaRequestEnvelope;
             await alexaAdapter.processActivity(alexaRequest, alexaResponse, async (context: TurnContext): Promise<void> => {
                 equal(context.activity.channelId, 'alexa');
                 equal(context.activity.text, (alexaRequestEnvelope.request as IntentRequest).intent.name);
+                equal(context.activity.type, ActivityTypes.Message);
             });
         });
         
-        it('should return 404 if no activities are created', async (): Promise<void> => {
+        it('should return 404 if no response activities are created for conversation', async (): Promise<void> => {
             alexaRequest.body = alexaRequestEnvelope;
             alexaResponse.status = (status: number): void => {
                 equal(status, 404);

@@ -5,7 +5,8 @@ import {
     Activity,
     ResourceResponse,
     WebRequest,
-    WebResponse
+    WebResponse,
+    ActivityTypes
 } from 'botbuilder';
 import { RequestEnvelope, IntentRequest, Session, interfaces, ResponseEnvelope } from 'ask-sdk-model';
 import { getRequestType, getLocale, getUserId, createAskSdkError } from 'ask-sdk-core';
@@ -80,6 +81,7 @@ export class AdapterAlexa extends BotAdapter {
         if (requestType === 'IntentRequest') {
             const intentRequest: IntentRequest = alexaRequest.request as IntentRequest;
             activity.text = intentRequest.intent.name;
+            activity.type = ActivityTypes.Message;
         }
 
         const context: TurnContext = this.createContext(activity);
@@ -106,7 +108,7 @@ export class AdapterAlexa extends BotAdapter {
             res.status(404)
             res.send(createAskSdkError('AlexaAdapter', 'Could not get activity from'));
         }
-        
+
         res.end();
     }
 
