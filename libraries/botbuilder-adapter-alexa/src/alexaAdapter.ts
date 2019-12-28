@@ -7,8 +7,9 @@ import {
     WebRequest,
     WebResponse
 } from 'botbuilder';
-import { RequestEnvelope, IntentRequest, Session, interfaces } from 'ask-sdk-model';
-import { getRequestType, getLocale, getUserId } from 'ask-sdk-core';
+import { RequestEnvelope, IntentRequest, Session, interfaces, ResponseEnvelope } from 'ask-sdk-model';
+import { getRequestType, getLocale, getUserId, createAskSdkError } from 'ask-sdk-core';
+import { retrieveBody } from '@botbuildercommunity/adapter-twitter';
 
 /**
  * @module botbuildercommunity/adapter-alexa
@@ -43,8 +44,9 @@ export class AdapterAlexa extends BotAdapter {
     }
 
     public async processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void> {
-        const alexaRequest: RequestEnvelope = req.body;
+        const alexaRequest: RequestEnvelope = await retrieveBody(req);
         const system: interfaces.system.SystemState = alexaRequest.context.System;
+        const requestType = getRequestType(alexaRequest);
         const session: Session = alexaRequest.session ? alexaRequest.session : {
             new: true,
             sessionId: '',
@@ -69,13 +71,13 @@ export class AdapterAlexa extends BotAdapter {
                 tenantId: 'test',
                 name: 'test'
             },
-            type: getRequestType(alexaRequest),
+            type: requestType,
             id: alexaRequest.request.requestId,
             timestamp: new Date(alexaRequest.request.timestamp),
             locale: getLocale(alexaRequest)
         };
 
-        if (getRequestType(alexaRequest) === 'IntentRequest') {
+        if (requestType === 'IntentRequest') {
             const intentRequest: IntentRequest = alexaRequest.request as IntentRequest;
             activity.text = intentRequest.intent.name;
         }
@@ -98,16 +100,20 @@ export class AdapterAlexa extends BotAdapter {
                         }
                     }
                 });
-                res.end();
                 this.responses.delete(key);
             }
+        } else {
+            res.status(404)
+            res.send(createAskSdkError('AlexaAdapter', 'Could not get activity from'));
         }
+        
+        res.end();
     }
 
     private createKey(context: TurnContext): string {
         let conversationId = '';
         if (context.activity.conversation !== undefined) {
-            conversationId = context.activity.conversation.id
+            conversationId = context.activity.conversation.id;
         }
 
         let activityId = '';

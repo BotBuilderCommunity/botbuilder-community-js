@@ -2,7 +2,7 @@ import { AdapterAlexa } from '../src';
 import { notEqual, rejects, equal, deepEqual } from 'assert';
 import { Activity, WebRequest, WebResponse } from 'botbuilder';
 import { TurnContext, ResourceResponse } from 'botbuilder-core';
-import { RequestEnvelope, IntentRequest } from 'ask-sdk-model';
+import { RequestEnvelope, IntentRequest, LaunchRequest } from 'ask-sdk-model';
 
 describe('Tests for Alexa Adapter', (): void => {
     let alexaAdapter: AdapterAlexa;
@@ -91,10 +91,10 @@ describe('Tests for Alexa Adapter', (): void => {
             });
         });
         
-        it('should not return a successful response to the server', async (): Promise<void> => {
+        it('should return 404 if no activities are created', async (): Promise<void> => {
             alexaRequest.body = alexaRequestEnvelope;
             alexaResponse.status = (status: number): void => {
-                notEqual(status, 200);
+                equal(status, 404);
             };
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             await alexaAdapter.processActivity(alexaRequest, alexaResponse, async (_context: TurnContext): Promise<void> => {});
