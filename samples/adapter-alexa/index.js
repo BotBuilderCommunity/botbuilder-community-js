@@ -8,7 +8,7 @@ const restify = require('restify');
 // Import required bot services.
 // See https://aka.ms/bot-services to learn more about the different parts of a bot.
 const { BotFrameworkAdapter } = require('botbuilder');
-const { AlexaAdapter } = require('@botbuildercommunity/adapter-alexa');
+const { AdapterAlexa } = require('@botbuildercommunity/adapter-alexa');
 
 // This bot's main dialog.
 const { EchoBot } = require('./bot');
@@ -34,7 +34,7 @@ const adapter = new BotFrameworkAdapter({
 
 // Create Twilio Adapter
 // See README for more details
-const alexaAdapter = new AlexaAdapter();
+const alexaAdapter = new AdapterAlexa();
 
 // Catch-all for errors.
 adapter.onTurnError = async (context, error) => {

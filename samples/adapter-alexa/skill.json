@@ -22,8 +22,8 @@
     "apis": {
       "custom": {
         "endpoint": {
-          "sourceDir": "lambda/custom",
-          "uri": "test"
+          "uri": "https://6f6c7fc0.ngrok.io/api/skillsrequest",
+          "sslCertificateType": "Wildcard"
         }
       }
     },

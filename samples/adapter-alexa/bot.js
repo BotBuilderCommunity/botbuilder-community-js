@@ -5,20 +5,21 @@ class EchoBot extends ActivityHandler {
         super();
         // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
         this.onMessage(async (context, next) => {
-            await context.sendActivity(`You said '${context.activity.text}'`);
+            await context.sendActivity(`Hello Alexa!`);
 
-            const replyWithAttachment = {
-                type: ActivityTypes.Message,
-                text: `This bot is built with the Microsoft Bot Framework via the Twilio Whatsapp channel (beta)!`,
-                attachments: [
-                    {
-                        contentType: 'image/png',
-                        contentUrl: 'https://docs.microsoft.com/en-us/bot-framework/media/how-it-works/architecture-resize.png'
-                    }
-                ]
-            };
+            // TODO re-integrate when other pieces for the alexa adapter work
+            // const replyWithAttachment = {
+            //     type: ActivityTypes.Message,
+            //     text: `This bot is built with the Microsoft Bot Framework via the Twilio Whatsapp channel (beta)!`,
+            //     attachments: [
+            //         {
+            //             contentType: 'image/png',
+            //             contentUrl: 'https://docs.microsoft.com/en-us/bot-framework/media/how-it-works/architecture-resize.png'
+            //         }
+            //     ]
+            // };
 
-            await context.sendActivity(replyWithAttachment);
+            // await context.sendActivity(replyWithAttachment);
 
             // By calling next() you ensure that the next BotHandler is run.
             await next();

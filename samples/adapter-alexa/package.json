@@ -4,14 +4,18 @@
   "description": "Botbuild v4 Alexa echo bot sample",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:local": "npm run deploy && npm run start:backend",
+    "start:backend": "node index.js",
+    "start:tunnel": "ngrok http 3978",
+    "deploy": "ask deploy --target skill",
+    "test": "ask dialog -l en-us"
   },
   "author": "Jacob Mayer",
   "license": "MIT",
-  "devDependencies": {
-    "ask-cli": "^1.7.18"
-  },
   "dependencies": {
-    "@botbuildercommunity/adapter-alexa": "file:../../libraries/botbuilder-adapter-alexa"
+    "@botbuildercommunity/adapter-alexa": "file:../../libraries/botbuilder-adapter-alexa",
+    "botbuilder": "^4.7.0",
+    "dotenv": "^8.2.0",
+    "restify": "^8.5.1"
   }
 }
