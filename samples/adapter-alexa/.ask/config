@@ -3,16 +3,7 @@
     "default": {
       "skill_id": "amzn1.ask.skill.e0938b3d-614d-442a-be03-0458510065a2",
       "was_cloned": false,
-      "resources": {
-        "manifest": {
-          "eTag": "f29d9ca3660b765f092f1f9ee65dcbba"
-        },
-        "interactionModel": {
-          "en-US": {
-            "eTag": "79baaa392b0a737f1fb69e742e3708d9"
-          }
-        }
-      }
+      "resources": { }
     }
   }
 }

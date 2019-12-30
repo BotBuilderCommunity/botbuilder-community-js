@@ -22,7 +22,7 @@
     "apis": {
       "custom": {
         "endpoint": {
-          "uri": "https://6f6c7fc0.ngrok.io/api/skillsrequest",
+          "uri": "https://YOUR_URL.ngrok.io/api/skillsrequest",
           "sslCertificateType": "Wildcard"
         }
       }
