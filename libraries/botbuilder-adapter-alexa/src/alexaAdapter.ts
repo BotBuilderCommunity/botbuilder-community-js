@@ -8,7 +8,7 @@ import {
     WebResponse,
     ActivityTypes
 } from 'botbuilder';
-import { RequestEnvelope, IntentRequest, Session, interfaces, ResponseEnvelope } from 'ask-sdk-model';
+import { RequestEnvelope, IntentRequest, Session, interfaces, ResponseEnvelope, SessionEndedReason, SessionEndedRequest } from 'ask-sdk-model';
 import { getRequestType, getLocale, getUserId, createAskSdkError } from 'ask-sdk-core';
 import { retrieveBody } from '@botbuildercommunity/adapter-twitter';
 
@@ -82,6 +82,10 @@ export class AdapterAlexa extends BotAdapter {
             const intentRequest: IntentRequest = alexaRequest.request as IntentRequest;
             activity.text = intentRequest.intent.name;
             activity.type = ActivityTypes.Message;
+        } else if (requestType === 'SessionEndedRequest') {
+            const sessionEndedRequest: SessionEndedRequest = alexaRequest.request as SessionEndedRequest;
+            activity.type = ActivityTypes.EndOfConversation;
+            activity.value = sessionEndedRequest.reason;
         }
 
         const context: TurnContext = this.createContext(activity);

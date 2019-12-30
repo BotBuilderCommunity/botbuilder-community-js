@@ -2,7 +2,7 @@ import { AdapterAlexa } from '../src';
 import { notEqual, rejects, equal, deepEqual } from 'assert';
 import { Activity, WebRequest, WebResponse } from 'botbuilder';
 import { TurnContext, ResourceResponse, ActivityTypes } from 'botbuilder-core';
-import { RequestEnvelope, IntentRequest, LaunchRequest } from 'ask-sdk-model';
+import { RequestEnvelope, IntentRequest, LaunchRequest, SessionEndedReason, SessionEndedRequest } from 'ask-sdk-model';
 
 describe('Tests for Alexa Adapter', (): void => {
     let alexaAdapter: AdapterAlexa;
@@ -89,6 +89,20 @@ describe('Tests for Alexa Adapter', (): void => {
                 equal(context.activity.channelId, 'alexa');
                 equal(context.activity.text, (alexaRequestEnvelope.request as IntentRequest).intent.name);
                 equal(context.activity.type, ActivityTypes.Message);
+            });
+        });
+
+        it('should convert session ended request to end conversation activity', async (): Promise<void> => {
+            const sessionEndRequest: SessionEndedRequest = {
+                'type': 'SessionEndedRequest',
+                'requestId': '123',
+                'timestamp': 'time',
+                'reason': 'USER_INITIATED'
+            }
+            alexaRequest.body = alexaRequestEnvelope;
+            alexaRequest.body.request = sessionEndRequest;
+            await alexaAdapter.processActivity(alexaRequest, alexaResponse, async (context: TurnContext): Promise<void> => {
+                equal(context.activity.type, ActivityTypes.EndOfConversation);
             });
         });
         
