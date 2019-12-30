@@ -96,16 +96,26 @@ export class AdapterAlexa extends BotAdapter {
         if (activities !== undefined) {
             const activity: Activity | undefined = activities.shift();
             if (activity !== undefined) {
-                res.status(200);
-                res.send({
-                    version: '1.0',
-                    response: {
-                        outputSpeech: {
-                            type: 'PlainText',
-                            text: activity.text || ''
+                if (activity.type === ActivityTypes.Message) {
+                    res.status(200);
+                    res.send({
+                        version: '1.0',
+                        response: {
+                            outputSpeech: {
+                                type: 'PlainText',
+                                text: activity.text || ''
+                            }
                         }
-                    }
-                });
+                    });
+                } else if (activity.type === ActivityTypes.EndOfConversation) {
+                    res.status(200);
+                    res.send({
+                        version: '1.0',
+                        response: {
+                            shouldEndSession: true
+                        }
+                    });
+                }
                 this.responses.delete(key);
             }
         } else {
