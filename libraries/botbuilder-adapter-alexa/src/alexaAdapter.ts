@@ -119,7 +119,7 @@ export class AdapterAlexa extends BotAdapter {
                 this.responses.delete(key);
             }
         } else {
-            res.status(404)
+            res.status(404);
             res.send(createAskSdkError('AlexaAdapter', 'Could not get activity from'));
         }
 
