@@ -8,7 +8,7 @@ import {
     WebResponse,
     ActivityTypes
 } from 'botbuilder';
-import { RequestEnvelope, IntentRequest, Session, interfaces, ResponseEnvelope, SessionEndedReason, SessionEndedRequest } from 'ask-sdk-model';
+import { RequestEnvelope, IntentRequest, Session, interfaces, SessionEndedRequest } from 'ask-sdk-model';
 import { getRequestType, getLocale, getUserId, createAskSdkError } from 'ask-sdk-core';
 import { retrieveBody } from '@botbuildercommunity/adapter-twitter';
 
