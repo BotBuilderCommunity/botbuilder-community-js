@@ -7,10 +7,30 @@
     "lib": "lib",
     "test": "test"
   },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "all": true,
+    "check-coverage": true,
+    "lines": 0,
+    "statements": 0,
+    "functions": 0,
+    "branches": 0,
+    "exclude": [
+      "**/*.d.ts",
+      "**/*.test.js"
+    ],
+    "reporter": [
+      "text",
+      "cobertura",
+      "html"
+    ],
+    "report-dir": "./.nyc_output/coverage"
+  },
   "scripts": {
     "clean": "rimraf ./lib",
     "build": "tsc",
-    "test": "mocha --require ts-node/register ./test/**/*.test.ts"
+    "test": "mocha --require ts-node/register ./test/**/*.test.ts",
+    "test-ci": "nyc mocha --require ts-node/register --reporter xunit --reporter-options output=./mocha-test-results.xml --reporter-options suiteName=$npm_package_name ./test/**/*.test.ts"
   },
   "repository": {
     "type": "git",
@@ -35,6 +55,7 @@
     "@types/mocha": "^5.2.7",
     "@types/node": "^13.1.0",
     "mocha": "^6.2.2",
+    "nyc": "^15.0.0",
     "rimraf": "^3.0.0",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.4"
