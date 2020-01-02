@@ -1,0 +1,66 @@
+{
+  "name": "@botbuildercommunity/utils",
+  "version": "0.1.0",
+  "description": "Helper functions and classes used by other (community) libraries.",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "all": true,
+    "check-coverage": true,
+    "lines": 0,
+    "statements": 0,
+    "functions": 0,
+    "branches": 0,
+    "exclude": [
+      "**/*.d.ts",
+      "**/*.test.js"
+    ],
+    "reporter": [
+      "text",
+      "cobertura",
+      "html"
+    ],
+    "report-dir": "./.nyc_output/coverage"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "tsc && nyc mocha",
+    "test-ci": "tsc && nyc mocha --reporter xunit --reporter-options output=./mocha-test-results.xml --reporter-options suiteName=$npm_package_name"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "keywords": [
+    "chatbots",
+    "bot framework",
+    "bot builder",
+    "utils"
+  ],
+  "contributors": [
+    "Bot Builder Community",
+    "Mick Vleeshouwer <mick@imick.nl>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
+  "dependencies": {
+    "botbuilder": "^4.7.0"
+  },
+  "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "mocha": "^6.2.2",
+    "nyc": "^15.0.0",
+    "rewire": "^4.0.1",
+    "typescript": "^3.7.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
