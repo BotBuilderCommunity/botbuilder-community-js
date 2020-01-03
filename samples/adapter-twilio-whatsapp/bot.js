@@ -22,8 +22,8 @@ class EchoBot extends ActivityHandler {
             await context.sendActivity(replyWithAttachment);
 
             // Did the user send their location?
-            if (context.activity.attachments && context.activity.attachments.lenght > 0) {
-                for (attachment of context.activity.attachments) {
+            if (context.activity.attachments && context.activity.attachments.length > 0) {
+                for (const attachment of context.activity.attachments) {
                     if (attachment.contentType === 'application/json' && attachment.content.type === 'GeoCoordinates') {
                         console.log('Received location!');
                         await context.sendActivity(`Received a location.

@@ -101,7 +101,7 @@ await context.sendActivity(reply);
 
 ## Receiving
 ```javascript
-if (context.activity.attachments && context.activity.attachments.lenght > 0) {
+if (context.activity.attachments && context.activity.attachments.length > 0) {
     for (attachment of context.activity.attachments) {
         if (attachment.contentType === 'application/json' && attachment.content.type === 'GeoCoordinates') {
             console.log('Received location!');
