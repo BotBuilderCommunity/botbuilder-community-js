@@ -383,7 +383,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         // Handle locations 
         // https://www.twilio.com/docs/sms/whatsapp/api#location-messages-with-whatsapp
         if (activity?.channelData?.persistentAction) {
-            message.persistentAction = activity.channelData.persistentAction as TwilioWhatsAppPersistentAction;
+            message.persistentAction = activity.channelData.persistentAction;
         }
 
         // Handle attachments

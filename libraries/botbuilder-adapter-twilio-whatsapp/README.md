@@ -52,7 +52,10 @@ server.post('/api/whatsapp/messages', (req, res) => {
 
 ## Advanced
 
-### Send attachments
+### Send and receive attachments
+The Bot Framework SDK supports the task of sending rich messages to the user. The Twilio WhatsApp adapter is using the same principles as the Bot Framework SDK. ([official documentation](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-add-media-attachments?view=azure-bot-service-4.0&tabs=javascript)).
+
+Attachments to WhatsApp messages can be of many different file types, including JPG, MP3, and PDF. [See more about the supported file types in the Twilio FAQs](https://support.twilio.com/hc/en-us/articles/360017961894-Sending-and-Receiving-Media-with-WhatsApp-Messaging-on-Twilio-Beta-). The file type can be found by looking at the `contentType` of the attachment.
 
 **Example**
 ```javascript
@@ -68,6 +71,45 @@ const reply = {
 };
 
 await context.sendActivity(reply);
+```
+
+>_You can send media messages up to 5 MB in size. At this time, Twilio will not transcode media for outgoing WhatsApp messages, so if you need to send a media object that is larger than 5 MB, please reduce the file size before sending it to Twilio._
+
+### Send and receive location messages
+Twilio WhatsApp offers the ability to send and receive [location messages](https://www.twilio.com/docs/sms/whatsapp/api#location-messages-with-whatsapp).
+
+#### Sending
+Location messages can be sent in two ways. By using a JSON attachment or by sending the location directly via channelData.
+
+**Attachment**
+```javascript
+    // Currently not supported
+```
+
+**ChannelData**
+```javascript
+const reply = {
+    type: 'message',
+    text: 'name', // The name of the location being sent (Location must exist in Google maps for the hyperlink to work on Mac/Windows WhatsApp client)
+    channelData: {
+        persistentAction: 'geo:{latitude},{longitude}|{label}'
+    }
+};
+
+await context.sendActivity(reply);
+```
+
+## Receiving
+```javascript
+if (context.activity.attachments && context.activity.attachments.lenght > 0) {
+    for (attachment of context.activity.attachments) {
+        if (attachment.contentType === 'application/json' && attachment.content.type === 'GeoCoordinates') {
+            console.log('Received location!');
+            await context.sendActivity(`Received a location.
+                            ${attachment.content.name} (${attachment.content.latitude}:${attachment.content.longitude})`);
+        }
+    }
+}
 ```
 
 ### Send proactive notifications
