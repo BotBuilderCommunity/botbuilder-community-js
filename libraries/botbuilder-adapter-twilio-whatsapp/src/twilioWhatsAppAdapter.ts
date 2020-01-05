@@ -195,6 +195,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         if (!message) {
             res.status(400);
             res.end();
+            return;
         }
 
         const isTwilioRequest = Twilio.validateRequest(authToken, signature, requestUrl, message);
@@ -204,6 +205,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
 
             res.status(401);
             res.end();
+            return;
         }
 
         // Handle events
@@ -301,7 +303,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     type: 'GeoCoordinates',
                     latitude: parseFloat(message.Latitude),
                     longitude: parseFloat(message.Longitude),
-                    name: message.Address
+                    name: message.Label + ' ' + message.Address
                 };
 
                 const attachment: Attachment = {
@@ -389,7 +391,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         // Handle attachments
         // One media attachment is supported per message, with a size limit of 5MB.
         // https://www.twilio.com/docs/sms/whatsapp/api#sending-a-freeform-whatsapp-message-with-media-attachment
-        if (activity?.attachments.length > 0) {
+        if (activity?.attachments?.length > 0) {
             const attachment = activity.attachments[0];
 
             // Check if contentUrl is provided
