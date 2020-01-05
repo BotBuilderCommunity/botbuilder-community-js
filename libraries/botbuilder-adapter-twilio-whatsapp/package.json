@@ -44,7 +44,9 @@
     "bot builder",
     "whatsapp adapter",
     "adapters",
-    "whatsapp"
+    "whatsapp",
+    "twilio",
+    "twilio-whatsapp"
   ],
   "contributors": [
     "Bot Builder Community",
@@ -61,8 +63,8 @@
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "mocha": "^6.2.2",
-    "nock": "^11.7.0",
+    "mocha": "^7.0.0",
+    "nock": "^11.7.1",
     "nyc": "^15.0.0",
     "typescript": "^3.7.4"
   },
