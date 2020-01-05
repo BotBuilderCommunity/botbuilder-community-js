@@ -96,7 +96,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         try {
             this.client = this.createTwilioClient(settings.accountSid, settings.authToken);
         } catch (error) {
-            throw new Error(`TwilioWhatsAppAdapter.constructor(): ${error.message}.`);
+            throw new Error(`TwilioWhatsAppAdapter.constructor(): ${ error.message }.`);
         }
     }
 
@@ -129,13 +129,13 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                         const res: MessageInstance = await this.client.messages.create(message);
                         responses.push({ id: res.sid });
                     } catch (error) {
-                        throw new Error(`TwilioWhatsAppAdapter.sendActivities(): ${error.message}.`);
+                        throw new Error(`TwilioWhatsAppAdapter.sendActivities(): ${ error.message }.`);
                     }
 
                     break;
                 default:
                     responses.push({} as ResourceResponse);
-                    console.warn(`TwilioWhatsAppAdapter.sendActivities(): Activities of type '${activity.type}' aren't supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.sendActivities(): Activities of type '${ activity.type }' aren't supported.`);
             }
         }
 
@@ -255,7 +255,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     activity.type = WhatsAppActivityTypes.MessageRead;
                     break;
                 default:
-                    console.warn(`TwilioWhatsAppAdapter.processActivity(): SmsStatus of type '${message.SmsStatus}' is not supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.processActivity(): SmsStatus of type '${ message.SmsStatus }' is not supported.`);
             }
         }
 
@@ -271,7 +271,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     activity.type = ActivityTypes.Message;
                     break;
                 default:
-                    console.warn(`TwilioWhatsAppAdapter.processActivity(): EventType of type '${message.EventType}' is not supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.processActivity(): EventType of type '${ message.EventType }' is not supported.`);
             }
         }
 
@@ -409,7 +409,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
             if (attachment.contentType === 'application/json') {
                 if (attachment.content?.type === 'GeoCoordinates') {
                     const geo = attachment.content;
-                    message.persistentAction = [`geo:${geo.latitude},${geo.longitude}${(geo.name ? `|${geo.name}` : '')}`]
+                    message.persistentAction = [`geo:${ geo.latitude },${ geo.longitude }${ (geo.name ? `|${ geo.name }` : '') }`];
                 }
             }
         }
