@@ -96,7 +96,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         try {
             this.client = this.createTwilioClient(settings.accountSid, settings.authToken);
         } catch (error) {
-            throw new Error(`TwilioWhatsAppAdapter.constructor(): ${ error.message }.`);
+            throw new Error(`TwilioWhatsAppAdapter.constructor(): ${error.message}.`);
         }
     }
 
@@ -129,13 +129,13 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                         const res: MessageInstance = await this.client.messages.create(message);
                         responses.push({ id: res.sid });
                     } catch (error) {
-                        throw new Error(`TwilioWhatsAppAdapter.sendActivities(): ${ error.message }.`);
+                        throw new Error(`TwilioWhatsAppAdapter.sendActivities(): ${error.message}.`);
                     }
 
                     break;
                 default:
                     responses.push({} as ResourceResponse);
-                    console.warn(`TwilioWhatsAppAdapter.sendActivities(): Activities of type '${ activity.type }' aren't supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.sendActivities(): Activities of type '${activity.type}' aren't supported.`);
             }
         }
 
@@ -255,7 +255,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     activity.type = WhatsAppActivityTypes.MessageRead;
                     break;
                 default:
-                    console.warn(`TwilioWhatsAppAdapter.processActivity(): SmsStatus of type '${ message.SmsStatus }' is not supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.processActivity(): SmsStatus of type '${message.SmsStatus}' is not supported.`);
             }
         }
 
@@ -271,7 +271,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     activity.type = ActivityTypes.Message;
                     break;
                 default:
-                    console.warn(`TwilioWhatsAppAdapter.processActivity(): EventType of type '${ message.EventType }' is not supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.processActivity(): EventType of type '${message.EventType}' is not supported.`);
             }
         }
 
@@ -303,7 +303,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     type: 'GeoCoordinates',
                     latitude: parseFloat(message.Latitude),
                     longitude: parseFloat(message.Longitude),
-                    name: message.Label + ' ' + message.Address
+                    name: message.Address
                 };
 
                 const attachment: Attachment = {
@@ -382,10 +382,14 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
             to: activity.conversation.id
         };
 
-        // Handle locations 
+        // Handle Persistant Accations (like locations)
         // https://www.twilio.com/docs/sms/whatsapp/api#location-messages-with-whatsapp
         if (activity?.channelData?.persistentAction) {
-            message.persistentAction = activity.channelData.persistentAction;
+            if (Array.isArray(activity.channelData.persistentAction)) {
+                message.persistentAction = activity.channelData.persistentAction;
+            } else {
+                message.persistentAction = [activity.channelData.persistentAction];
+            }
         }
 
         // Handle attachments
@@ -399,6 +403,14 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                 message.mediaUrl = attachment.contentUrl;
             } else {
                 console.warn(`TwilioWhatsAppAdapter.parseActivity(): Attachment ignored. Attachment without contentUrl is not supported.`);
+            }
+
+            // Check if attachment is location
+            if (attachment.contentType === 'application/json') {
+                if (attachment.content?.type === 'GeoCoordinates') {
+                    const geo = attachment.content;
+                    message.persistentAction = [`geo:${geo.latitude},${geo.longitude}${(geo.name ? `|${geo.name}` : '')}`]
+                }
             }
         }
 

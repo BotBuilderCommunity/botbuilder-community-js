@@ -83,12 +83,29 @@ Location messages can be sent in two ways. By using a JSON attachment or by send
 
 **Attachment**
 ```javascript
-    // Currently not supported
+const replyWithLocation = {
+    type: 'message',
+    text: `Microsoft Nederland`,
+    attachments: [
+        {
+            contentType: 'application/json',
+            content: {
+                elevation: null,
+                type: 'GeoCoordinates',
+                latitude: 52.3037702,
+                longitude: 4.7501761,
+                name: 'Schiphol'
+            }
+        }
+    ]
+};
+
+await context.sendActivity(replyWithLocation);
 ```
 
 **ChannelData**
 ```javascript
-const reply = {
+const replyWithLocation = {
     type: 'message',
     text: 'name', // The name of the location being sent (Location must exist in Google maps for the hyperlink to work on Mac/Windows WhatsApp client)
     channelData: {
@@ -96,7 +113,7 @@ const reply = {
     }
 };
 
-await context.sendActivity(reply);
+await context.sendActivity(replyWithLocation);
 ```
 
 ## Receiving
@@ -105,8 +122,8 @@ if (context.activity.attachments && context.activity.attachments.length > 0) {
     for (attachment of context.activity.attachments) {
         if (attachment.contentType === 'application/json' && attachment.content.type === 'GeoCoordinates') {
             console.log('Received location!');
-            await context.sendActivity(`Received a location.
-                            ${attachment.content.name} (${attachment.content.latitude}:${attachment.content.longitude})`);
+            await context.sendActivity('Received a location' +
+            `${attachment.name} (${attachment.content.name}) (${attachment.content.latitude},${attachment.content.longitude})`);
         }
     }
 }
