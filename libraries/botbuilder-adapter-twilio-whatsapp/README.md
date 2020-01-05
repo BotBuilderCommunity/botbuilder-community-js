@@ -130,7 +130,7 @@ if (context.activity.attachments && context.activity.attachments.length > 0) {
 ```
 
 ### Send proactive notifications
-Proactive notifications are supported using the default SDK functions. Read more about how to [send proactive notifications to users](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-proactive-message?view=azure-bot-service-4.0&tabs=csharp).
+Proactive notifications are supported using the same principles as the Bot Framework SDK. Read more about how to [send proactive notifications to users](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-proactive-message?view=azure-bot-service-4.0&tabs=csharp).
 
 A WhatsApp session begins with a user initiated message to your app. Sessions are valid for 24 hours after the most recently received message, during which time you can communicate with them using free form messages. In order to send a message outside the 24 hour Session window, you must use a pre-approved template (see [Sending Notifications](https://www.twilio.com/docs/sms/whatsapp/api#sending-notifications) section).
 
@@ -147,14 +147,14 @@ await whatsAppAdapter.continueConversation(conversationReference, async (turnCon
 
 ### Implement channel-specific functionality
 The Twilio WhatsApp channel is using `whatsapp` as the channel id. Within the TurnContext, you can use the following snippet to detect if the request is coming from the Twilio WhatsApp channel and implement your custom logic.
-`if (context.activity.channelId === 'whatsapp)'`
+`if (context.activity.channelId === 'whatsapp')`
 
-Using the `channelData` object on new message activities is not supported, since there is no WhatsApp specific functionality that isn't supported by the Bot Framework SDK.
+Using the `channelData` object on new message activities is currently only supported for passing PersistentAction's, like location messages.
 
 ### Monitor the status of your WhatsApp outbound message
-If you configure the `status callback url` in Twilio Configuration, multiple status events will be broadcasted to your bot. You can use this functionality to [monitor the status of your WhatsApp outbound message](https://www.twilio.com/docs/sms/whatsapp/api#monitor-the-status-of-your-whatsapp-outbound-message). Possible values include: 'messageRead', 'messageDelivered', 'messageSent', 'messageQueued', 'messageFailed'
+If you configure the `status callback url` in Twilio Configuration, multiple status events will be broadcasted to your bot. You can use this functionality to [monitor the status of your WhatsApp outbound message](https://www.twilio.com/docs/sms/whatsapp/api#monitor-the-status-of-your-whatsapp-outbound-message). Possible values include: 'messageRead', 'messageDelivered', 'messageSent', 'messageQueued', 'messageFailed'.
 
-Within the TurnContext you are able to differentiate between the events by reading the value of `context.activity.type`.
+Within the TurnContext you are able to differentiate between the events by reading the value of `context.activity.type`. If you are using an `ActivityHandler`, you should use the `onUnrecognizedActivityType` method.
 
 **Example (JavaScript)**
 ```javascript
