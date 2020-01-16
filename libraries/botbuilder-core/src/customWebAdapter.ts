@@ -2,6 +2,9 @@
 import { BotAdapter, WebRequest } from 'botbuilder';
 import { parse as parseQueryString } from 'qs';
 
+/**
+ * Adds helper functions to the default BotAdapter
+ */
 export abstract class CustomWebAdapter extends BotAdapter {
 
     /**
@@ -46,7 +49,8 @@ export abstract class CustomWebAdapter extends BotAdapter {
 
     /**
      * Copied from `botFrameworkAdapter.ts` to support { type: 'delay' } activity.
-     * @param timeout timeout in miliseconds, defaults to 1000
+     * @param timeout timeout in milliseconds
+     * @default 1000
      */
     protected delay(timeout: number): Promise<void> {
         timeout = (typeof timeout === 'number' ? timeout : 1000);
