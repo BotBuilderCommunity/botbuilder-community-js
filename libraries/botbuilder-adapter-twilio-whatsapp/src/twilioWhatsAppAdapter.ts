@@ -2,7 +2,6 @@ import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference
 import * as Twilio from 'twilio';
 import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
 import { parse } from 'qs';
-import { CustomWebAdapter } from '@botbuildercommunity/utils';
 
 /**
  * @module botbuildercommunity/adapter-twilio-whatsapp
@@ -52,7 +51,7 @@ export enum WhatsAppActivityTypes {
 /**
  * Bot Framework Adapter for [Twilio Whatsapp](https://www.twilio.com/whatsapp)
  */
-export class TwilioWhatsAppAdapter extends CustomWebAdapter {
+export class TwilioWhatsAppAdapter extends BotAdapter {
 
     protected readonly settings: TwilioWhatsAppAdapterSettings;
     protected readonly client: Twilio.Twilio;
@@ -93,7 +92,7 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
 
             switch (activity.type) {
                 case 'delay':
-                    await this.delay(typeof activity.value === 'number' ? activity.value : 1000);
+                    await delay(typeof activity.value === 'number' ? activity.value : 1000);
                     responses.push({} as ResourceResponse);
                     break;
                 case ActivityTypes.Message:
@@ -169,7 +168,7 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
         const signature = req.headers['x-twilio-signature'] || !req.headers['X-Twilio-Signature'];
         const authToken = this.settings.authToken;
         const requestUrl = this.settings.endpointUrl;
-        const message = await this.retrieveBody(req);
+        const message = await retrieveBody(req);
 
         if (!message) {
             res.status(400);
@@ -364,4 +363,49 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
         return message;
     }
 
+}
+
+/**
+ * Retrieve body from WebRequest
+ * @private
+ * @param req incoming web request
+ */
+function retrieveBody(req: WebRequest): Promise<any> {
+    return new Promise((resolve: any, reject: any): void => {
+
+        const type = req.headers['content-type'] || req.headers['Content-Type'];
+
+        if (req.body) {
+            try {
+                resolve(req.body);
+            } catch (err) {
+                reject(err);
+            }
+        } else {
+            let requestData = '';
+            req.on('data', (chunk: string): void => {
+                requestData += chunk;
+            });
+            req.on('end', (): void => {
+                try {
+                    if (type.includes('application/x-www-form-urlencoded')) {
+                        req.body = parse(requestData);
+                    } else {
+                        req.body = JSON.parse(requestData);
+                    }
+
+                    resolve(req.body);
+                } catch (err) {
+                    reject(err);
+                }
+            });
+        }
+    });
+}
+
+// Copied from `botFrameworkAdapter.ts` to support {type: 'delay' } activity.
+function delay(timeout: number): Promise<void> {
+    return new Promise((resolve): void => {
+        setTimeout(resolve, timeout);
+    });
 }
