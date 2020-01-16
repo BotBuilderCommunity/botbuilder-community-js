@@ -1,7 +1,7 @@
 {
-  "name": "@botbuildercommunity/utils",
-  "version": "0.1.0",
-  "description": "Helper functions and classes used by other (community) libraries.",
+  "name": "@botbuildercommunity/core",
+  "version": "1.0.0",
+  "description": "Classes used by other (community) libraries.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "directories": {
@@ -35,12 +35,6 @@
     "type": "git",
     "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
   },
-  "keywords": [
-    "chatbots",
-    "bot framework",
-    "bot builder",
-    "utils"
-  ],
   "contributors": [
     "Bot Builder Community",
     "Mick Vleeshouwer <mick@imick.nl>"
@@ -56,10 +50,9 @@
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "mocha": "^6.2.2",
+    "mocha": "^7.0.0",
     "nyc": "^15.0.0",
-    "rewire": "^4.0.1",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   },
   "publishConfig": {
     "access": "public"

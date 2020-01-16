@@ -1,0 +1,35 @@
+# BotBuilder Community Core
+
+This package is not to be used directly in your Bot Framework chatbot. Instead, it is used in other packages to minimize code repetition.
+
+## CustomWebAdapter
+
+The CustomWebAdapter adds two extra functions to the default `BotAdapter`. `retrieveBody` could be used to retrieve the body of a HTTP request and it will automatically serialize JSON and url-encoded content. `delay` could be used to parse the delay activity.
+
+```typescript
+import { CustomWebAdapter } from '@botbuildercommunity/core';
+
+export class YourOwnAdapter extends CustomWebAdapter {
+
+    public async processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void> {
+        const body = this.retrieveBody(req);
+        ...
+    }
+
+    public async sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]> {
+        const responses: ResourceResponse[] = [];
+
+        for (let i = 0; i < activities.length; i++) {
+            const activity: Partial<Activity> = activities[i];
+
+            switch (activity.type) {
+                case 'delay':
+                    await delay(activity.value);
+                    responses.push({} as ResourceResponse);
+                    break;
+                    ...
+            }
+        }
+    }
+}
+```
