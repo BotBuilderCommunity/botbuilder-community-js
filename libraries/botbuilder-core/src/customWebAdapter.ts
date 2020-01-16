@@ -12,7 +12,7 @@ export abstract class CustomWebAdapter extends BotAdapter {
      */
     protected retrieveBody(req: WebRequest): Promise<any> {
 
-        const type = req.headers['content-type'] || req.headers['Content-Type'];
+        const contentType = req.headers['content-type'] || req.headers['Content-Type'];
 
         return new Promise((resolve: any, reject: any): void => {
 
@@ -29,8 +29,7 @@ export abstract class CustomWebAdapter extends BotAdapter {
                 });
                 req.on('end', (): void => {
                     try {
-
-                        if (type.includes('application/x-www-form-urlencoded')) {
+                        if (contentType.includes('application/x-www-form-urlencoded')) {
                             req.body = parseQueryString(requestData);
                         } else {
                             req.body = JSON.parse(requestData);
@@ -45,8 +44,13 @@ export abstract class CustomWebAdapter extends BotAdapter {
         });
     }
 
-    // Copied from `botFrameworkAdapter.ts` to support { type: 'delay' } activity.
+    /**
+     * Copied from `botFrameworkAdapter.ts` to support { type: 'delay' } activity.
+     * @param timeout timeout in miliseconds, defaults to 1000
+     */
     protected delay(timeout: number): Promise<void> {
+        timeout = (typeof timeout === 'number' ? timeout : 1000);
+
         return new Promise((resolve): void => {
             setTimeout(resolve, timeout);
         });
