@@ -1,12 +1,24 @@
-import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
+import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse, TokenResponse } from 'botbuilder';
 import * as Twilio from 'twilio';
 import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
 import { parse } from 'qs';
+import {
+    AppCredentials,
+    JwtTokenValidation,
+    MicrosoftAppCredentials,
+    SimpleCredentialProvider,
+    TokenApiClient,
+    TokenApiModels
+} from "botframework-connector";
+import { USER_AGENT } from 'botbuilder/src/botFrameworkAdapter';
+
 
 /**
  * @module botbuildercommunity/adapter-twilio-whatsapp
  */
 
+const OAUTH_ENDPOINT = "https://api.botframework.com";
+const US_GOV_OAUTH_ENDPOINT = "https://api.botframework.azure.us";
 
 /**
  * Settings used to configure a `TwilioWhatsAppAdapter` instance.
@@ -31,6 +43,31 @@ export interface TwilioWhatsAppAdapterSettings {
      * https://www.twilio.com/docs/usage/security#validating-requests
      */
     endpointUrl: string;
+
+    /**
+     * The ID assigned to your bot in the [Bot Framework Portal](https://dev.botframework.com/).
+     */
+    appId: string;
+
+    /**
+     * The password assigned to your bot in the [Bot Framework Portal](https://dev.botframework.com/).
+     */
+    appPassword: string;
+
+    /**
+     * Optional. The tenant to acquire the bot-to-channel token from.
+     */
+    channelAuthTenant?: string;
+
+    /**
+     * Optional. The OAuth API endpoint for your bot to use.
+     */
+    oAuthEndpoint?: string;
+
+    /**
+     * Optional. The channel service option for this bot to validate connections from Azure or other channel locations.
+     */
+    channelService?: string;
 }
 
 /**
@@ -57,24 +94,51 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
     protected readonly client: Twilio.Twilio;
     protected readonly channel: string = 'whatsapp';
 
+    // OAuth Properties
+    protected readonly credentials: AppCredentials;
+    protected readonly credentialsProvider: SimpleCredentialProvider;
     /**
      * Creates a new TwilioWhatsAppAdapter instance.
      * @param settings configuration settings for the adapter.
      */
-    public constructor(settings: TwilioWhatsAppAdapterSettings) {
+    public constructor(settings?: Partial<TwilioWhatsAppAdapterSettings>) {
         super();
 
-        this.settings = settings;
+        this.settings = {
+            appId: "",
+            appPassword: "",
+            accountSid: "",
+            authToken: "",
+            phoneNumber: "",
+            endpointUrl: "",
+            ...settings
+        };
+
+        this.credentials = new MicrosoftAppCredentials(
+            this.settings.appId,
+            this.settings.appPassword || "",
+            this.settings.channelAuthTenant
+        );
+
+        this.credentialsProvider = new SimpleCredentialProvider(
+            this.credentials.appId,
+            this.settings.appPassword || ""
+        );
 
         // Add required `whatsapp:` prefix if not exists
-        if (!this.settings.phoneNumber.startsWith('whatsapp:')) {
-            this.settings.phoneNumber = 'whatsapp:' + this.settings.phoneNumber;
+        if (!this.settings.phoneNumber.startsWith("whatsapp:")) {
+            this.settings.phoneNumber = "whatsapp:" + this.settings.phoneNumber;
         }
 
         try {
-            this.client = this.createTwilioClient(settings.accountSid, settings.authToken);
+            this.client = this.createTwilioClient(
+                this.settings.accountSid,
+                this.settings.authToken
+            );
         } catch (error) {
-            throw new Error(`TwilioWhatsAppAdapter.constructor(): ${ error.message }.`);
+            throw new Error(
+                `TwilioWhatsAppAdapter.constructor(): ${error.message}.`
+            );
         }
     }
 
@@ -107,13 +171,13 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                         const res: MessageInstance = await this.client.messages.create(message);
                         responses.push({ id: res.sid });
                     } catch (error) {
-                        throw new Error(`TwilioWhatsAppAdapter.sendActivities(): ${ error.message }.`);
+                        throw new Error(`TwilioWhatsAppAdapter.sendActivities(): ${error.message}.`);
                     }
 
                     break;
                 default:
                     responses.push({} as ResourceResponse);
-                    console.warn(`TwilioWhatsAppAdapter.sendActivities(): Activities of type '${ activity.type }' aren't supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.sendActivities(): Activities of type '${activity.type}' aren't supported.`);
             }
         }
 
@@ -231,7 +295,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     activity.type = WhatsAppActivityTypes.MessageRead;
                     break;
                 default:
-                    console.warn(`TwilioWhatsAppAdapter.processActivity(): SmsStatus of type '${ message.SmsStatus }' is not supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.processActivity(): SmsStatus of type '${message.SmsStatus}' is not supported.`);
             }
         }
 
@@ -247,7 +311,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     activity.type = ActivityTypes.Message;
                     break;
                 default:
-                    console.warn(`TwilioWhatsAppAdapter.processActivity(): EventType of type '${ message.EventType }' is not supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.processActivity(): EventType of type '${message.EventType}' is not supported.`);
             }
         }
 
@@ -361,6 +425,173 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         }
 
         return message;
+    }
+
+    /**
+     * Asynchronously attempts to retrieve the token for a user that's in a login flow.
+     *
+     * @param context The context object for the turn.
+     * @param connectionName The name of the auth connection to use.
+     * @param magicCode Optional. The validation code the user entered.
+     *
+     * @returns A [TokenResponse](xref:botframework-schema.TokenResponse) object that contains the user token.
+     */
+    public async getUserToken(
+        context: TurnContext,
+        connectionName: string,
+        magicCode?: string
+    ): Promise<TokenResponse> {
+        if (!context.activity.from || !context.activity.from.id) {
+            throw new Error(
+                `TwilioWhatsappAdatper.getUserToken(): missing from or from.id`
+            );
+        }
+        if (!connectionName) {
+            throw new Error(
+                "getUserToken() requires a connectionName but none was provided."
+            );
+        }
+        // this.checkEmulatingOAuthCards(context);
+        const userId: string = context.activity.from.id;
+        const url: string = this.oauthApiUrl();
+        const client: TokenApiClient = this.createTokenApiClient(url);
+
+        const result: TokenApiModels.UserTokenGetTokenResponse = await client.userToken.getToken(
+            userId,
+            connectionName,
+            { code: magicCode, channelId: context.activity.channelId }
+        );
+        if (!result || !result.token || result._response.status == 404) {
+            return undefined!;
+        } else {
+            return result as TokenResponse;
+        }
+    }
+
+    /**
+     * Asynchronously signs out the user from the token server.
+     *
+     * @param context The context object for the turn.
+     * @param connectionName The name of the auth connection to use.
+     * @param userId The ID of user to sign out.
+     */
+    public async signOutUser(
+        context: TurnContext,
+        connectionName: string,
+        userId?: string
+    ): Promise<void> {
+        if (!context.activity.from || !context.activity.from.id) {
+            throw new Error(
+                `BotFrameworkAdapter.signOutUser(): missing from or from.id`
+            );
+        }
+        if (!userId) {
+            userId = context.activity.from.id;
+        }
+
+        const url: string = this.oauthApiUrl();
+        const client: TokenApiClient = this.createTokenApiClient(url);
+        await client.userToken.signOut(userId, {
+            connectionName: connectionName,
+            channelId: context.activity.channelId
+        });
+    }
+
+    public async getSignInLink(
+        context: TurnContext,
+        connectionName: string
+    ): Promise<string> {
+        const conversation: Partial<ConversationReference> = TurnContext.getConversationReference(
+            context.activity
+        );
+        const url: string = this.oauthApiUrl();
+        const client: TokenApiClient = this.createTokenApiClient(url);
+        const state: any = {
+            ConnectionName: connectionName,
+            Conversation: conversation,
+            MsAppId: (client.credentials as AppCredentials).appId
+        };
+
+        const finalState: string = Buffer.from(JSON.stringify(state)).toString(
+            "base64"
+        );
+
+        return (
+            await client.botSignIn.getSignInUrl(finalState, {
+                channelId: context.activity.channelId
+            })
+        )._response.bodyAsText;
+    }
+
+    /**
+     * Asynchronously gets Aad tokens
+     *
+     * @param context The context object for the turn.
+     * @param userId Optional. If present, the ID of the user to retrieve the token status for.
+     *      Otherwise, the ID of the user who sent the current activity is used.
+     * @param includeFilter Optional. A comma-separated list of connection's to include. If present,
+     *      the `includeFilter` parameter limits the tokens this method returns.
+     *
+     * @returns The [TokenStatus](xref:botframework-connector.TokenStatus) objects retrieved.
+     */
+    public async getAadTokens(
+        context: TurnContext,
+        connectionName: string,
+        resourceUrls: string[]
+    ): Promise<{
+        [propertyName: string]: TokenResponse;
+    }> {
+        if (!context.activity.from || !context.activity.from.id) {
+            throw new Error(
+                `BotFrameworkAdapter.getAadTokens(): missing from or from.id`
+            );
+        }
+        const userId: string = context.activity.from.id;
+        const url: string = this.oauthApiUrl();
+        const client: TokenApiClient = this.createTokenApiClient(url);
+
+        return (
+            await client.userToken.getAadTokens(
+                userId,
+                connectionName,
+                { resourceUrls: resourceUrls },
+                { channelId: context.activity.channelId }
+            )
+        )._response.parsedBody as { [propertyName: string]: TokenResponse };
+    }
+
+    /**
+     * Gets the OAuth API endpoint.
+     *
+     * @remarks
+     * Override this in a derived class to create a mock OAuth API endpoint for unit testing.
+     */
+    protected oauthApiUrl(): string {
+        return this.settings.oAuthEndpoint
+            ? this.settings.oAuthEndpoint
+            : JwtTokenValidation.isGovernment(
+                this.settings.channelService
+                    ? this.settings.channelService
+                    : ""
+            )
+                ? US_GOV_OAUTH_ENDPOINT
+                : OAUTH_ENDPOINT;
+    }
+
+    /**
+     * Creates an OAuth API client.
+     *
+     * @param serviceUrl The client's service URL.
+     *
+     * @remarks
+     * Override this in a derived class to create a mock OAuth API client for unit testing.
+     */
+    protected createTokenApiClient(serviceUrl: string): TokenApiClient {
+        const client = new TokenApiClient(this.credentials, {
+            baseUri: serviceUrl,
+            userAgent: USER_AGENT
+        });
+        return client;
     }
 
 }
