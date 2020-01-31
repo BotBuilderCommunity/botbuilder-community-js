@@ -9,7 +9,7 @@ import {
     SimpleCredentialProvider,
     TokenApiClient,
     TokenApiModels
-} from "botframework-connector";
+} from 'botframework-connector';
 import { USER_AGENT } from 'botbuilder/src/botFrameworkAdapter';
 
 
@@ -17,8 +17,8 @@ import { USER_AGENT } from 'botbuilder/src/botFrameworkAdapter';
  * @module botbuildercommunity/adapter-twilio-whatsapp
  */
 
-const OAUTH_ENDPOINT = "https://api.botframework.com";
-const US_GOV_OAUTH_ENDPOINT = "https://api.botframework.azure.us";
+const OAUTH_ENDPOINT = 'https://api.botframework.com';
+const US_GOV_OAUTH_ENDPOINT = 'https://api.botframework.azure.us';
 
 /**
  * Settings used to configure a `TwilioWhatsAppAdapter` instance.
@@ -38,7 +38,7 @@ export interface TwilioWhatsAppAdapterSettings {
      */
     phoneNumber: string;
     /**
-     * Full URL of the request URL you specify for your phone number or app, 
+     * Full URL of the request URL you specify for your phone number or app,
      * from the protocol (https...) through the end of the query string (everything after the ?).
      * https://www.twilio.com/docs/usage/security#validating-requests
      */
@@ -105,29 +105,29 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         super();
 
         this.settings = {
-            appId: "",
-            appPassword: "",
-            accountSid: "",
-            authToken: "",
-            phoneNumber: "",
-            endpointUrl: "",
+            appId: '',
+            appPassword: '',
+            accountSid: '',
+            authToken: '',
+            phoneNumber: '',
+            endpointUrl: '',
             ...settings
         };
 
         this.credentials = new MicrosoftAppCredentials(
             this.settings.appId,
-            this.settings.appPassword || "",
+            this.settings.appPassword || '',
             this.settings.channelAuthTenant
         );
 
         this.credentialsProvider = new SimpleCredentialProvider(
             this.credentials.appId,
-            this.settings.appPassword || ""
+            this.settings.appPassword || ''
         );
 
         // Add required `whatsapp:` prefix if not exists
-        if (!this.settings.phoneNumber.startsWith("whatsapp:")) {
-            this.settings.phoneNumber = "whatsapp:" + this.settings.phoneNumber;
+        if (!this.settings.phoneNumber.startsWith('whatsapp:')) {
+            this.settings.phoneNumber = 'whatsapp:' + this.settings.phoneNumber;
         }
 
         try {
@@ -137,7 +137,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
             );
         } catch (error) {
             throw new Error(
-                `TwilioWhatsAppAdapter.constructor(): ${error.message}.`
+                `TwilioWhatsAppAdapter.constructor(): ${ error.message }.`
             );
         }
     }
@@ -171,13 +171,13 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                         const res: MessageInstance = await this.client.messages.create(message);
                         responses.push({ id: res.sid });
                     } catch (error) {
-                        throw new Error(`TwilioWhatsAppAdapter.sendActivities(): ${error.message}.`);
+                        throw new Error(`TwilioWhatsAppAdapter.sendActivities(): ${ error.message }.`);
                     }
 
                     break;
                 default:
                     responses.push({} as ResourceResponse);
-                    console.warn(`TwilioWhatsAppAdapter.sendActivities(): Activities of type '${activity.type}' aren't supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.sendActivities(): Activities of type '${ activity.type }' aren't supported.`);
             }
         }
 
@@ -295,7 +295,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     activity.type = WhatsAppActivityTypes.MessageRead;
                     break;
                 default:
-                    console.warn(`TwilioWhatsAppAdapter.processActivity(): SmsStatus of type '${message.SmsStatus}' is not supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.processActivity(): SmsStatus of type '${ message.SmsStatus }' is not supported.`);
             }
         }
 
@@ -311,7 +311,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                     activity.type = ActivityTypes.Message;
                     break;
                 default:
-                    console.warn(`TwilioWhatsAppAdapter.processActivity(): EventType of type '${message.EventType}' is not supported.`);
+                    console.warn(`TwilioWhatsAppAdapter.processActivity(): EventType of type '${ message.EventType }' is not supported.`);
             }
         }
 
@@ -370,7 +370,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
 
     /**
      * Transform Bot Framework Activity to a Twilio Message.
-     * 
+     *
      * @param activity Activity to transform
      */
     protected parseActivity(activity: Partial<Activity>): any {
@@ -448,7 +448,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         }
         if (!connectionName) {
             throw new Error(
-                "getUserToken() requires a connectionName but none was provided."
+                'getUserToken() requires a connectionName but none was provided.'
             );
         }
         // this.checkEmulatingOAuthCards(context);
@@ -462,7 +462,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
             { code: magicCode, channelId: context.activity.channelId }
         );
         if (!result || !result.token || result._response.status == 404) {
-            return undefined!;
+            return undefined;
         } else {
             return result as TokenResponse;
         }
@@ -513,7 +513,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         };
 
         const finalState: string = Buffer.from(JSON.stringify(state)).toString(
-            "base64"
+            'base64'
         );
 
         return (
@@ -539,8 +539,8 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         connectionName: string,
         resourceUrls: string[]
     ): Promise<{
-        [propertyName: string]: TokenResponse;
-    }> {
+            [propertyName: string]: TokenResponse;
+        }> {
         if (!context.activity.from || !context.activity.from.id) {
             throw new Error(
                 `BotFrameworkAdapter.getAadTokens(): missing from or from.id`
@@ -572,7 +572,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
             : JwtTokenValidation.isGovernment(
                 this.settings.channelService
                     ? this.settings.channelService
-                    : ""
+                    : ''
             )
                 ? US_GOV_OAUTH_ENDPOINT
                 : OAUTH_ENDPOINT;
