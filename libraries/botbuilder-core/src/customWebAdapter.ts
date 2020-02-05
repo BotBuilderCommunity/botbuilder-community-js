@@ -1,4 +1,3 @@
-
 import { BotAdapter, WebRequest, BotFrameworkAdapterSettings, IUserTokenProvider, TokenResponse, TurnContext, ConversationReference } from 'botbuilder';
 import { parse as parseQueryString } from 'qs';
 
@@ -29,7 +28,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
      * Creates a new CustomWebAdapter instance.
      * @param botFrameworkAdapterSettings configuration settings for the adapter.
      */
-    constructor(botFrameworkAdapterSettings?: BotFrameworkAdapterSettings) {
+    public constructor(botFrameworkAdapterSettings?: BotFrameworkAdapterSettings) {
         super();
         this.oAuthSettings = botFrameworkAdapterSettings;
 
@@ -210,8 +209,8 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         connectionName: string,
         resourceUrls: string[]
     ): Promise<{
-        [propertyName: string]: TokenResponse;
-    }> {
+            [propertyName: string]: TokenResponse;
+        }> {
         if (!context.activity.from || !context.activity.from.id) {
             throw new Error(
                 `CustomWebAdapter.getAadTokens(): missing from or from.id`
@@ -264,6 +263,5 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         });
         return client;
     }
-
 
 }
