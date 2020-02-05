@@ -6,6 +6,8 @@ This package is not to be used directly in your Bot Framework chatbot. Instead, 
 
 The CustomWebAdapter adds two extra functions to the default `BotAdapter`. `retrieveBody` could be used to retrieve the body of a HTTP request and it will automatically serialize JSON and url-encoded content. `delay` could be used to parse the delay activity.
 
+It is possible to use the Bot Service OAuth functionality by passing in a `BotFrameworkAdapterSettings` object. If you want to implement your own OAuth functionality in `YourOwnAdapter`, you could override the existing OAuth functions found in `IUserTokenProvider`.
+
 ```typescript
 import { CustomWebAdapter } from '@botbuildercommunity/core';
 
