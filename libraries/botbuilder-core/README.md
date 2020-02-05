@@ -11,6 +11,13 @@ import { CustomWebAdapter } from '@botbuildercommunity/core';
 
 export class YourOwnAdapter extends CustomWebAdapter {
 
+    protected readonly yourOwnAdapterSettings: YourOwnAdapterSettings;
+
+    public constructor(yourOwnAdapterSettings: YourOwnAdapterSettings, botFrameworkAdapterSettings?: BotFrameworkAdapterSettings) {
+        // Add optional botFrameworkAdapterSettings to enable OAuth on custom adapters
+        super(botFrameworkAdapterSettings);
+    }
+
     public async processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void> {
         const body = this.retrieveBody(req);
         ...
