@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "botbuilder": "^4.7.0",
+    "botbuilder": "^4.7.1",
     "botframework-connector": "^4.7.1",
     "qs": "^6.9.1"
   },

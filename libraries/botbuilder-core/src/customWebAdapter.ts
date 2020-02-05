@@ -9,10 +9,11 @@ import {
     TokenApiClient,
     TokenApiModels
 } from 'botframework-connector';
-import { USER_AGENT } from 'botbuilder/src/botFrameworkAdapter';
+// import { USER_AGENT } from 'botbuilder/src/botFrameworkAdapter';
 
 const OAUTH_ENDPOINT = 'https://api.botframework.com';
 const US_GOV_OAUTH_ENDPOINT = 'https://api.botframework.azure.us';
+const USER_AGENT = 'Microsoft-BotFramework/3.1 BotBuilder/CustomWebAdapter';
 
 /**
  * Adds helper functions to the default BotAdapter
@@ -30,18 +31,22 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
      */
     public constructor(botFrameworkAdapterSettings?: BotFrameworkAdapterSettings) {
         super();
+
         this.oAuthSettings = botFrameworkAdapterSettings;
 
-        this.credentials = new MicrosoftAppCredentials(
-            this.oAuthSettings.appId,
-            this.oAuthSettings.appPassword || '',
-            this.oAuthSettings.channelAuthTenant
-        );
+        if (this.oAuthSettings?.appId) {
+            this.credentials = new MicrosoftAppCredentials(
+                this.oAuthSettings.appId,
+                this.oAuthSettings.appPassword || '',
+                this.oAuthSettings.channelAuthTenant
+            );
 
-        this.credentialsProvider = new SimpleCredentialProvider(
-            this.credentials.appId,
-            this.oAuthSettings.appPassword || ''
-        );
+            this.credentialsProvider = new SimpleCredentialProvider(
+                this.credentials.appId,
+                this.oAuthSettings.appPassword || ''
+            );
+        }
+
     }
 
     /**
@@ -209,8 +214,8 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         connectionName: string,
         resourceUrls: string[]
     ): Promise<{
-            [propertyName: string]: TokenResponse;
-        }> {
+        [propertyName: string]: TokenResponse;
+    }> {
         if (!context.activity.from || !context.activity.from.id) {
             throw new Error(
                 `CustomWebAdapter.getAadTokens(): missing from or from.id`
