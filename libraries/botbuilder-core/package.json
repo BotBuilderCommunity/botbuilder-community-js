@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "@types/qs": "^6.9.0",
     "mocha": "^7.0.0",
     "nyc": "^15.0.0",
     "typescript": "^3.7.5"

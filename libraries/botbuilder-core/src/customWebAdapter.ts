@@ -9,7 +9,6 @@ import {
     TokenApiClient,
     TokenApiModels
 } from 'botframework-connector';
-// import { USER_AGENT } from 'botbuilder/src/botFrameworkAdapter';
 
 const OAUTH_ENDPOINT = 'https://api.botframework.com';
 const US_GOV_OAUTH_ENDPOINT = 'https://api.botframework.azure.us';
@@ -214,8 +213,8 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         connectionName: string,
         resourceUrls: string[]
     ): Promise<{
-        [propertyName: string]: TokenResponse;
-    }> {
+            [propertyName: string]: TokenResponse;
+        }> {
         if (!context.activity.from || !context.activity.from.id) {
             throw new Error(
                 `CustomWebAdapter.getAadTokens(): missing from or from.id`
