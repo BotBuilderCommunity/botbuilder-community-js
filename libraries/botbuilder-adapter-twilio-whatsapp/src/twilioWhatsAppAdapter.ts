@@ -382,7 +382,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
             to: activity.conversation.id
         };
 
-        // Handle Persistant Accations (like locations)
+        // Handle Persistant Actions (like locations)
         // https://www.twilio.com/docs/sms/whatsapp/api#location-messages-with-whatsapp
         if (activity?.channelData?.persistentAction) {
             if (Array.isArray(activity.channelData.persistentAction)) {

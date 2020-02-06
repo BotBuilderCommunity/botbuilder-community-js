@@ -7,7 +7,7 @@ The Twilio WhatsApp adapter for the Microsoft Bot Framework allows you to add an
 
 This adapter supports the limited capabilities of Twilio WhatsApp, including;
 * Send and receive text messages
-* Send and receive text messages with attachment (`image`, `audio`, `video`, `document`)
+* Send and receive text messages with attachment (`image`, `audio`, `video`, `document`, `location`)
 * Send proactive notifications
 * Track message deliveries (`sent`, `delivered`, `read` receipts)
 
