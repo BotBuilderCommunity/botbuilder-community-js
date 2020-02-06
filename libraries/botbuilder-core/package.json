@@ -37,7 +37,8 @@
   },
   "contributors": [
     "Bot Builder Community",
-    "Mick Vleeshouwer <mick@imick.nl>"
+    "Mick Vleeshouwer <mick@imick.nl>",
+    "Néstor Alonso Viña <nalonso@student.42.fr>"
   ],
   "license": "MIT",
   "bugs": {
