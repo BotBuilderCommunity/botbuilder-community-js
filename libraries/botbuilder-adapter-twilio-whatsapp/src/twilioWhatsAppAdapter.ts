@@ -33,29 +33,6 @@ export interface TwilioWhatsAppAdapterSettings {
 }
 
 /**
- * PersistentAction can be used to send location
- * https://www.twilio.com/docs/sms/whatsapp/api#location-messages-with-whatsapp
- */
-export interface TwilioWhatsAppPersistentAction {
-    /**
-     * The name of the location being sent (Location must exist in Google maps for the hyperlink to work on Mac/Windows WhatsApp client)
-     */
-    name: string;
-    /**
-     * Latitude of the location being sent
-     */
-    latitude: string;
-    /**
-     * Longitude of the location being sent
-     */
-    longitude: string;
-    /**
-     * Optional free-form text to display under the location `name`
-     */
-    label?: string;
-}
-
-/**
  * Defines values for WhatsAppActivityTypes.
  * Possible values include: 'messageRead', 'messageDelivered', 'messageSent', 'messageQueued', 'messageFailed'
  * https://www.twilio.com/docs/sms/whatsapp/api#monitor-the-status-of-your-whatsapp-outbound-message
