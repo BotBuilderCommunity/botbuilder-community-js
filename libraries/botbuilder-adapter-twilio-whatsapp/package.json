@@ -58,15 +58,15 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "botbuilder": "^4.7.0",
-    "twilio": "^3.39.1"
+    "botbuilder": "^4.7.1",
+    "twilio": "^3.39.4"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "mocha": "^7.0.0",
-    "nock": "^11.7.1",
+    "mocha": "^7.0.1",
+    "nock": "^11.7.2",
     "nyc": "^15.0.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   },
   "publishConfig": {
     "access": "public"
