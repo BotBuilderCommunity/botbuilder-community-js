@@ -52,6 +52,12 @@ server.post('/api/whatsapp/messages', (req, res) => {
 
 ## Advanced
 
+* [Send and receive attachments](#send-and-receive-attachments)
+* [Send and receive location messages](#send-and-receive-location-messages)
+* [Send proactive notifications](#send-proactive-notifications)
+* [Implement channel-specific functionality](#implement-channel-specific-functionality)
+* [Monitor the status of your WhatsApp outbound message](#monitor-the-status-of-your-whatsapp-outbound-message)
+
 ### Send and receive attachments
 The Bot Framework SDK supports the task of sending rich messages to the user. The Twilio WhatsApp adapter is using the same principles as the Bot Framework SDK. ([official documentation](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-add-media-attachments?view=azure-bot-service-4.0&tabs=javascript)).
 
@@ -116,7 +122,7 @@ const replyWithLocation = {
 await context.sendActivity(replyWithLocation);
 ```
 
-## Receiving
+#### Receiving
 ```javascript
 if (context.activity.attachments && context.activity.attachments.length > 0) {
     for (attachment of context.activity.attachments) {
