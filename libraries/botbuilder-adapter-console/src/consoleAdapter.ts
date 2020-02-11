@@ -7,7 +7,7 @@ import { createInterface, ReadLine, ReadLineOptions } from 'readline';
 
 export class ConsoleAdapter extends BotAdapter {
 
-    private _nextID: number = 0;
+    private _nextID = 0;
     private readonly _ref: ConversationReference;
     private readonly _lineOptions: ReadLineOptions = {
         input: process.stdin,

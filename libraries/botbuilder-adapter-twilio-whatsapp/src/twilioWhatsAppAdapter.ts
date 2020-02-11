@@ -1,12 +1,11 @@
-import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse } from 'botbuilder';
-import * as Twilio from 'twilio';
-import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
-import { parse } from 'qs';
-
 /**
  * @module botbuildercommunity/adapter-twilio-whatsapp
  */
 
+import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse, Attachment, GeoCoordinates } from 'botbuilder';
+import * as Twilio from 'twilio';
+import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
+import { parse } from 'qs';
 
 /**
  * Settings used to configure a `TwilioWhatsAppAdapter` instance.
@@ -173,6 +172,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         if (!message) {
             res.status(400);
             res.end();
+            return;
         }
 
         const isTwilioRequest = Twilio.validateRequest(authToken, signature, requestUrl, message);
@@ -182,6 +182,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
 
             res.status(401);
             res.end();
+            return;
         }
 
         // Handle events
@@ -251,23 +252,44 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
             }
         }
 
+        activity.attachments = [];
+
         // Message Received
         if (activity.type === ActivityTypes.Message) {
 
             // Has attachments?
             if (message.NumMedia && parseInt(message.NumMedia) > 0) {
 
-                activity.attachments = [];
                 const amount = parseInt(message.NumMedia);
 
                 for (let i = 0; i < amount; i++) {
-                    const attachment = {
+                    const attachment: Attachment = {
                         contentType: message['MediaContentType' + i],
                         contentUrl: message['MediaUrl' + i]
                     };
                     activity.attachments.push(attachment);
                 }
 
+            }
+
+            // Has location?
+            // Latitude=37.7879277&Longitude=-122.3937508&Address=375+Beale+St%2C+San+Francisco%2C+CA+94105
+            if (message.Latitude && message.Longitude) {
+                const geo: GeoCoordinates = {
+                    elevation: null,
+                    type: 'GeoCoordinates',
+                    latitude: parseFloat(message.Latitude),
+                    longitude: parseFloat(message.Longitude),
+                    name: message.Address
+                };
+
+                const attachment: Attachment = {
+                    contentType: 'application/json',
+                    content: geo,
+                    name: message.Address
+                };
+
+                activity.attachments.push(attachment);
             }
 
         }
@@ -329,22 +351,28 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         // Handle mentions
         // Not supported by current Twilio WhatsApp API yet
 
-        // Handle locations
-        // Not supported by current Twilio WhatsApp API yet
-
         // Create new Message for Twilio
         // @ts-ignore Using any since MessageInstance interface doesn't include `mediaUrl`
         const message: any = {
             body: activity.text,
             from: this.settings.phoneNumber,
-            to: activity.conversation.id,
-            mediaUrl: undefined
+            to: activity.conversation.id
         };
+
+        // Handle Persistant Actions (like locations)
+        // https://www.twilio.com/docs/sms/whatsapp/api#location-messages-with-whatsapp
+        if (activity?.channelData?.persistentAction) {
+            if (Array.isArray(activity.channelData.persistentAction)) {
+                message.persistentAction = activity.channelData.persistentAction;
+            } else {
+                message.persistentAction = [activity.channelData.persistentAction];
+            }
+        }
 
         // Handle attachments
         // One media attachment is supported per message, with a size limit of 5MB.
         // https://www.twilio.com/docs/sms/whatsapp/api#sending-a-freeform-whatsapp-message-with-media-attachment
-        if (activity.attachments && activity.attachments.length > 0) {
+        if (activity?.attachments?.length > 0) {
             const attachment = activity.attachments[0];
 
             // Check if contentUrl is provided
@@ -352,6 +380,14 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
                 message.mediaUrl = attachment.contentUrl;
             } else {
                 console.warn(`TwilioWhatsAppAdapter.parseActivity(): Attachment ignored. Attachment without contentUrl is not supported.`);
+            }
+
+            // Check if attachment is location
+            if (attachment.contentType === 'application/json') {
+                if (attachment.content?.type === 'GeoCoordinates') {
+                    const geo = attachment.content;
+                    message.persistentAction = [`geo:${ geo.latitude },${ geo.longitude }${ (geo.name ? `|${ geo.name }` : '') }`];
+                }
             }
         }
 

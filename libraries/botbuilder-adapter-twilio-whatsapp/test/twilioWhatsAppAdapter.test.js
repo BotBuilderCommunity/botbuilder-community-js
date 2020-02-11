@@ -2,9 +2,7 @@ const assert = require('assert');
 const { TwilioWhatsAppAdapter } = require("../lib/twilioWhatsAppAdapter");
 const Twilio = require('twilio').Twilio;
 
-describe('TwilioWhatsAppAdapter', function () {
-
-    let adapter;
+describe('TwilioWhatsAppAdapter', () => {
 
     const fakeAccountSid = 'AC8db973kwl8xp1lz94kjf0bma5pez8c'; // 34 characters
     const fakeAuthToken = '96yc5z9g44vl4ks2p1suc42yb9p4lpmu'; // 32 characters
@@ -12,7 +10,7 @@ describe('TwilioWhatsAppAdapter', function () {
     const fakePhoneNumber = '+14123456789';
     const fakeWhatsAppNumber = 'whatsapp:' + fakePhoneNumber;
 
-    it('should create a TwilioWhatsAppAdapter object', function () {
+    it('should create a TwilioWhatsAppAdapter object', () => {
         const whatsAppAdapter = new TwilioWhatsAppAdapter({
             accountSid: fakeAccountSid,
             authToken: fakeAuthToken,
@@ -32,7 +30,7 @@ describe('TwilioWhatsAppAdapter', function () {
         assert((whatsAppAdapter.client.accountSid === fakeAccountSid), 'Twilio client does not contain accountSid');
     });
 
-    it('should add whatsapp: prefix if missing', function () {
+    it('should add whatsapp: prefix if missing', () => {
 
         const whatsAppAdapter = new TwilioWhatsAppAdapter({
             accountSid: fakeAccountSid,
@@ -45,29 +43,29 @@ describe('TwilioWhatsAppAdapter', function () {
     });
 
 
-    it.skip('should validate if request is from Twilio', function () {
+    it.skip('should validate if request is from Twilio', () => {
 
     });
 
-    it.skip('should fail if request is not from Twilio', function () {
+    it.skip('should fail if request is not from Twilio', () => {
 
     });
 
-    it.skip('should handle read activities from Twilio', function () {
+    it.skip('should handle read activities from Twilio', () => {
 
     });
 
-    it.skip('should handle read activities from Twilio', function () {
+    it.skip('should handle read activities from Twilio', () => {
 
     });
 
 
-    it.skip('should transform activity', function () {
-        
+    it.skip('should transform activity', () => {
+
 
     });
 
-    it.skip('transform attachment to Bot Framework attachment format', function () {
+    it.skip('transform attachment to Bot Framework attachment format', () => {
 
     });
 
