@@ -23,7 +23,7 @@ The adapter currently supports the following scenarios;
 Currently **not** supported scenarios;
 * Add proactive events to your skill ([documentation](https://developer.amazon.com/en-US/docs/alexa/smapi/proactive-events-api.html))
 * Specify Alexa RePrompt speech / text
-
+* Account Linking Management ([documentation](https://developer.amazon.com/en-US/docs/alexa/smapi/account-linking-operations.html))
 
 ## Installation
 
@@ -60,11 +60,11 @@ In this article you will learn how to connect a bot to an Alexa skill using the 
 
 2. On the next screen enter a name for your new skill.  On this page you can **Choose a model to add to your skill** (**Custom** selected by default) and **Choose a method to host your skill's backend resources** (**Provision your own** selected by default).  Leave the default options selected and click the **Create Skill** button.
 
-![Skill model and hosting](https://github.com/BotBuilderCommunity/botbuilder-community-dotnet/tree/feature/adopt-alexadotnet/libraries/Bot.Builder.Community.Adapters.Alexa/media/bot-service-adapter-connect-alexa/create-skill-options.PNG?raw=true)
+![Skill model and hosting](/libraries/botbuilder-adapter-alexa/media/bot-service-adapter-connect-alexa/create-skill-options.png?raw=true)
 
 3. On the next screen you will be asked to **Choose a template**.  **Start from scratch** will be selected by default. Leave **Start from scratch** selected and click the **Choose** button.
 
-![Skill template](https://github.com/BotBuilderCommunity/botbuilder-community-dotnet/tree/feature/adopt-alexadotnet/libraries/Bot.Builder.Community.Adapters.Alexa/media/bot-service-adapter-connect-alexa/create-skill-options2.PNG?raw=true)
+![Skill template](/libraries/botbuilder-adapter-alexa/media/bot-service-adapter-connect-alexa/create-skill-options2.png?raw=true)
 
 4. You will now be presented with your skill dashboard. Navigate to **JSON Editor** within the **Interaction Model** section of the left hand menu.
 
@@ -217,7 +217,7 @@ Now that you have created an Alexa skill and wired up the adapter in your bot pr
 
 3. In the drop down underneath the text box where you have defined your endpoint, you need to select the type of certificate being used.  For development purposes, you can choose **My development endpoint is a sub-domain of a domain that has a wildcard certificate from a certificate authority**, changing this to **My development endpoint has a certificate from a trusted certificate authority** when you publish your skill into Production.
 
-![Skill template](https://github.com/BotBuilderCommunity/botbuilder-community-dotnet/tree/feature/adopt-alexadotnet/libraries/Bot.Builder.Community.Adapters.Alexa/media/bot-service-adapter-connect-alexa/alexa-endpoint.PNG?raw=true)
+![Skill template](/libraries/botbuilder-adapter-alexa/media/bot-service-adapter-connect-alexa/alexa-endpoint.png?raw=true)
 
 4. Click the **Save Endpoints** button.
 
@@ -231,7 +231,7 @@ You can now test interacting with your Alexa skill using the simulator.
 
 3. As a basic test enter "ask <SKILL INVOCATION NAME> hello world" into the simulator input box. For example, if your skill invocation name was 'alexa helper', you would type 'ask alexa helper hello world'. This should return an echo of your message.
 
-![Simulator](https://github.com/BotBuilderCommunity/botbuilder-community-dotnet/tree/feature/adopt-alexadotnet/libraries/Bot.Builder.Community.Adapters.Alexa/media/bot-service-adapter-connect-alexa/simulator.PNG?raw=true)
+![Simulator](/libraries/botbuilder-adapter-alexa/media/bot-service-adapter-connect-alexa/simulator.png?raw=true)
 
 Now that you have enabled testing for your skill, you can also test your skill using a physical Echo device or the Alexa app, providing you are logged into the device / app with the same account used to login to the Alexa Developer Console (or an account that you have added as a beta tester for your skill within the console).
 

@@ -2,7 +2,7 @@ const { ActivityHandler, InputHints } = require('botbuilder');
 const { AlexaCardFactory, AlexaContextExtensions } = require('@botbuildercommunity/adapter-alexa');
 
 class EchoBot extends ActivityHandler {
-    
+
     constructor() {
         super();
 
@@ -16,7 +16,6 @@ class EchoBot extends ActivityHandler {
         // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
         this.onMessage(async (context, next) => {
             
-
             switch (context.activity.text) {
                 // Progressive response
                 case 'progressive':
