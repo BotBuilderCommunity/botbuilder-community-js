@@ -6,6 +6,7 @@ The Twilio WhatsApp adapter for the Microsoft Bot Framework allows you to add an
 >To send messages with WhatsApp in production, you have to wait for WhatsApp to formally approve your account. But, that doesn't mean you have to wait to start building. [Twilio Sandbox for WhatsApp](https://www.twilio.com/console/messaging/whatsapp) lets you test your app in a developer environment.
 
 This adapter supports the limited capabilities of Twilio WhatsApp, including;
+
 * Send and receive text messages
 * Send and receive text messages with attachment (`image`, `audio`, `video`, `document`, `location`)
 * Send proactive notifications
@@ -155,7 +156,7 @@ await whatsAppAdapter.continueConversation(conversationReference, async (turnCon
 The Twilio WhatsApp channel is using `whatsapp` as the channel id. Within the TurnContext, you can use the following snippet to detect if the request is coming from the Twilio WhatsApp channel and implement your custom logic.
 `if (context.activity.channelId === 'whatsapp')`
 
-Using the `channelData` object on new message activities is currently only supported for passing PersistentAction's, like location messages.
+Using the `channelData` object on new message activities is currently only supported for passing `persistentAction`, which can be used to send location messages.
 
 ### Monitor the status of your WhatsApp outbound message
 If you configure the `status callback url` in Twilio Configuration, multiple status events will be broadcasted to your bot. You can use this functionality to [monitor the status of your WhatsApp outbound message](https://www.twilio.com/docs/sms/whatsapp/api#monitor-the-status-of-your-whatsapp-outbound-message). Possible values include: 'messageRead', 'messageDelivered', 'messageSent', 'messageQueued', 'messageFailed'.
