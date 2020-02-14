@@ -91,6 +91,11 @@ export class AlexaAdapter extends BotAdapter {
         }
 
         const activity = this.processOutgoingActivities(messageActivities);
+
+        if (!activity) {
+            return responses;
+        }
+
         const alexaResponse = AlexaMessageMapper.activityToAlexaResponse(activity, this.settings);
 
         // Create Alexa response
@@ -115,7 +120,7 @@ export class AlexaAdapter extends BotAdapter {
     public processOutgoingActivities(activities: Partial<Activity>[]): Partial<Activity> {
 
         if (activities.length === 0) {
-            throw new Error(`AlexaAdapter.sendActivities(): No message activities present.`);
+            return;
         }
 
         const finalActivity = activities[0];
@@ -130,7 +135,6 @@ export class AlexaAdapter extends BotAdapter {
 
             // Merge speech
             if (activity.speak) {
-
                 finalActivity.speak = finalActivity.speak + '<break strength="strong"/>' + activity.speak;
             }
 

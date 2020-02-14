@@ -43,6 +43,11 @@ export class AlexaRequestToMessageEventActivitiesMiddleware implements Middlewar
         const intentValue = getSlotValue(alexaRequest, this.settings.intentSlotName);
         context.activity.text = intentValue;
 
+        // Catch Amazon intents
+        if (!intentValue) {
+            context.activity.text = alexaRequest.request.intent.name;
+        }
+
         await next();
     }
 

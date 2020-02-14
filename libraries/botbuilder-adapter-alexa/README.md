@@ -24,6 +24,12 @@ Currently **not** supported scenarios;
 * Add proactive events to your skill ([documentation](https://developer.amazon.com/en-US/docs/alexa/smapi/proactive-events-api.html))
 * Specify Alexa RePrompt speech / text
 * Account Linking Management ([documentation](https://developer.amazon.com/en-US/docs/alexa/smapi/account-linking-operations.html))
+* Directives other than display
+* CanFulfillIntentRequest
+* Alexa Reminders ([documentation](https://developer.amazon.com/en-US/docs/alexa/smapi/alexa-reminders-overview.html#how-to-add-reminders-to-your-skill))
+* Add Personalization to Your Skils ([documentation](https://developer.amazon.com/en-US/docs/alexa/custom-skills/add-personalization-to-your-skill.html)) + ([documentation](Add Personalized Greetings or Prompts))
+* Enhance Your Skill With Address Information ([documentation](https://developer.amazon.com/en-US/docs/alexa/custom-skills/device-address-api.html))
+* Location Services for Alexa Skills ([documentation](https://developer.amazon.com/en-US/docs/alexa/custom-skills/location-services-for-alexa-skills.html))
 
 ## Installation
 
