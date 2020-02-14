@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/adapter-alexa",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Alexa adapter for use with the Bot Framework.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -57,7 +57,7 @@
   "dependencies": {
     "ask-sdk-core": "^2.7.0",
     "ask-sdk-express-adapter": "^2.0.1",
-    "ask-sdk-model": "^1.25.1",
+    "ask-sdk-model": "^1.25.2",
     "botbuilder": "^4.7.2",
     "node-fetch": "^2.6.0"
   },
