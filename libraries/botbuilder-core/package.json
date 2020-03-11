@@ -46,16 +46,16 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "botbuilder": "^4.7.1",
-    "botframework-connector": "^4.7.1",
+    "botbuilder": "^4.8.0-rc0",
+    "botframework-connector": "^4.8.0-rc0",
     "qs": "^6.9.1"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "@types/qs": "^6.9.0",
-    "mocha": "^7.0.0",
+    "@types/qs": "^6.9.1",
+    "mocha": "^7.1.0",
     "nyc": "^15.0.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.3"
   },
   "publishConfig": {
     "access": "public"
