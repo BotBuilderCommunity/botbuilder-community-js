@@ -115,7 +115,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
     public async getUserToken(context: TurnContext, connectionName: string, magicCode?: string, oAuthAppCredentials?: AppCredentials): Promise<TokenResponse>;
     public async getUserToken(context: TurnContext, connectionName: string, magicCode?: string, oAuthAppCredentials?: AppCredentials): Promise<TokenResponse> {
         if (!context.activity.from || !context.activity.from.id) {
-            throw new Error(`BotFrameworkAdapter.getUserToken(): missing from or from.id`);
+            throw new Error(`CustomWebAdapter.getUserToken(): missing from or from.id`);
         }
         if (!connectionName) {
             throw new Error('getUserToken() requires a connectionName but none was provided.');
@@ -145,7 +145,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
     public async signOutUser(context: TurnContext, connectionName?: string, userId?: string, oAuthAppCredentials?: AppCredentials): Promise<void>;
     public async signOutUser(context: TurnContext, connectionName?: string, userId?: string, oAuthAppCredentials?: AppCredentials): Promise<void> {
         if (!context.activity.from || !context.activity.from.id) {
-            throw new Error(`BotFrameworkAdapter.signOutUser(): missing from or from.id`);
+            throw new Error(`CustomWebAdapter.signOutUser(): missing from or from.id`);
         }
         if (!userId) {
             userId = context.activity.from.id;
@@ -204,7 +204,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
     public async getTokenStatus(context: TurnContext, userId?: string, includeFilter?: string, oAuthAppCredentials?: AppCredentials): Promise<TokenStatus[]>;
     public async getTokenStatus(context: TurnContext, userId?: string, includeFilter?: string, oAuthAppCredentials?: AppCredentials): Promise<TokenStatus[]> {
         if (!userId && (!context.activity.from || !context.activity.from.id)) {
-            throw new Error(`BotFrameworkAdapter.getTokenStatus(): missing from or from.id`);
+            throw new Error(`CustomWebAdapter.getTokenStatus(): missing from or from.id`);
         }
         userId = userId || context.activity.from.id;
         const url: string = this.oauthApiUrl(context);
@@ -228,7 +228,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
     public async getAadTokens(context: TurnContext, connectionName: string, resourceUrls: string[], oAuthAppCredentials?: AppCredentials): Promise<{ [propertyName: string]: TokenResponse }>;
     public async getAadTokens(context: TurnContext, connectionName: string, resourceUrls: string[], oAuthAppCredentials?: AppCredentials): Promise<{ [propertyName: string]: TokenResponse }> {
         if (!context.activity.from || !context.activity.from.id) {
-            throw new Error(`BotFrameworkAdapter.getAadTokens(): missing from or from.id`);
+            throw new Error(`CustomWebAdapter.getAadTokens(): missing from or from.id`);
         }
         const userId: string = context.activity.from.id;
         const url: string = this.oauthApiUrl(context);
@@ -254,12 +254,12 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         }
 
         if (!context.activity.from || !context.activity.from.id) {
-            throw new Error(`BotFrameworkAdapter.getSignInResource(): missing from or from.id`);
+            throw new Error(`CustomWebAdapter.getSignInResource(): missing from or from.id`);
         }
 
         // what to do when userId is null (same for finalRedirect)
         if (userId && context.activity.from.id != userId) {
-            throw new Error('BotFrameworkAdapter.getSiginInResource(): cannot get signin resource for a user that is different from the conversation');
+            throw new Error('CustomWebAdapter.getSiginInResource(): cannot get signin resource for a user that is different from the conversation');
         }
 
         const url: string = this.oauthApiUrl(context);
@@ -295,7 +295,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         }
 
         if (tokenExchangeRequest && !tokenExchangeRequest.token && !tokenExchangeRequest.uri) {
-            throw new Error('BotFrameworkAdapter.exchangeToken(): Either a Token or Uri property is required on the TokenExchangeRequest');
+            throw new Error('CustomWebAdapter.exchangeToken(): Either a Token or Uri property is required on the TokenExchangeRequest');
         }
 
         const url: string = this.oauthApiUrl(context);
