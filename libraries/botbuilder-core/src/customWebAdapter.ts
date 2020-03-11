@@ -33,7 +33,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
     protected readonly credentials: AppCredentials;
     protected readonly credentialsProvider: SimpleCredentialProvider;
     private isEmulatingOAuthCards: boolean;
-    public readonly TokenApiClientCredentialsKey: Symbol = Symbol('TokenApiClientCredentials');
+    public readonly TokenApiClientCredentialsKey: symbol = Symbol('TokenApiClientCredentials');
 
     /**
      * Creates a new CustomWebAdapter instance.
@@ -112,7 +112,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         });
     }
 
-   /**
+    /**
      * Asynchronously attempts to retrieve the token for a user that's in a login flow.
      * 
      * @param context The context object for the turn.
