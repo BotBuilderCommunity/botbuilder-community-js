@@ -1,5 +1,5 @@
 import { BotAdapter, WebRequest, BotFrameworkAdapterSettings, IUserTokenProvider, TokenResponse, TurnContext, ConversationReference } from 'botbuilder';
-import { AppCredentials, JwtTokenValidation, MicrosoftAppCredentials, SimpleCredentialProvider, TokenApiClient, TokenApiModels, EmulatorApiClient, TokenStatus, TokenExchangeRequest, SignInUrlResponse } from 'botframework-connector';
+import { AppCredentials, JwtTokenValidation, MicrosoftAppCredentials, SimpleCredentialProvider, TokenApiClient, TokenApiModels, TokenStatus, TokenExchangeRequest, SignInUrlResponse } from 'botframework-connector';
 import { parse as parseQueryString } from 'qs';
 
 // Constants taken from BotFrameworkAdapter.ts
