@@ -22,7 +22,6 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
     protected readonly oAuthSettings: BotFrameworkAdapterSettings;
     protected readonly credentials: AppCredentials;
     protected readonly credentialsProvider: SimpleCredentialProvider;
-    private isEmulatingOAuthCards: boolean;
     public readonly TokenApiClientCredentialsKey: symbol = Symbol('TokenApiClientCredentials');
 
     /**
@@ -121,7 +120,6 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         if (!connectionName) {
             throw new Error('getUserToken() requires a connectionName but none was provided.');
         }
-        this.checkEmulatingOAuthCards(context);
         const userId: string = context.activity.from.id;
         const url: string = this.oauthApiUrl(context);
         const client: TokenApiClient = this.createTokenApiClient(url, oAuthAppCredentials);
@@ -153,7 +151,6 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
             userId = context.activity.from.id;
         }
 
-        this.checkEmulatingOAuthCards(context);
         const url: string = this.oauthApiUrl(context);
         const client: TokenApiClient = this.createTokenApiClient(url, oAuthAppCredentials);
         context.turnState.set(this.TokenApiClientCredentialsKey, client);
@@ -176,7 +173,6 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
             throw new ReferenceError(`cannot retrieve OAuth signin link for a user that's different from the conversation`);
         }
 
-        this.checkEmulatingOAuthCards(context);
         const conversation: Partial<ConversationReference> = TurnContext.getConversationReference(context.activity);
         const url: string = this.oauthApiUrl(context);
         const client: TokenApiClient = this.createTokenApiClient(url, oAuthAppCredentials);
@@ -210,7 +206,6 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         if (!userId && (!context.activity.from || !context.activity.from.id)) {
             throw new Error(`BotFrameworkAdapter.getTokenStatus(): missing from or from.id`);
         }
-        this.checkEmulatingOAuthCards(context);
         userId = userId || context.activity.from.id;
         const url: string = this.oauthApiUrl(context);
         const client: TokenApiClient = this.createTokenApiClient(url, oAuthAppCredentials);
@@ -235,7 +230,6 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         if (!context.activity.from || !context.activity.from.id) {
             throw new Error(`BotFrameworkAdapter.getAadTokens(): missing from or from.id`);
         }
-        this.checkEmulatingOAuthCards(context);
         const userId: string = context.activity.from.id;
         const url: string = this.oauthApiUrl(context);
         const client: TokenApiClient = this.createTokenApiClient(url, oAuthAppCredentials);
@@ -311,23 +305,6 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
     }
 
     /**
-     * Asynchronously sends an emulated OAuth card for a channel.
-     * 
-     * This method supports the framework and is not intended to be called directly for your code.
-     * 
-     * @param contextOrServiceUrl The URL of the emulator.
-     * @param emulate `true` to send an emulated OAuth card to the emulator; or `false` to not send the card.
-     * 
-     * @remarks
-     * When testing a bot in the Bot Framework Emulator, this method can emulate the OAuth card interaction.
-     */
-    public async emulateOAuthCards(contextOrServiceUrl: TurnContext | string, emulate: boolean): Promise<void> {
-        this.isEmulatingOAuthCards = emulate;
-        const url: string = this.oauthApiUrl(contextOrServiceUrl);
-        await EmulatorApiClient.emulateOAuthCards(this.credentials as AppCredentials, url, emulate);
-    }
-
-    /**
      * Creates an OAuth API client.
      * 
      * @param serviceUrl The client's service URL.
@@ -355,27 +332,12 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
      * Override this in a derived class to create a mock OAuth API endpoint for unit testing.
      */
     protected oauthApiUrl(contextOrServiceUrl: TurnContext | string): string {
-        return this.isEmulatingOAuthCards ?
+        const isEmulatingOAuthCards = false;
+        return isEmulatingOAuthCards ?
             (typeof contextOrServiceUrl === 'object' ? contextOrServiceUrl.activity.serviceUrl : contextOrServiceUrl) :
             (this.oAuthSettings.oAuthEndpoint ? this.oAuthSettings.oAuthEndpoint :
                 JwtTokenValidation.isGovernment(this.oAuthSettings.channelService) ?
                     US_GOV_OAUTH_ENDPOINT : OAUTH_ENDPOINT);
-    }
-
-    /**
-     * Checks the environment and can set a flag to emulate OAuth cards.
-     * 
-     * @param context The context object for the turn.
-     * 
-     * @remarks
-     * Override this in a derived class to control how OAuth cards are emulated for unit testing.
-     */
-    protected checkEmulatingOAuthCards(context: TurnContext): void {
-        if (!this.isEmulatingOAuthCards &&
-            context.activity.channelId === 'emulator' &&
-            (!this.credentials.appId)) {
-            this.isEmulatingOAuthCards = true;
-        }
     }
 
 }
