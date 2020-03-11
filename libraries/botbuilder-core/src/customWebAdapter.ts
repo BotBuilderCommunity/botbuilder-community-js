@@ -1,21 +1,12 @@
 import { BotAdapter, WebRequest, BotFrameworkAdapterSettings, IUserTokenProvider, TokenResponse, TurnContext, ConversationReference } from 'botbuilder';
-import { EmulatorApiClient, TokenStatus, TokenExchangeRequest, SignInUrlResponse } from 'botframework-connector';
-
+import { AppCredentials, JwtTokenValidation, MicrosoftAppCredentials, SimpleCredentialProvider, TokenApiClient, TokenApiModels, EmulatorApiClient, TokenStatus, TokenExchangeRequest, SignInUrlResponse } from 'botframework-connector';
 import { parse as parseQueryString } from 'qs';
 
-import {
-    AppCredentials,
-    JwtTokenValidation,
-    MicrosoftAppCredentials,
-    SimpleCredentialProvider,
-    TokenApiClient,
-    TokenApiModels
-} from 'botframework-connector';
-
+// Constants taken from BotFrameworkAdapter.ts
 const OAUTH_ENDPOINT = 'https://api.botframework.com';
 const US_GOV_OAUTH_ENDPOINT = 'https://api.botframework.azure.us';
+
 const USER_AGENT = 'Microsoft-BotFramework/3.1 BotBuilder/CustomWebAdapter';
-// import { USER_AGENT } from 'botbuilder/src/botFrameworkAdapter';
 
 /**
  * Adds helper functions to the default BotAdapter
@@ -23,8 +14,7 @@ const USER_AGENT = 'Microsoft-BotFramework/3.1 BotBuilder/CustomWebAdapter';
 export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenProvider {
 
     /**
-     * Used to workaround the ABS OAuth cards issue
-     * [more information](https://github.com/microsoft/botbuilder-js/pull/1812)
+     * Used as a workaround for the [ABS OAuth cards issue](https://github.com/microsoft/botbuilder-js/pull/1812)
      */
     public name = 'Web Adapter';
 
@@ -66,11 +56,9 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
      * @param req incoming web request
      */
     protected retrieveBody(req: WebRequest): Promise<any> {
-
         const contentType = req.headers['content-type'] || req.headers['Content-Type'];
 
         return new Promise((resolve: any, reject: any): void => {
-
             if (req.body) {
                 try {
                     resolve(req.body);
@@ -100,7 +88,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
     }
 
     /**
-     * Copied from `CustomWebAdapter.ts` to support { type: 'delay' } activity.
+     * Copied from `BotFrameworkAdapter.ts` to support { type: 'delay' } activity.
      * @param timeout timeout in milliseconds
      * @default 1000
      */
@@ -111,6 +99,8 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
             setTimeout(resolve, timeout);
         });
     }
+
+    // OAuth functionality copied from BotFrameworkAdapter.ts
 
     /**
      * Asynchronously attempts to retrieve the token for a user that's in a login flow.
@@ -159,16 +149,16 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         if (!context.activity.from || !context.activity.from.id) {
             throw new Error(`BotFrameworkAdapter.signOutUser(): missing from or from.id`);
         }
-        if (!userId){
+        if (!userId) {
             userId = context.activity.from.id;
         }
-        
+
         this.checkEmulatingOAuthCards(context);
         const url: string = this.oauthApiUrl(context);
         const client: TokenApiClient = this.createTokenApiClient(url, oAuthAppCredentials);
         context.turnState.set(this.TokenApiClientCredentialsKey, client);
 
-        await client.userToken.signOut(userId, { connectionName: connectionName, channelId: context.activity.channelId } );
+        await client.userToken.signOut(userId, { connectionName: connectionName, channelId: context.activity.channelId });
     }
 
     /**
@@ -225,8 +215,8 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         const url: string = this.oauthApiUrl(context);
         const client: TokenApiClient = this.createTokenApiClient(url, oAuthAppCredentials);
         context.turnState.set(this.TokenApiClientCredentialsKey, client);
-        
-        return (await client.userToken.getTokenStatus(userId, {channelId: context.activity.channelId, include: includeFilter}))._response.parsedBody;
+
+        return (await client.userToken.getTokenStatus(userId, { channelId: context.activity.channelId, include: includeFilter }))._response.parsedBody;
     }
 
     /**
@@ -239,9 +229,9 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
      * 
      * @returns A map of the [TokenResponse](xref:botframework-schema.TokenResponse) objects by resource URL.
      */
-    public async getAadTokens(context: TurnContext, connectionName: string, resourceUrls: string[]): Promise<{[propertyName: string]: TokenResponse}>;
-    public async getAadTokens(context: TurnContext, connectionName: string, resourceUrls: string[], oAuthAppCredentials?: AppCredentials): Promise<{[propertyName: string]: TokenResponse}>;
-    public async getAadTokens(context: TurnContext, connectionName: string, resourceUrls: string[], oAuthAppCredentials?: AppCredentials): Promise<{[propertyName: string]: TokenResponse}> {
+    public async getAadTokens(context: TurnContext, connectionName: string, resourceUrls: string[]): Promise<{ [propertyName: string]: TokenResponse }>;
+    public async getAadTokens(context: TurnContext, connectionName: string, resourceUrls: string[], oAuthAppCredentials?: AppCredentials): Promise<{ [propertyName: string]: TokenResponse }>;
+    public async getAadTokens(context: TurnContext, connectionName: string, resourceUrls: string[], oAuthAppCredentials?: AppCredentials): Promise<{ [propertyName: string]: TokenResponse }> {
         if (!context.activity.from || !context.activity.from.id) {
             throw new Error(`BotFrameworkAdapter.getAadTokens(): missing from or from.id`);
         }
@@ -251,7 +241,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         const client: TokenApiClient = this.createTokenApiClient(url, oAuthAppCredentials);
         context.turnState.set(this.TokenApiClientCredentialsKey, client);
 
-        return (await client.userToken.getAadTokens(userId, connectionName, { resourceUrls: resourceUrls }, { channelId: context.activity.channelId }))._response.parsedBody as {[propertyName: string]: TokenResponse };
+        return (await client.userToken.getAadTokens(userId, connectionName, { resourceUrls: resourceUrls }, { channelId: context.activity.channelId }))._response.parsedBody as { [propertyName: string]: TokenResponse };
     }
 
     /**
@@ -264,8 +254,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
      * 
      * @returns The [BotSignInGetSignInResourceResponse](xref:botframework-connector.BotSignInGetSignInResourceResponse) object.
      */
-    public async getSignInResource(context: TurnContext, connectionName: string, userId?: string, finalRedirect?: string, appCredentials?: AppCredentials): Promise<SignInUrlResponse>
-    {
+    public async getSignInResource(context: TurnContext, connectionName: string, userId?: string, finalRedirect?: string, appCredentials?: AppCredentials): Promise<SignInUrlResponse> {
         if (!connectionName) {
             throw new Error('getUserToken() requires a connectionName but none was provided.');
         }
@@ -275,7 +264,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         }
 
         // what to do when userId is null (same for finalRedirect)
-        if(userId && context.activity.from.id != userId) {
+        if (userId && context.activity.from.id != userId) {
             throw new Error('BotFrameworkAdapter.getSiginInResource(): cannot get signin resource for a user that is different from the conversation');
         }
 
@@ -290,8 +279,8 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
             MSAppId: (client.credentials as AppCredentials).appId
         };
         const finalState: string = Buffer.from(JSON.stringify(state)).toString('base64');
-        const options: TokenApiModels.BotSignInGetSignInResourceOptionalParams = {finalRedirect: finalRedirect};
-        
+        const options: TokenApiModels.BotSignInGetSignInResourceOptionalParams = { finalRedirect: finalRedirect };
+
         return await (client.botSignIn.getSignInResource(finalState, options));
     }
 
@@ -301,7 +290,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
      * @param connectionName Name of the auth connection to use.
      * @param userId The user id that will be associated with the token.
      * @param tokenExchangeRequest The exchange request details, either a token to exchange or a uri to exchange.
-     */ 
+     */
     public async exchangeToken(context: TurnContext, connectionName: string, userId: string, tokenExchangeRequest: TokenExchangeRequest, appCredentials?: AppCredentials): Promise<TokenResponse> {
         if (!connectionName) {
             throw new Error('exchangeToken() requires a connectionName but none was provided.');
@@ -310,8 +299,8 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         if (!userId) {
             throw new Error('exchangeToken() requires an userId but none was provided.');
         }
-        
-        if(tokenExchangeRequest && !tokenExchangeRequest.token && !tokenExchangeRequest.uri) {
+
+        if (tokenExchangeRequest && !tokenExchangeRequest.token && !tokenExchangeRequest.uri) {
             throw new Error('BotFrameworkAdapter.exchangeToken(): Either a Token or Uri property is required on the TokenExchangeRequest');
         }
 
@@ -335,7 +324,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
     public async emulateOAuthCards(contextOrServiceUrl: TurnContext | string, emulate: boolean): Promise<void> {
         this.isEmulatingOAuthCards = emulate;
         const url: string = this.oauthApiUrl(contextOrServiceUrl);
-        await EmulatorApiClient.emulateOAuthCards(this.credentials as AppCredentials,  url, emulate);
+        await EmulatorApiClient.emulateOAuthCards(this.credentials as AppCredentials, url, emulate);
     }
 
     /**
@@ -354,7 +343,6 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
         return client;
     }
 
-
     /**
      * Gets the OAuth API endpoint.
      * 
@@ -369,7 +357,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
     protected oauthApiUrl(contextOrServiceUrl: TurnContext | string): string {
         return this.isEmulatingOAuthCards ?
             (typeof contextOrServiceUrl === 'object' ? contextOrServiceUrl.activity.serviceUrl : contextOrServiceUrl) :
-            (this.oAuthSettings.oAuthEndpoint ? this.oAuthSettings.oAuthEndpoint : 
+            (this.oAuthSettings.oAuthEndpoint ? this.oAuthSettings.oAuthEndpoint :
                 JwtTokenValidation.isGovernment(this.oAuthSettings.channelService) ?
                     US_GOV_OAUTH_ENDPOINT : OAUTH_ENDPOINT);
     }
