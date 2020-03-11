@@ -382,6 +382,7 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
 
             switch (attachment.contentType) {
                 case 'application/vnd.microsoft.card.signin':
+                    // eslint-disable-next-line no-case-declarations
                     const signin = attachment.content;
 
                     message.body = `${ signin.text }\n\n`;
