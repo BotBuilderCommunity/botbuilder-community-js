@@ -65,7 +65,6 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
 
         this.settings = settings;
 
-        // Do all required keys exist?
         if (!this.settings.phoneNumber || !this.settings.phoneNumber || !this.settings.phoneNumber || !this.settings.phoneNumber) {
             throw new Error(`TwilioWhatsAppAdapter.constructor(): Required TwilioWhatsAppAdapterSettings missing.`);
         }
