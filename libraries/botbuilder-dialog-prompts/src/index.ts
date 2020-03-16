@@ -2,6 +2,7 @@
  * @module botbuildercommunity/dialog-prompts
  */
 
+export * from './adaptiveCardPrompt';
 export * from './numberWithUnit';
 export * from './numberWithType';
 export * from './phone';
