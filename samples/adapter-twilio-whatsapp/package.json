@@ -16,10 +16,10 @@
         "url": "https://github.com"
     },
     "dependencies": {
-        "@botbuildercommunity/adapter-twilio-whatsapp": "^1.0.0",
-        "botbuilder": "~4.5.1",
-        "dotenv": "^8.0.0",
-        "restify": "~8.3.3"
+        "@botbuildercommunity/adapter-twilio-whatsapp": "^1.1.0",
+        "botbuilder": "~4.8.0",
+        "dotenv": "^8.2.0",
+        "restify": "~8.5.1"
     },
     "devDependencies": {
         "nodemon": "~1.19.1"
