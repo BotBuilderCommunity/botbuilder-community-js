@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "mocha": "^7.0.1",
+    "mocha": "^7.1.1",
     "nock": "^11.8.2",
     "nyc": "^15.0.0",
     "typescript": "^3.7.5"
