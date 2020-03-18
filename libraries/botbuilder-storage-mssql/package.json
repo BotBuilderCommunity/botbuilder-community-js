@@ -58,7 +58,7 @@
     "@types/node": "^7.10.6",
     "mocha": "^7.1.1",
     "nyc": "^15.0.0",
-    "rewire": "^4.0.1",
+    "rewire": "^5.0.0",
     "typescript": "^3.5.2"
   },
   "publishConfig": {
