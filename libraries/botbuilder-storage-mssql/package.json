@@ -48,8 +48,8 @@
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "dependencies": {
-    "botbuilder": "^4.5.3",
-    "botbuilder-core": "^4.5.3",
+    "botbuilder": "^4.8.0",
+    "botbuilder-core": "^4.8.0",
     "mssql": "^5.1.0"
   },
   "devDependencies": {

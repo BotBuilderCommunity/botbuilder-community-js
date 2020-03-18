@@ -57,7 +57,7 @@
   "dependencies": {
     "@botbuildercommunity/middleware-engine-core": "^1.0.0",
     "@google-cloud/language": "^3.5.0",
-    "botbuilder": "^4.5.3"
+    "botbuilder": "^4.8.0"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",

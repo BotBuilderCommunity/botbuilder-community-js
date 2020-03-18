@@ -55,7 +55,7 @@
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
     "azure-cognitiveservices-spellcheck": "^1.1.0",
-    "botbuilder": "^4.5.3",
+    "botbuilder": "^4.8.0",
     "restify": "^8.4.0",
     "web-request": "^1.0.7"
   },

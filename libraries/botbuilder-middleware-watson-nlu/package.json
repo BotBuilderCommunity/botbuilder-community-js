@@ -54,7 +54,7 @@
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
     "@botbuildercommunity/middleware-engine-core": "^1.1.0",
-    "botbuilder": "^4.5.3",
+    "botbuilder": "^4.8.0",
     "ibm-watson": "^4.3.3",
     "mathjs": "^6.2.2"
   },
