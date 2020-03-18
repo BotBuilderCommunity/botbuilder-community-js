@@ -35,5 +35,8 @@
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "devDependencies": {
     "typescript": "^3.5.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

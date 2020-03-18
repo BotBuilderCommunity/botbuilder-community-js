@@ -64,5 +64,8 @@
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "typescript": "^3.5.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
