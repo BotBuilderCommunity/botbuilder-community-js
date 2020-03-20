@@ -1,11 +1,10 @@
 /**
  * @module botbuildercommunity/adapter-twilio-whatsapp
  */
-
-import { Activity, ActivityTypes, BotAdapter, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse, Attachment, GeoCoordinates } from 'botbuilder';
+import { Activity, ActivityTypes, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse, Attachment, GeoCoordinates, BotFrameworkAdapterSettings } from 'botbuilder';
 import * as Twilio from 'twilio';
 import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
-import { parse } from 'qs';
+import { CustomWebAdapter } from '@botbuildercommunity/core';
 
 /**
  * Settings used to configure a `TwilioWhatsAppAdapter` instance.
@@ -50,7 +49,7 @@ export enum WhatsAppActivityTypes {
 /**
  * Bot Framework Adapter for [Twilio Whatsapp](https://www.twilio.com/whatsapp)
  */
-export class TwilioWhatsAppAdapter extends BotAdapter {
+export class TwilioWhatsAppAdapter extends CustomWebAdapter {
 
     protected readonly settings: TwilioWhatsAppAdapterSettings;
     protected readonly client: Twilio.Twilio;
@@ -60,10 +59,14 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
      * Creates a new TwilioWhatsAppAdapter instance.
      * @param settings configuration settings for the adapter.
      */
-    public constructor(settings: TwilioWhatsAppAdapterSettings) {
-        super();
+    public constructor(settings: TwilioWhatsAppAdapterSettings, botFrameworkAdapterSettings?: BotFrameworkAdapterSettings) {
+        super(botFrameworkAdapterSettings);
 
         this.settings = settings;
+
+        if (!this.settings.phoneNumber || !this.settings.phoneNumber || !this.settings.phoneNumber || !this.settings.phoneNumber) {
+            throw new Error(`TwilioWhatsAppAdapter.constructor(): Required TwilioWhatsAppAdapterSettings missing.`);
+        }
 
         // Add required `whatsapp:` prefix if not exists
         if (!this.settings.phoneNumber.startsWith('whatsapp:')) {
@@ -91,7 +94,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
 
             switch (activity.type) {
                 case 'delay':
-                    await delay(typeof activity.value === 'number' ? activity.value : 1000);
+                    await this.delay(activity.value);
                     responses.push({} as ResourceResponse);
                     break;
                 case ActivityTypes.Message:
@@ -167,7 +170,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         const signature = req.headers['x-twilio-signature'] || !req.headers['X-Twilio-Signature'];
         const authToken = this.settings.authToken;
         const requestUrl = this.settings.endpointUrl;
-        const message = await retrieveBody(req);
+        const message = await this.retrieveBody(req);
 
         if (!message) {
             res.status(400);
@@ -300,7 +303,7 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         context.turnState.set('httpStatus', 200);
         await this.runMiddleware(context, logic);
 
-        // send http response back
+        // Send HTTP response back
         res.status(context.turnState.get('httpStatus'));
         if (context.turnState.get('httpBody')) {
             res.send(context.turnState.get('httpBody'));
@@ -375,20 +378,35 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         if (activity?.attachments?.length > 0) {
             const attachment = activity.attachments[0];
 
-            // Check if contentUrl is provided
-            if (attachment.contentUrl) {
-                message.mediaUrl = attachment.contentUrl;
-            } else {
-                console.warn(`TwilioWhatsAppAdapter.parseActivity(): Attachment ignored. Attachment without contentUrl is not supported.`);
+            switch (attachment.contentType) {
+                case 'application/vnd.microsoft.card.signin':
+                    // eslint-disable-next-line no-case-declarations
+                    const signin = attachment.content;
+
+                    message.body = `${ signin.text }\n\n`;
+                    message.body += (signin.buttons[0].title ? `*${ signin.buttons[0].title }*\n` : '');
+                    message.body += signin.buttons[0].value;
+                    break;
+
+                case 'application/json':
+                    if (attachment.content?.type === 'GeoCoordinates') {
+                        const geo = attachment.content;
+                        message.persistentAction = [`geo:${ geo.latitude },${ geo.longitude }${ (geo.name ? `|${ geo.name }` : '') }`];
+                    }
+                    break;
+
+                default:
+                    // Check if contentUrl is provided
+                    if (attachment.contentUrl) {
+                        message.mediaUrl = attachment.contentUrl;
+                    }
+                    else {
+                        console.warn(`TwilioWhatsAppAdapter.parseActivity(): Attachment ignored. Attachment without contentUrl is not supported.`);
+                    }
+
+                    break;
             }
 
-            // Check if attachment is location
-            if (attachment.contentType === 'application/json') {
-                if (attachment.content?.type === 'GeoCoordinates') {
-                    const geo = attachment.content;
-                    message.persistentAction = [`geo:${ geo.latitude },${ geo.longitude }${ (geo.name ? `|${ geo.name }` : '') }`];
-                }
-            }
         }
 
         // Messages without text or mediaUrl are not valid
@@ -399,49 +417,4 @@ export class TwilioWhatsAppAdapter extends BotAdapter {
         return message;
     }
 
-}
-
-/**
- * Retrieve body from WebRequest
- * @private
- * @param req incoming web request
- */
-function retrieveBody(req: WebRequest): Promise<any> {
-    return new Promise((resolve: any, reject: any): void => {
-
-        const type = req.headers['content-type'] || req.headers['Content-Type'];
-
-        if (req.body) {
-            try {
-                resolve(req.body);
-            } catch (err) {
-                reject(err);
-            }
-        } else {
-            let requestData = '';
-            req.on('data', (chunk: string): void => {
-                requestData += chunk;
-            });
-            req.on('end', (): void => {
-                try {
-                    if (type.includes('application/x-www-form-urlencoded')) {
-                        req.body = parse(requestData);
-                    } else {
-                        req.body = JSON.parse(requestData);
-                    }
-
-                    resolve(req.body);
-                } catch (err) {
-                    reject(err);
-                }
-            });
-        }
-    });
-}
-
-// Copied from `botFrameworkAdapter.ts` to support {type: 'delay' } activity.
-function delay(timeout: number): Promise<void> {
-    return new Promise((resolve): void => {
-        setTimeout(resolve, timeout);
-    });
 }

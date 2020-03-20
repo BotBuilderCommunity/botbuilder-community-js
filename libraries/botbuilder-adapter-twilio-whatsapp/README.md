@@ -58,6 +58,7 @@ server.post('/api/whatsapp/messages', (req, res) => {
 * [Send proactive notifications](#send-proactive-notifications)
 * [Implement channel-specific functionality](#implement-channel-specific-functionality)
 * [Monitor the status of your WhatsApp outbound message](#monitor-the-status-of-your-whatsapp-outbound-message)
+* [User authentication within a conversation](#user-authentication-within-a-conversation)
 
 ### Send and receive attachments
 The Bot Framework SDK supports the task of sending rich messages to the user. The Twilio WhatsApp adapter is using the same principles as the Bot Framework SDK. ([official documentation](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-add-media-attachments?view=azure-bot-service-4.0&tabs=javascript)).
@@ -163,12 +164,22 @@ If you configure the `status callback url` in Twilio Configuration, multiple sta
 
 Within the TurnContext you are able to differentiate between the events by reading the value of `context.activity.type`. If you are using an `ActivityHandler`, you should use the `onUnrecognizedActivityType` method.
 
-**Example (JavaScript)**
+**Example**
 ```javascript
-if (context.activity.type === 'messageRead') {}
+if (context.activity.type === WhatsAppActivityTypes.MessageRead) {}
 ```
 
-**Example (TypeScript)**
-```typescript
-if (context.activity.type === WhatsAppActivityTypes.MessageRead) {}
+### User authentication within a conversation
+It is possible to use the native [Bot Service OAuth functionality](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-authentication?view=azure-bot-service-4.0) by passing in the optional `BotFrameworkAdapterSettings` object. Sample code for adding OAuth to your bot can be found [here](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-authentication?view=azure-bot-service-4.0&tabs=javascript).
+
+```javascript
+const whatsAppAdapter = new TwilioWhatsAppAdapter({
+    accountSid: '', // Account SID
+    authToken: '', // Auth Token
+    phoneNumber: '', // The From parameter consisting of whatsapp: followed by the sending WhatsApp number (using E.164 formatting)
+    endpointUrl: '' // Endpoint URL you configured in the sandbox, used for validation
+}, {
+    appId: '', // MicrosoftAppId
+    appPassword: '' // MicrosoftAppPassword
+});
 ```
