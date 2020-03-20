@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Abstracting the code using the CustomWebAdapter
+- Updated dependencies
 
 ## [1.1.0] - 2020-02
 ### Added

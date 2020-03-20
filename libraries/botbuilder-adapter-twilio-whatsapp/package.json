@@ -58,8 +58,8 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "@botbuildercommunity/core": "file:../botbuilder-core",
-    "botbuilder": "^4.8.0-rc0",
+    "@botbuildercommunity/core": "^1.0.0",
+    "botbuilder": "^4.8.0",
     "twilio": "^3.40.0"
   },
   "devDependencies": {

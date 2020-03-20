@@ -1,7 +1,6 @@
 /**
  * @module botbuildercommunity/adapter-twilio-whatsapp
  */
-
 import { Activity, ActivityTypes, TurnContext, ConversationReference, ResourceResponse, WebRequest, WebResponse, Attachment, GeoCoordinates, BotFrameworkAdapterSettings } from 'botbuilder';
 import * as Twilio from 'twilio';
 import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
