@@ -6,7 +6,7 @@ import { parse as parseQueryString } from 'qs';
 const OAUTH_ENDPOINT = 'https://api.botframework.com';
 const US_GOV_OAUTH_ENDPOINT = 'https://api.botframework.azure.us';
 
-const USER_AGENT = 'Microsoft-BotFramework/3.1 BotBuilder/CustomWebAdapter';
+import { USER_AGENT } from 'botbuilder/lib/botFrameworkAdapter';
 
 /**
  * Adds helper functions to the default BotAdapter
@@ -14,7 +14,7 @@ const USER_AGENT = 'Microsoft-BotFramework/3.1 BotBuilder/CustomWebAdapter';
 export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenProvider {
 
     /**
-     * Used as a workaround for the [ABS OAuth cards issue](https://github.com/microsoft/botbuilder-js/pull/1812)
+     * Workaround for [ABS OAuth cards](https://github.com/microsoft/botbuilder-js/pull/1812)
      */
     public name = 'Web Adapter';
 
