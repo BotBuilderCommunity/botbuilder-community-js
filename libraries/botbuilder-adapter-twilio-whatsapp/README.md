@@ -164,13 +164,8 @@ If you configure the `status callback url` in Twilio Configuration, multiple sta
 
 Within the TurnContext you are able to differentiate between the events by reading the value of `context.activity.type`. If you are using an `ActivityHandler`, you should use the `onUnrecognizedActivityType` method.
 
-**Example (JavaScript)**
+**Example **
 ```javascript
-if (context.activity.type === 'messageRead') {}
-```
-
-**Example (TypeScript)**
-```typescript
 if (context.activity.type === WhatsAppActivityTypes.MessageRead) {}
 ```
 
