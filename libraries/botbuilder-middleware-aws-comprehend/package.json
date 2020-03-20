@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/middleware-aws-comprehend",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Bot Framework middleware component for the Amazon AWS Comprehend service, including sentiment analysis, language detection, entity extraction, and keyword recognition.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",

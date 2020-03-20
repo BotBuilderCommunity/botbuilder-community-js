@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/storage-mongodb",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MongoDB storage option for the Microsoft Bot Framework",
   "keywords": [
     "botbuilder",
