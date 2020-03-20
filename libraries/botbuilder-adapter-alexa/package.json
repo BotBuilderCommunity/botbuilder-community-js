@@ -55,18 +55,19 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
+    "@botbuildercommunity/core": "^1.0.0",
     "ask-sdk-core": "^2.7.0",
     "ask-sdk-express-adapter": "^2.0.1",
-    "ask-sdk-model": "^1.25.2",
-    "botbuilder": "^4.7.2",
+    "ask-sdk-model": "^1.26.0",
+    "botbuilder": "^4.8.0",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@types/mocha": "^7.0.1",
+    "@types/mocha": "^7.0.2",
     "express": "^4.17.1",
-    "mocha": "^7.0.1",
+    "mocha": "^7.1.0",
     "nyc": "^15.0.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.3"
   },
   "publishConfig": {
     "access": "public"

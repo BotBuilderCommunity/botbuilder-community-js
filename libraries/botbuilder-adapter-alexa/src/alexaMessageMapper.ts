@@ -164,22 +164,22 @@ export class AlexaMessageMapper {
         // TODO no any
         for (const attachment of activity.attachments as any) {
             // Parse native cards
-            if (attachment.type && ['Simple', 'Standard', 'AskForPermissionsConsent', 'LinkPermissions'].includes(attachment.type)) {
+            if (attachment.type && ['Simple', 'Standard', 'AskForPermissionsConsent', 'LinkAccount'].includes(attachment.type)) {
                 return attachment;
             }
 
             // Transform HeroCard to StandardCard
             if (attachment.type === 'application/vnd.microsoft.card.hero') {
-                return AlexaCardFactory.standardCard(attachment.title, null, attachment.images[0]);
+                return AlexaCardFactory.standardCard(attachment.title, null, attachment?.images[0]);
             }
 
-            // Transform ThumbnailCard to StandarCard + Image
+            // Transform ThumbnailCard to StandardCard + Image
             if (attachment.type === 'application/vnd.microsoft.card.thumbnail') {
-                return AlexaCardFactory.standardCard(attachment.title, null, attachment.images[0]);
+                return AlexaCardFactory.standardCard(attachment.title, null, attachment?.images[0]);
             }
 
-            // Transform SignInCard to LinkAccount Card
-            if (attachment.type === 'application/vnd.microsoft.card.signin') {
+            // Transform SignInCard & OAuthCard to LinkAccount Card
+            if (attachment.type === 'application/vnd.microsoft.card.signin' || attachment.type === 'application/vnd.microsoft.card.oauth') {
                 return AlexaCardFactory.linkAccountCard();
             }
 

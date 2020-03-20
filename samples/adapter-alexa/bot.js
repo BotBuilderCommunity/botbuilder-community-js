@@ -1,4 +1,4 @@
-const { ActivityHandler, InputHints } = require('botbuilder');
+const { ActivityHandler, ActivityTypes, InputHints } = require('botbuilder');
 const { AlexaCardFactory, AlexaContextExtensions } = require('@botbuildercommunity/adapter-alexa');
 
 class EchoBot extends ActivityHandler {
@@ -15,12 +15,28 @@ class EchoBot extends ActivityHandler {
 
         // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
         this.onMessage(async (context, next) => {
-            
+
             switch (context.activity.text) {
                 // Progressive response
+                case 'account':
+                    await context.sendActivity({
+                        text: ` Before I can do x, you need to log in with your Microsoft account. Please visit the Alexa app to link your Microsoft account. !`,
+                        attachments: [
+                            AlexaCardFactory.linkAccountCard()
+                        ],
+                        inputHint: InputHints.ExpectingInput
+                    });
+
+                    break;
+
                 case 'progressive':
                     await AlexaContextExtensions.sendProgressiveResponse(context, 'This is a progressive response. Please wait while we are retrieving your results.');
                     await context.sendActivity('Here is your result!');
+                    break;
+
+                case 'typing':
+                    await context.sendActivity({ type: ActivityTypes.Typing });
+                    await context.sendActivity('I have sent a typing before');
                     break;
 
                 // Wait for input & send multiple text replies
