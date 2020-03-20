@@ -247,6 +247,7 @@ export class AlexaAdapter extends CustomWebAdapter {
     public async getUserToken(context: TurnContext, connectionName?: string, magicCode?: string): Promise<TokenResponse>;
     public async getUserToken(context: TurnContext, connectionName?: string, magicCode?: string, oAuthAppCredentials?: AppCredentials): Promise<TokenResponse>;
     public async getUserToken(context: TurnContext, connectionName?: string, magicCode?: string, oAuthAppCredentials?: AppCredentials): Promise<TokenResponse> {
+
         if (!context.activity.from || !context.activity.from.id) {
             throw new Error(`CustomWebAdapter.getUserToken(): missing from or from.id`);
         }
@@ -259,11 +260,13 @@ export class AlexaAdapter extends CustomWebAdapter {
             token: alexaBody.session?.user?.accessToken
         };
 
-        if (!result || !result.token) {
-            return undefined;
-        } else {
-            return result as TokenResponse;
-        }
+        return new Promise<TokenResponse>((resolve, reject) => {
+            if (!result || !result.token) {
+                resolve(undefined);
+            } else {
+                resolve(result as TokenResponse);
+            }
+        });
     }
 
     /** 
@@ -293,7 +296,9 @@ export class AlexaAdapter extends CustomWebAdapter {
             hasToken: (token ? true : false)
         };
 
-        return [tokenStatus];
+        return new Promise<TokenStatus[]>((resolve, reject) => {
+            resolve([tokenStatus]);
+        });
     }
 
     /**
@@ -325,7 +330,9 @@ export class AlexaAdapter extends CustomWebAdapter {
         }
 
         // Send empty string back to not break SignInCard 
-        return '';
+        return new Promise<string>((resolve, reject) => {
+            resolve('');
+        });
     }
 
 }

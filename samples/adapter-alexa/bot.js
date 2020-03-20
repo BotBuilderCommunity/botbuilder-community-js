@@ -17,23 +17,31 @@ class EchoBot extends ActivityHandler {
         this.onMessage(async (context, next) => {
 
             switch (context.activity.text) {
-                // Progressive response
-                case 'account':
-                    await context.sendActivity({
-                        text: ` Before I can do x, you need to log in with your Microsoft account. Please visit the Alexa app to link your Microsoft account. !`,
-                        attachments: [
-                            AlexaCardFactory.linkAccountCard()
-                        ],
-                        inputHint: InputHints.ExpectingInput
-                    });
+                // Retrieve token
+                case 'token':
+                    const tokenResponse = await context.adapter.getUserToken(context);
 
+                    if (tokenResponse) {
+                        const tokenPreview = tokenResponse.token.slice(0, 5);
+                        await context.sendActivity(`You are logged in, part of your token is ${tokenPreview}.`);
+                    } else {
+                        await context.sendActivity({
+                            text: ` Before I can do x, you need to log in with your Microsoft account. Please visit the Alexa app to link your Microsoft account.`,
+                            attachments: [
+                                AlexaCardFactory.linkAccountCard()
+                            ],
+                            inputHint: InputHints.ExpectingInput
+                        });
+                    }
                     break;
 
+                // Progressive response
                 case 'progressive':
                     await AlexaContextExtensions.sendProgressiveResponse(context, 'This is a progressive response. Please wait while we are retrieving your results.');
                     await context.sendActivity('Here is your result!');
                     break;
 
+                // Typing activity shouldn't work, but later messages should be sent.
                 case 'typing':
                     await context.sendActivity({ type: ActivityTypes.Typing });
                     await context.sendActivity('I have sent a typing before');
@@ -70,7 +78,7 @@ class EchoBot extends ActivityHandler {
                     }]);
                     break;
 
-                // Send a Simple Card
+                // Send a simple card
                 case 'card':
                     await context.sendActivity({
                         text: `You can also send cards via the Alexa Adapter!`,
