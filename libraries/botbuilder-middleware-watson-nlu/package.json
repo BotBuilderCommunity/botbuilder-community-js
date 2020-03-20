@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/middleware-watson-nlu",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Bot Framework middleware component for the IBM Watson NLU service.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -54,15 +54,18 @@
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
     "@botbuildercommunity/middleware-engine-core": "^1.1.0",
-    "botbuilder": "^4.5.3",
+    "botbuilder": "^4.8.0",
     "ibm-watson": "^4.3.3",
     "mathjs": "^6.2.2"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
     "@types/mathjs": "^6.0.2",
-    "mocha": "^6.1.4",
-    "nyc": "^14.1.1",
+    "mocha": "^7.1.1",
+    "nyc": "^15.0.0",
     "typescript": "^3.5.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

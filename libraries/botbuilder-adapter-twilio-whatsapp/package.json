@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/adapter-twilio-whatsapp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Twilio WhatsApp adapter for use with the Bot Framework.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -58,13 +58,12 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "botbuilder": "^4.7.2",
+    "botbuilder": "^4.8.0",
     "twilio": "^3.39.4"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "mocha": "^7.0.1",
-    "nock": "^11.8.2",
+    "mocha": "^7.1.1",
     "nyc": "^15.0.0",
     "typescript": "^3.7.5"
   },
