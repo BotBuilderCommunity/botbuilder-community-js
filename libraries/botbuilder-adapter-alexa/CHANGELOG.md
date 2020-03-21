@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add helper functions to retrieve OAuth token status
 
 ### Fixed
-- Fix sending of linkAccountCard
+- Fixed the handling of linkAccountCards
 
 ## [1.0.0-beta.1] - 2020-02
 ### Added
