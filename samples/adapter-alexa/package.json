@@ -16,7 +16,7 @@
         "url": "https://github.com"
     },
     "dependencies": {
-        "@botbuildercommunity/adapter-alexa": "^1.0.0-beta.1",
+        "@botbuildercommunity/adapter-alexa": "^1.0.0-beta.2",
         "botbuilder": "~4.8.0",
         "dotenv": "^8.2.0",
         "restify": "~8.5.1"
