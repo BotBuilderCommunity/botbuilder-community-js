@@ -1,4 +1,7 @@
 # Alexa Adapter (preview)
+
+__Currently the Alexa Adapter is in beta.__
+
 This is part of the [Bot Builder Community Extensions](https://github.com/BotBuilderCommunity/botbuilder-community-js) project which contains various pieces of middleware, recognizers and other components for use with the Bot Builder JavaScript SDK v4.
 
 The Alexa Adapter allows you to add an additional endpoint to your bot for Alexa Skills. The Alexa endpoint can be used
@@ -36,7 +39,7 @@ Currently **not** supported scenarios;
 To install:
 
 ```bash
-    npm install @botbuildercommunity/adapter-alexa@next --save
+    npm install @botbuildercommunity/adapter-alexa --save
 ```
 
 ## Sample
