@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Classes used by other (community) libraries.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -48,7 +48,7 @@
   "dependencies": {
     "botbuilder": "^4.8.0",
     "botframework-connector": "^4.8.0",
-    "qs": "^6.9.1"
+    "qs": "^6.9.2"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",

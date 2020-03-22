@@ -71,7 +71,7 @@ export abstract class CustomWebAdapter extends BotAdapter implements IUserTokenP
                 });
                 req.on('end', (): void => {
                     try {
-                        if (contentType.includes('application/x-www-form-urlencoded')) {
+                        if (contentType?.includes('application/x-www-form-urlencoded')) {
                             req.body = parseQueryString(requestData);
                         } else {
                             req.body = JSON.parse(requestData);
