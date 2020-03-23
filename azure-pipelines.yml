@@ -50,7 +50,6 @@ steps:
   inputs: 
     codeCoverageTool: Cobertura
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
-    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
   displayName: 'Publish code coverage results'
   condition: succeededOrFailed()
 
