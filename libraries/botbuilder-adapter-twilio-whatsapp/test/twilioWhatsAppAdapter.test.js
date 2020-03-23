@@ -1,6 +1,6 @@
 const assert = require('assert');
-const { TwilioWhatsAppAdapter } = require("../lib/twilioWhatsAppAdapter");
-const Twilio = require('twilio').Twilio;
+const { TwilioWhatsAppAdapter } = require('../lib/twilioWhatsAppAdapter');
+const { CardFactory } = require('botbuilder');
 
 const mockAccountSid = 'AC8db973kwl8xp1lz94kjf0bma5pez8c'; // 34 characters
 const mockAuthToken = '96yc5z9g44vl4ks2p1suc42yb9p4lpmu'; // 32 characters
@@ -33,8 +33,8 @@ class TwilioWhatsAppAdapterUnderTest extends TwilioWhatsAppAdapter {
         return {
             messages: {
                 create(message) {
-                    console.log('message sent')
-                    return { sid: 'ID' };
+                    assert(message, `Twilio.messages.create() doesn't contain a message.`);
+                    return { sid: 'sent_' + message.to };
                 }
             }
         }
@@ -244,15 +244,15 @@ describe('TwilioWhatsAppAdapter', async () => {
 
         const twilioBody = 'Latitude=52.303897857666016&Longitude=4.750025749206543&Address=Evert+van+de+Beekstraat+354%2C+Schiphol%2C+North+Holland+1118+CZ&SmsMessageSid=SM9c871cd9649aa3829298e153ae6a8123&NumMedia=0&SmsSid=SM9c871cd9649aa3829298e153ae6a8123&SmsStatus=received&Label=Microsoft&Body=&To=whatsapp%3A%2B14123456789&NumSegments=1&MessageSid=SM9c871cd9649aa3829298e153ae6a8123&AccountSid=AC1a03647d811fab342c0ad608e382fab2&From=whatsapp%3A%2B31612345678&ApiVersion=2010-04-01';
         const attachmentToValidate = [{
-            "contentType": "application/json",
-            "content": {
-                "elevation": null,
-                "type": "GeoCoordinates",
-                "latitude": 52.303897857666016,
-                "longitude": 4.750025749206543,
-                "name": "Evert van de Beekstraat 354, Schiphol, North Holland 1118 CZ"
+            'contentType': 'application/json',
+            'content': {
+                'elevation': null,
+                'type': 'GeoCoordinates',
+                'latitude': 52.303897857666016,
+                'longitude': 4.750025749206543,
+                'name': 'Evert van de Beekstraat 354, Schiphol, North Holland 1118 CZ'
             },
-            "name": "Evert van de Beekstraat 354, Schiphol, North Holland 1118 CZ"
+            'name': 'Evert van de Beekstraat 354, Schiphol, North Holland 1118 CZ'
         }];
         const req = new MockRequest(twilioBody, { 'X-Twilio-Signature': 'skip' });
         const res = new MockResponse();
@@ -313,24 +313,196 @@ describe('TwilioWhatsAppAdapter', async () => {
         assert.strictEqual(res.statusCode, 200);
     });
 
-    it.skip('sendActivities() parses html formatting to WhatsApp formatting', async () => {
+    it('sendActivities() parses html formatting to WhatsApp formatting', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
 
+        const result = await whatsAppAdapter.sendActivities(null, [
+            { conversation: { id: 'mockId1' }, type: 'message', text: 'Hello this is the first message.' },
+            { conversation: { id: 'mockId2' }, type: 'message', text: 'This is the second message' }
+        ]);
+
+        assert.notEqual(result, null);
+        assert.equal((result.length === 2), true);
+        assert.deepEqual(result, [{ id: 'sent_mockId1' }, { id: 'sent_mockId2' }]);
     });
 
-    it.skip('sendActivities() parses persistentActions', async () => {
+    it('parseActivity() parses basis activity to WhatsApp message', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
 
+        const result = await whatsAppAdapter.parseActivity(
+            { conversation: { id: 'mockId' }, type: 'message', text: 'Test 1234.' }
+        );
+
+        assert.deepEqual(result, {
+            body: 'Test 1234.',
+            from: 'whatsapp:+14123456789',
+            to: 'mockId'
+        });
     });
 
-    it.skip('sendActivities() parses image attachments', async () => {
+    it('parseActivity() parses html formatting to WhatsApp formatting', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
 
+        const result = await whatsAppAdapter.parseActivity(
+            {
+                conversation: { id: 'mockId' },
+                type: 'message',
+                text: 'Hello, I can transform <b>bold</b>, <i>italic</i>, <s>strikethrough</s> and <code>{}</code> code.'
+            }
+        );
+
+        assert.equal(result.body, 'Hello, I can transform *bold*, _italic_, ~strikethrough~ and ```{}``` code.');
     });
 
-    it.skip('sendActivities() parses GeoCoordinates attachments', async () => {
+    it('parseActivity() parses persistentActions as string', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
 
+        const result = await whatsAppAdapter.parseActivity(
+            {
+                conversation: { id: 'mockId' },
+                type: 'message',
+                text: 'Message with PersistentAction.',
+                channelData: {
+                    persistentAction: 'PersistentAction=geo:{latitude},{longitude}|{label}'
+                }
+            }
+        );
+
+        assert.equal(result.body, 'Message with PersistentAction.');
+        assert.deepEqual(result.persistentAction, ['PersistentAction=geo:{latitude},{longitude}|{label}'])
     });
 
-    it.skip('sendActivities() parses SignIn cards in attachments', async () => {
+    it('parseActivity() parses persistentActions as array', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
 
+        const result = await whatsAppAdapter.parseActivity(
+            {
+                conversation: { id: 'mockId' },
+                type: 'message',
+                text: 'Message with PersistentAction.',
+                channelData: {
+                    persistentAction: ['PersistentAction=geo:{latitude},{longitude}|{label}']
+                }
+            }
+        );
+
+        assert.equal(result.body, 'Message with PersistentAction.');
+        assert.deepEqual(result.persistentAction, ['PersistentAction=geo:{latitude},{longitude}|{label}'])
+    });
+
+    it('parseActivity() parses image attachments', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
+
+        const result = await whatsAppAdapter.parseActivity(
+            {
+                conversation: { id: 'mockId' },
+                type: 'message',
+                text: 'Message with attachments',
+                attachments: [
+                    {
+                        contentType: 'image/png',
+                        contentUrl: 'https://docs.microsoft.com/en-us/bot-framework/media/how-it-works/architecture-resize.png'
+                    },
+                    {
+                        contentType: 'image/png',
+                        contentUrl: 'https://imageurl.com'
+                    }
+                ]
+            }
+        );
+
+        assert.equal(result.body, 'Message with attachments');
+        assert.equal(result.mediaUrl, 'https://docs.microsoft.com/en-us/bot-framework/media/how-it-works/architecture-resize.png');
+    });
+
+    it('parseActivity() parses GeoCoordinates attachments', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
+
+        const result = await whatsAppAdapter.parseActivity(
+            {
+                conversation: { id: 'mockId' },
+                type: 'message',
+                text: 'Message with GeoCoordinates attachment',
+                attachments: [
+                    {
+                        contentType: 'application/json',
+                        content: {
+                            elevation: null,
+                            type: 'GeoCoordinates',
+                            latitude: 52.303897857666016,
+                            longitude: 4.750025749206543,
+                            name: 'Evert van de Beekstraat 354, Schiphol, Netherlands'
+                        },
+                        name: 'Evert van de Beekstraat 354, Schiphol, North Holland 1118 CZ'
+                    }
+                ]
+            }
+        );
+
+        assert.equal(result.body, 'Message with GeoCoordinates attachment');
+        assert.deepEqual(result.persistentAction, [
+            'geo:52.303897857666016,4.750025749206543|Evert van de Beekstraat 354, Schiphol, Netherlands'
+        ]);
+    });
+
+    it('parseActivity() parses SignIn cards in attachments', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
+
+        const result = await whatsAppAdapter.parseActivity(
+            {
+                conversation: { id: 'mockId' },
+                type: 'message',
+                text: '(this text will be ignored)',
+                attachments: [
+                    CardFactory.signinCard(
+                        'BotFramework Sign in Card',
+                        'https://login.microsoftonline.com',
+                        'Sign in'
+                    )
+                ]
+            });
+
+        assert.equal(result.body, 'Sign in\n\n*BotFramework Sign in Card*\nhttps://login.microsoftonline.com');
     });
 
 });
