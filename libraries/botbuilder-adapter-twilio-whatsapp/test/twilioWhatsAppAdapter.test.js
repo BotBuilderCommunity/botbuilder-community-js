@@ -25,7 +25,11 @@ class TwilioWhatsAppAdapterUnderTest extends TwilioWhatsAppAdapter {
         return false;
     }
 
-    createTwilioClient() {
+    createTwilioClient(accountSid, authToken) {
+        assert(authToken, `createTwilioClient() not passed authToken.`);
+        assert.deepEqual(authToken, mockAuthToken);
+        assert(accountSid, `createTwilioClient() not passed accountSid.`);
+        assert.deepEqual(accountSid, mockAccountSid);
         return {
             messages: {
                 create(message) {
@@ -83,7 +87,7 @@ class MockResponse {
 describe('TwilioWhatsAppAdapter', async () => {
 
     it('constructor() should create a TwilioWhatsAppAdapter object', () => {
-        const whatsAppAdapter = new TwilioWhatsAppAdapter({
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
             accountSid: mockAccountSid,
             authToken: mockAuthToken,
             phoneNumber: mockWhatsAppNumber,
@@ -95,15 +99,10 @@ describe('TwilioWhatsAppAdapter', async () => {
         assert((whatsAppAdapter.settings.accountSid === mockAccountSid), 'Adapter does not contain accountSid');
         assert((whatsAppAdapter.settings.endpointUrl === mockEndpointUrl), 'Adapter does not contain endpoint url');
         assert((whatsAppAdapter.settings.authToken === mockAuthToken), 'Adapter does not contain auth token');
-
-        assert((whatsAppAdapter.client instanceof Twilio), 'Client not of type Twilio');
-        assert((whatsAppAdapter.client.username === mockAccountSid), 'Twilio client does not contain username');
-        assert((whatsAppAdapter.client.password === mockAuthToken), 'Twilio client does not contain password');
-        assert((whatsAppAdapter.client.accountSid === mockAccountSid), 'Twilio client does not contain accountSid');
     });
 
     it('constructor() should add whatsapp: prefix if missing', () => {
-        const whatsAppAdapter = new TwilioWhatsAppAdapter({
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
             accountSid: mockAccountSid,
             authToken: mockAuthToken,
             phoneNumber: mockPhoneNumber,
