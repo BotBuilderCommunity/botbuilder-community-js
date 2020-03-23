@@ -161,13 +161,14 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
 
         // Validate if requests are coming from Twilio
         // https://www.twilio.com/docs/usage/security#validating-requests
-        if (!req.headers && (!req.headers['x-twilio-signature'] || !req.headers['X-Twilio-Signature'])) {
+        if (!req?.headers['x-twilio-signature'] && !req?.headers['X-Twilio-Signature']) {
             console.warn(`TwilioWhatsAppAdapter.processActivity(): request doesn't contain a Twilio Signature.`);
             res.status(401);
             res.end();
+            return;
         }
 
-        const signature = req.headers['x-twilio-signature'] || !req.headers['X-Twilio-Signature'];
+        const signature = req.headers['x-twilio-signature'] || req.headers['X-Twilio-Signature'];
         const authToken = this.settings.authToken;
         const requestUrl = this.settings.endpointUrl;
         const message = await this.retrieveBody(req);
@@ -178,12 +179,12 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
             return;
         }
 
-        const isTwilioRequest = Twilio.validateRequest(authToken, signature, requestUrl, message);
+        const isTwilioRequest = this.validateRequest(authToken, signature, requestUrl, message);
 
         if (!isTwilioRequest) {
             console.warn(`TwilioWhatsAppAdapter.processActivity(): request doesn't contain a valid Twilio Signature.`);
 
-            res.status(401);
+            res.status(403);
             res.end();
             return;
         }
@@ -318,6 +319,15 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
      */
     protected createContext(request: Partial<Activity>): TurnContext {
         return new TurnContext(this as any, request);
+    }
+
+    /**
+     * Allows for the overriding of the Twilio object in unit tests and derived adapters.
+     * @param accountSid Twilio AccountSid
+     * @param authToken Twilio Auth Token
+     */
+    protected validateRequest(authToken: string, signature: string, requestUrl: string, message: Record<string, any>) {
+        return Twilio.validateRequest(authToken, signature, requestUrl, message);
     }
 
     /**
