@@ -64,7 +64,7 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
 
         this.settings = settings;
 
-        if (!this.settings.phoneNumber || !this.settings.phoneNumber || !this.settings.phoneNumber || !this.settings.phoneNumber) {
+        if (!this.settings.accountSid || !this.settings.authToken || !this.settings.phoneNumber || !this.settings.endpointUrl) {
             throw new Error(`TwilioWhatsAppAdapter.constructor(): Required TwilioWhatsAppAdapterSettings missing.`);
         }
 
@@ -326,7 +326,7 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
      * @param accountSid Twilio AccountSid
      * @param authToken Twilio Auth Token
      */
-    protected validateRequest(authToken: string, signature: string, requestUrl: string, message: Record<string, any>) {
+    protected validateRequest(authToken: string, signature: string, requestUrl: string, message: Record<string, any>): boolean {
         return Twilio.validateRequest(authToken, signature, requestUrl, message);
     }
 
@@ -421,7 +421,7 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
 
         // Messages without text or mediaUrl are not valid
         if (!message.body && !message.mediaUrl) {
-            throw new Error(`TwilioWhatsAppAdapter.parseActivity(): A activity text or attachment with contentUrl must be specified.`);
+            throw new Error(`TwilioWhatsAppAdapter.parseActivity(): An activity text or attachment with contentUrl must be specified.`);
         }
 
         return message;

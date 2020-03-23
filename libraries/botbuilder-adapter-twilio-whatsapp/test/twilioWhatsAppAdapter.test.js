@@ -1,6 +1,7 @@
 const assert = require('assert');
 const { TwilioWhatsAppAdapter } = require('../lib/twilioWhatsAppAdapter');
 const { CardFactory } = require('botbuilder');
+const Twilio = require('twilio').Twilio;
 
 const mockAccountSid = 'AC8db973kwl8xp1lz94kjf0bma5pez8c'; // 34 characters
 const mockAuthToken = '96yc5z9g44vl4ks2p1suc42yb9p4lpmu'; // 32 characters
@@ -110,6 +111,35 @@ describe('TwilioWhatsAppAdapter', async () => {
         });
 
         assert((whatsAppAdapter.settings.phoneNumber === mockWhatsAppNumber), 'whatsapp: prefix not added');
+    });
+
+    it('constructor() should throw an error if a required parameter is missing', () => {
+        try {
+            new TwilioWhatsAppAdapterUnderTest({
+                authToken: mockAuthToken,
+                phoneNumber: mockPhoneNumber,
+                endpointUrl: mockEndpointUrl
+            });
+            assert.fail(['This should have thrown an exception.']);
+        }
+        catch (e) {
+            assert.equal(e, 'Error: TwilioWhatsAppAdapter.constructor(): Required TwilioWhatsAppAdapterSettings missing.');
+        }
+    });
+
+    it('constructor() should pass BotFrameworkAdapterSettings to super()', () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockPhoneNumber,
+            endpointUrl: mockEndpointUrl
+        }, {
+            appId: 'mockAppId',
+            appPassword: 'mockAppPassword'
+        });
+
+        assert.equal(whatsAppAdapter.credentials.appId, 'mockAppId');
+        assert.equal(whatsAppAdapter.credentials.appPassword, 'mockAppPassword');
     });
 
     it('processActivity()() should fail if request is missing Twilio signature headers', async () => {
@@ -503,6 +533,104 @@ describe('TwilioWhatsAppAdapter', async () => {
             });
 
         assert.equal(result.body, 'Sign in\n\n*BotFramework Sign in Card*\nhttps://login.microsoftonline.com');
+    });
+
+    it('parseActivity() throws error on empty message and attachment url', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
+
+
+        try {
+            const result = await whatsAppAdapter.parseActivity(
+                {
+                    conversation: { id: 'mockId' },
+                    type: 'message'
+                });
+            assert.fail(['This should have thrown an exception.']);
+        }
+        catch (e) {
+            assert.equal(e, 'Error: TwilioWhatsAppAdapter.parseActivity(): An activity text or attachment with contentUrl must be specified.');
+        }
+    });
+
+    it('updateActivity() should throw an exception', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
+
+        try {
+            await whatsAppAdapter.updateActivity(null, null);
+            assert.fail(['This should have thrown an exception.']);
+        }
+        catch (e) {
+            assert.equal(e, 'Error: Method not supported by Twilio WhatsApp API.');
+        }
+    });
+
+    it('deleteActivity() should throw an exception', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
+
+        try {
+            await whatsAppAdapter.deleteActivity(null, null);
+            assert.fail(['This should have thrown an exception.']);
+        }
+        catch (e) {
+            assert.equal(e, 'Error: Method not supported by Twilio WhatsApp API.');
+        }
+    });
+
+    it('createContext() should create a context', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
+
+        const activity = {
+            id: 'SM892512e202b34d4109b10a3893fa9640',
+            channelId: 'whatsapp',
+            conversation: {
+                id: 'whatsapp:+31612345678',
+                isGroup: false,
+                conversationType: null,
+                tenantId: null,
+                name: ''
+            },
+            from: { id: 'whatsapp:+31612345678', name: '' },
+            recipient: { id: 'whatsapp:+14123456789', name: '' },
+            text: 'test',
+            type: 'message'
+        }
+
+        const turnContext = whatsAppAdapter.createContext(activity);
+        assert.notEqual(turnContext, null);
+    });
+
+    it('createTwilioClient() should create a Twilio client', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapter({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
+
+        const client = whatsAppAdapter.createTwilioClient(mockAccountSid, mockAuthToken);
+
+        assert.notEqual(client, null);
+        assert((client instanceof Twilio), 'Client not of type Twilio');
     });
 
 });
