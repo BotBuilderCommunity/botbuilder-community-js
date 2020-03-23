@@ -235,35 +235,102 @@ describe('TwilioWhatsAppAdapter', async () => {
         assert.strictEqual(res.statusCode, 200);
     });
 
-    it.skip('processActivity() parses a Twilio message with location attachment to activity', async () => {
+    it('processActivity() parses a Twilio message with location attachment to activity', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
+
         const twilioBody = 'Latitude=52.303897857666016&Longitude=4.750025749206543&Address=Evert+van+de+Beekstraat+354%2C+Schiphol%2C+North+Holland+1118+CZ&SmsMessageSid=SM9c871cd9649aa3829298e153ae6a8123&NumMedia=0&SmsSid=SM9c871cd9649aa3829298e153ae6a8123&SmsStatus=received&Label=Microsoft&Body=&To=whatsapp%3A%2B14123456789&NumSegments=1&MessageSid=SM9c871cd9649aa3829298e153ae6a8123&AccountSid=AC1a03647d811fab342c0ad608e382fab2&From=whatsapp%3A%2B31612345678&ApiVersion=2010-04-01';
+        const attachmentToValidate = [{
+            "contentType": "application/json",
+            "content": {
+                "elevation": null,
+                "type": "GeoCoordinates",
+                "latitude": 52.303897857666016,
+                "longitude": 4.750025749206543,
+                "name": "Evert van de Beekstraat 354, Schiphol, North Holland 1118 CZ"
+            },
+            "name": "Evert van de Beekstraat 354, Schiphol, North Holland 1118 CZ"
+        }];
+        const req = new MockRequest(twilioBody, { 'X-Twilio-Signature': 'skip' });
+        const res = new MockResponse();
+
+        await whatsAppAdapter.processActivity(req, res, (context) => {
+            assert(context, `context not passed.`);
+            assert.deepEqual(context.activity.attachments, attachmentToValidate);
+            called = true;
+        });
+
+        assert(called, `bot logic not called.`);
+        assert.strictEqual(res.statusCode, 200);
     });
 
-    it.skip('processActivity() parses a Twilio delivered event to activity', () => {
+    it('processActivity() parses a Twilio delivered event to activity', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
+
         const twilioBody = 'EventType=DELIVERED&SmsSid=SMdf55df64a2ff4920bb0748193cfbb640&SmsStatus=delivered&MessageStatus=delivered&ChannelToAddress=%2B31612345678&To=whatsapp%3A%2B31612345678&ChannelPrefix=whatsapp&MessageSid=SMdf55df64a2ff4920bb0748193cfbb640&AccountSid=AC1a03647d811fab342c0ad608e382fab2&From=whatsapp%3A%2B14123456789&ApiVersion=2010-04-01&ChannelInstallSid=XE4e524de4c4d93a42831b334b540bc5ae';
+
+        const req = new MockRequest(twilioBody, { 'X-Twilio-Signature': 'skip' });
+        const res = new MockResponse();
+
+        await whatsAppAdapter.processActivity(req, res, (context) => {
+            assert(context, `context not passed.`);
+            assert.strictEqual(context.activity.type, 'messageDelivered');
+            called = true;
+        });
+
+        assert(called, `bot logic not called.`);
+        assert.strictEqual(res.statusCode, 200);
     });
 
-    it.skip('processActivity() parses a Twilio sent event to activity', () => {
+    it('processActivity() parses a Twilio sent event to activity', async () => {
+        const whatsAppAdapter = new TwilioWhatsAppAdapterUnderTest({
+            accountSid: mockAccountSid,
+            authToken: mockAuthToken,
+            phoneNumber: mockWhatsAppNumber,
+            endpointUrl: mockEndpointUrl
+        });
+
         const twilioBody = 'SmsSid=SM0cec4ed334e74bcbb64eb8b6684e9654&SmsStatus=sent&MessageStatus=sent&ChannelToAddress=%2B31612345678&To=whatsapp%3A%2B31612345678&ChannelPrefix=whatsapp&MessageSid=SM0cec4ed334e74bcbb64eb8b6684e9654&AccountSid=AC1a03647d811fab342c0ad608e382fab2&StructuredMessage=false&From=whatsapp%3A%2B14123456789&ApiVersion=2010-04-01&ChannelInstallSid=XEcc20d939f803ee381f2442185d0d5dc5';
+
+        const req = new MockRequest(twilioBody, { 'X-Twilio-Signature': 'skip' });
+        const res = new MockResponse();
+
+        await whatsAppAdapter.processActivity(req, res, (context) => {
+            assert(context, `context not passed.`);
+            assert.strictEqual(context.activity.type, 'messageSent');
+            called = true;
+        });
+
+        assert(called, `bot logic not called.`);
+        assert.strictEqual(res.statusCode, 200);
     });
 
-    it.skip('sendActivities() parses html formatting to WhatsApp formatting', () => {
+    it.skip('sendActivities() parses html formatting to WhatsApp formatting', async () => {
 
     });
 
-    it.skip('sendActivities() parses persistentActions', () => {
+    it.skip('sendActivities() parses persistentActions', async () => {
 
     });
 
-    it.skip('sendActivities() parses image attachments', () => {
+    it.skip('sendActivities() parses image attachments', async () => {
 
     });
 
-    it.skip('sendActivities() parses GeoCoordinates attachments', () => {
+    it.skip('sendActivities() parses GeoCoordinates attachments', async () => {
 
     });
 
-    it.skip('sendActivities() parses SignIn cards in attachments', () => {
+    it.skip('sendActivities() parses SignIn cards in attachments', async () => {
 
     });
 
