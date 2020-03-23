@@ -46,6 +46,14 @@ steps:
   displayName: 'Publish test results'
   condition: succeededOrFailed()
 
+- task: PublishCodeCoverageResults@1
+  inputs: 
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+  displayName: 'Publish code coverage results'
+  condition: succeededOrFailed()
+
 - script: |
     npm run audit
   displayName: 'Run a security audit'
