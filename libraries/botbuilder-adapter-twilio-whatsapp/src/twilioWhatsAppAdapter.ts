@@ -64,7 +64,7 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
 
         this.settings = settings;
 
-        if (!this.settings.phoneNumber || !this.settings.phoneNumber || !this.settings.phoneNumber || !this.settings.phoneNumber) {
+        if (!this.settings.accountSid || !this.settings.authToken || !this.settings.phoneNumber || !this.settings.endpointUrl) {
             throw new Error(`TwilioWhatsAppAdapter.constructor(): Required TwilioWhatsAppAdapterSettings missing.`);
         }
 
@@ -161,13 +161,14 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
 
         // Validate if requests are coming from Twilio
         // https://www.twilio.com/docs/usage/security#validating-requests
-        if (!req.headers && (!req.headers['x-twilio-signature'] || !req.headers['X-Twilio-Signature'])) {
+        if (!req?.headers['x-twilio-signature'] && !req?.headers['X-Twilio-Signature']) {
             console.warn(`TwilioWhatsAppAdapter.processActivity(): request doesn't contain a Twilio Signature.`);
             res.status(401);
             res.end();
+            return;
         }
 
-        const signature = req.headers['x-twilio-signature'] || !req.headers['X-Twilio-Signature'];
+        const signature = req.headers['x-twilio-signature'] || req.headers['X-Twilio-Signature'];
         const authToken = this.settings.authToken;
         const requestUrl = this.settings.endpointUrl;
         const message = await this.retrieveBody(req);
@@ -178,12 +179,12 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
             return;
         }
 
-        const isTwilioRequest = Twilio.validateRequest(authToken, signature, requestUrl, message);
+        const isTwilioRequest = this.validateRequest(authToken, signature, requestUrl, message);
 
         if (!isTwilioRequest) {
             console.warn(`TwilioWhatsAppAdapter.processActivity(): request doesn't contain a valid Twilio Signature.`);
 
-            res.status(401);
+            res.status(403);
             res.end();
             return;
         }
@@ -325,6 +326,15 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
      * @param accountSid Twilio AccountSid
      * @param authToken Twilio Auth Token
      */
+    protected validateRequest(authToken: string, signature: string, requestUrl: string, message: Record<string, any>): boolean {
+        return Twilio.validateRequest(authToken, signature, requestUrl, message);
+    }
+
+    /**
+     * Allows for the overriding of the Twilio object in unit tests and derived adapters.
+     * @param accountSid Twilio AccountSid
+     * @param authToken Twilio Auth Token
+     */
     protected createTwilioClient(accountSid: string, authToken: string): Twilio.Twilio {
         return Twilio(accountSid, authToken);
     }
@@ -411,7 +421,7 @@ export class TwilioWhatsAppAdapter extends CustomWebAdapter {
 
         // Messages without text or mediaUrl are not valid
         if (!message.body && !message.mediaUrl) {
-            throw new Error(`TwilioWhatsAppAdapter.parseActivity(): A activity text or attachment with contentUrl must be specified.`);
+            throw new Error(`TwilioWhatsAppAdapter.parseActivity(): An activity text or attachment with contentUrl must be specified.`);
         }
 
         return message;

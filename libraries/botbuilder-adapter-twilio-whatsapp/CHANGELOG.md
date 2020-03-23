@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Support for OAuth via Azure Bot Service
 
+### Fixed
+- Fix validation of X-Twilio-Signature
+- Fix validation constructor parameters
+
+### Changed
+- Changed HTTP Status code from 401 to 403, when X-Twilio-Signature is invalid
+
 ### Changed
 - Abstracting the code using the CustomWebAdapter
 - Updated dependencies
