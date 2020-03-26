@@ -30,18 +30,18 @@
     "eslint": "eslint ./libraries/*/src/*.ts ./libraries/*/src/**/*.ts",
     "eslint-ci": "eslint ./libraries/*/src/*.ts ./libraries/*/src/**/*.ts --quiet -f junit -o ./eslint-test-results.xml",
     "eslint-fix": "eslint ./libraries/*/src/*.ts ./libraries/*/src/**/*.ts --fix",
-    "audit": "lerna exec --stream --parallel -- npm audit --audit-level=moderate",
+    "audit": "lerna exec --stream --no-bail --parallel -- npm audit --audit-level=moderate",
     "audit-fix": "lerna exec --stream --parallel -- npm audit fix"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
     "@types/node": "^12.6.9",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
-    "@typescript-eslint/parser": "^2.14.0",
-    "eslint": "^6.1.0",
-    "lerna": "^3.16.4",
+    "@typescript-eslint/parser": "^2.19.2",
+    "eslint": "^6.8.0",
+    "lerna": "^3.20.2",
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   }
 }
