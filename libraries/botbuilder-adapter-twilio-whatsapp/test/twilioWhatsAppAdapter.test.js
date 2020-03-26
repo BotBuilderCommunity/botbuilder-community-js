@@ -413,13 +413,13 @@ describe('TwilioWhatsAppAdapter', async () => {
                 type: 'message',
                 text: 'Message with PersistentAction.',
                 channelData: {
-                    persistentAction: 'PersistentAction=geo:{latitude},{longitude}|{label}'
+                    persistentAction: 'geo:{latitude},{longitude}|{label}'
                 }
             }
         );
 
         assert.equal(result.body, 'Message with PersistentAction.');
-        assert.deepEqual(result.persistentAction, ['PersistentAction=geo:{latitude},{longitude}|{label}'])
+        assert.deepEqual(result.persistentAction, ['geo:{latitude},{longitude}|{label}'])
     });
 
     it('parseActivity() parses persistentActions as array', async () => {
@@ -436,13 +436,13 @@ describe('TwilioWhatsAppAdapter', async () => {
                 type: 'message',
                 text: 'Message with PersistentAction.',
                 channelData: {
-                    persistentAction: ['PersistentAction=geo:{latitude},{longitude}|{label}']
+                    persistentAction: ['geo:{latitude},{longitude}|{label}']
                 }
             }
         );
 
         assert.equal(result.body, 'Message with PersistentAction.');
-        assert.deepEqual(result.persistentAction, ['PersistentAction=geo:{latitude},{longitude}|{label}'])
+        assert.deepEqual(result.persistentAction, ['geo:{latitude},{longitude}|{label}'])
     });
 
     it('parseActivity() parses image attachments', async () => {
