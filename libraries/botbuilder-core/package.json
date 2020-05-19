@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/core",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Classes used by other (community) libraries.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -46,8 +46,8 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "botbuilder": "^4.8.0",
-    "botframework-connector": "^4.8.0",
+    "botbuilder": "^4.9.0",
+    "botframework-connector": "^4.9.0",
     "qs": "^6.9.2"
   },
   "devDependencies": {
