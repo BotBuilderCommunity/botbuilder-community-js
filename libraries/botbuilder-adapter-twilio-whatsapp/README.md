@@ -8,9 +8,10 @@ The Twilio WhatsApp adapter for the Microsoft Bot Framework allows you to add an
 This adapter supports the limited capabilities of Twilio WhatsApp, including;
 
 * Send and receive text messages
-* Send and receive text messages with attachment (`image`, `audio`, `video`, `document`, `location`)
+* Send and receive text messages with attachments (`image`, `audio`, `video`, `document`, `location`)
 * Send proactive notifications
-* Track message deliveries (`sent`, `delivered`, `read` receipts)
+* Track message deliveries (`sent`, `delivered` and `read` receipts)
+* User authentication via OAuth (provided by Azure Bot Service)
 
 ## Status
 __Currently the Twilio WhatsApp channel is in beta.__
@@ -35,6 +36,8 @@ _The `status callback url` is optional and should only be used if you want to tr
 6. Give it a try! Your existing bot should be able to operate on the WhatsApp channel via Twilio.
 
 ```javascript
+const { TwilioWhatsAppAdapter } = require('@botbuildercommunity/adapter-twilio-whatsapp');
+
 const whatsAppAdapter = new TwilioWhatsAppAdapter({
     accountSid: '', // Account SID
     authToken: '', // Auth Token
@@ -58,11 +61,12 @@ server.post('/api/whatsapp/messages', (req, res) => {
 * [Send proactive notifications](#send-proactive-notifications)
 * [Implement channel-specific functionality](#implement-channel-specific-functionality)
 * [Monitor the status of your WhatsApp outbound message](#monitor-the-status-of-your-whatsapp-outbound-message)
+* [User authentication within a conversation](#user-authentication-within-a-conversation)
 
 ### Send and receive attachments
 The Bot Framework SDK supports the task of sending rich messages to the user. The Twilio WhatsApp adapter is using the same principles as the Bot Framework SDK. ([official documentation](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-add-media-attachments?view=azure-bot-service-4.0&tabs=javascript)).
 
-Attachments to WhatsApp messages can be of many different file types, including JPG, MP3, and PDF. [See more about the supported file types in the Twilio FAQs](https://support.twilio.com/hc/en-us/articles/360017961894-Sending-and-Receiving-Media-with-WhatsApp-Messaging-on-Twilio-Beta-). The file type can be found by looking at the `contentType` of the attachment.
+Attachments to WhatsApp messages can be of many different file types, including JPG, MP3, and PDF. [Read more about the supported file types in the Twilio FAQ](https://support.twilio.com/hc/en-us/articles/360017961894-Sending-and-Receiving-Media-with-WhatsApp-Messaging-on-Twilio-Beta-). The file type can be found by looking at the `contentType` property of the attachment.
 
 **Example**
 ```javascript
@@ -148,12 +152,12 @@ conversationReference = TurnContext.getConversationReference(context.activity);
 
 // Send pro-active message
 await whatsAppAdapter.continueConversation(conversationReference, async (turnContext) => {
-    await turnContext.sendActivity(`Proactive message!.`);
+    await turnContext.sendActivity(`Proactive message!`);
 });
 ```
 
 ### Implement channel-specific functionality
-The Twilio WhatsApp channel is using `whatsapp` as the channel id. Within the TurnContext, you can use the following snippet to detect if the request is coming from the Twilio WhatsApp channel and implement your custom logic.
+The Twilio WhatsApp channel is using `whatsapp` as the channel id. Within the TurnContext, you can use the following snippet to detect if the request is coming from the Twilio WhatsApp channel and to implement your custom logic.
 `if (context.activity.channelId === 'whatsapp')`
 
 Using the `channelData` object on new message activities is currently only supported for passing `persistentAction`, which can be used to send location messages.
@@ -163,12 +167,22 @@ If you configure the `status callback url` in Twilio Configuration, multiple sta
 
 Within the TurnContext you are able to differentiate between the events by reading the value of `context.activity.type`. If you are using an `ActivityHandler`, you should use the `onUnrecognizedActivityType` method.
 
-**Example (JavaScript)**
+**Example**
 ```javascript
-if (context.activity.type === 'messageRead') {}
+if (context.activity.type === WhatsAppActivityTypes.MessageRead) {}
 ```
 
-**Example (TypeScript)**
-```typescript
-if (context.activity.type === WhatsAppActivityTypes.MessageRead) {}
+### User authentication within a conversation
+It is possible to use the native [Bot Service OAuth functionality](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-authentication?view=azure-bot-service-4.0) by passing in the optional `BotFrameworkAdapterSettings` object. Sample code for adding OAuth to your bot can be found [here](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-authentication?view=azure-bot-service-4.0&tabs=javascript).
+
+```javascript
+const whatsAppAdapter = new TwilioWhatsAppAdapter({
+    accountSid: '', // Account SID
+    authToken: '', // Auth Token
+    phoneNumber: '', // The From parameter consisting of whatsapp: followed by the sending WhatsApp number (using E.164 formatting)
+    endpointUrl: '' // Endpoint URL you configured in the sandbox, used for validation
+}, {
+    appId: '', // MicrosoftAppId
+    appPassword: '' // MicrosoftAppPassword
+});
 ```

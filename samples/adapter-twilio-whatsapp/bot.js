@@ -1,4 +1,4 @@
-const { ActivityHandler } = require('botbuilder');
+const { ActivityHandler, ActivityTypes } = require('botbuilder');
 
 class EchoBot extends ActivityHandler {
     constructor() {
