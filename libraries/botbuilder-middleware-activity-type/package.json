@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/middleware-activity-type",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Bot Framework middleware component to handle incoming activities based on a specific activity type",
   "main": "./lib/index.js",
   "typings": "index.d.ts",
@@ -52,7 +52,7 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "botbuilder": "^4.5.3"
+    "botbuilder": "^4.9.0"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",

@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/storage-mongodb",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "MongoDB storage option for the Microsoft Bot Framework",
   "keywords": [
     "botbuilder",
@@ -27,8 +27,8 @@
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "dependencies": {
-    "botbuilder": "^4.5.3",
-    "botbuilder-core": "^4.5.3",
+    "botbuilder": "^4.9.0",
+    "botbuilder-core": "^4.9.0",
     "flat": "^4.1.0",
     "mongodb": "^3.3.2"
   },

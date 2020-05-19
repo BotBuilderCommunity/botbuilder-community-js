@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/storage-mssql",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Microsoft SQL Server storage option for the Microsoft Bot Framework",
   "keywords": [
     "botbuilder",
@@ -48,8 +48,8 @@
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "dependencies": {
-    "botbuilder": "^4.5.3",
-    "botbuilder-core": "^4.5.3",
+    "botbuilder": "^4.9.0",
+    "botbuilder-core": "^4.9.0",
     "mssql": "^5.1.0"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/middleware-google-language",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Bot Framework middleware component for the Google Cloud Natural Language service, including sentiment analysis, language detection, entity extraction, and keyword recognition.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -55,9 +55,9 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "@botbuildercommunity/middleware-engine-core": "^1.0.0",
+    "@botbuildercommunity/middleware-engine-core": "^1.1.0",
     "@google-cloud/language": "^3.5.0",
-    "botbuilder": "^4.5.3"
+    "botbuilder": "^4.9.0"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",

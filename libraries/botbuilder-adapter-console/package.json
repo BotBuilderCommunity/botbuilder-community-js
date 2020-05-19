@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/adapter-console",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Console adapter for the Bot Framework SDK v4.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -52,7 +52,7 @@
   },
   "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
   "dependencies": {
-    "botbuilder": "^4.5.3"
+    "botbuilder": "^4.9.0"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
