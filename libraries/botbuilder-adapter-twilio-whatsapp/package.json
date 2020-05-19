@@ -50,7 +50,8 @@
   ],
   "contributors": [
     "Bot Builder Community",
-    "Mick Vleeshouwer <mick@imick.nl>"
+    "Mick Vleeshouwer <mick@imick.nl>",
+    "Néstor Alonso Viña <nalonso@student.42.fr>"
   ],
   "license": "MIT",
   "bugs": {
@@ -65,8 +66,9 @@
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "mocha": "^7.1.2",
     "nock": "^11.8.2",
-    "nyc": "^15.0.0",
-    "typescript": "^3.7.5"
+    "@botbuildercommunity/core": "^1.0.0",
+    "botbuilder": "^4.8.0",
+    "twilio": "^3.41.1"
   },
   "publishConfig": {
     "access": "public"

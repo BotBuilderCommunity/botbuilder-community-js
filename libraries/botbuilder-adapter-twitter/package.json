@@ -69,9 +69,9 @@
     "@types/qs": "^6.5.3",
     "@types/request": "^2.48.3",
     "@types/request-promise": "^4.1.44",
-    "mocha": "^6.2.0",
-    "nyc": "^14.1.1",
-    "rewire": "^4.0.1",
+    "mocha": "^7.1.1",
+    "nyc": "^15.0.0",
+    "rewire": "^5.0.0",
     "typescript": "^3.5.3"
   },
   "publishConfig": {

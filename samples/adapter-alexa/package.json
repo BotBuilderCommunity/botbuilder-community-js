@@ -1,0 +1,27 @@
+{
+    "name": "alexa-echobot",
+    "version": "1.0.0",
+    "description": "Bot Builder v4 Alexa echo bot sample",
+    "author": "Microsoft",
+    "license": "MIT",
+    "main": "index.js",
+    "scripts": {
+        "start": "node ./index.js",
+        "watch": "nodemon ./index.js",
+        "lint": "eslint .",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com"
+    },
+    "dependencies": {
+        "@botbuildercommunity/adapter-alexa": "^1.0.0-beta.2",
+        "botbuilder": "~4.8.0",
+        "dotenv": "^8.2.0",
+        "restify": "~8.5.1"
+    },
+    "devDependencies": {
+        "nodemon": "~2.0.2"
+    }
+}
