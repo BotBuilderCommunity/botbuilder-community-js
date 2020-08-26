@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/storage-dynamodb",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "DynamoDB storage option for the Microsoft Bot Framework",
   "keywords": [
     "botbuilder",
