@@ -1,0 +1,40 @@
+{
+  "name": "@botbuildercommunity/storage-dynamodb",
+  "version": "1.0.1",
+  "description": "DynamoDB storage option for the Microsoft Bot Framework",
+  "keywords": [
+    "botbuilder",
+    "bots",
+    "chatbots",
+    "dynamodb",
+    "storage"
+  ],
+  "contributors": [
+    "Bot Builder Community"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "dependencies": {
+    "aws-sdk": "^2.739.0",
+    "botbuilder": "^4.8.0",
+    "botbuilder-core": "^4.8.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
