@@ -49,7 +49,7 @@ export class DynamoDBStorage implements Storage {
     public constructor(tableName: string, region: string, credentials?: AWSCredentialsOptions) {
         this.tableName = tableName;
         this.region = region;
-        this.credentials = credentials
+        this.credentials = credentials;
     }
 
     public async read(keys: string[]): Promise<StoreItems> {
