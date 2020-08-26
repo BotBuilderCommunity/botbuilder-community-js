@@ -2,9 +2,24 @@
  * @module @botbuildercommunity/storage-dynamodb
  */
 
-import { config as awsConfig } from 'aws-sdk';
+import { config as awsConfig, Credentials as AWSCredentials } from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { Storage, StoreItems } from 'botbuilder-core';
+
+interface AWSCredentialsOptions {
+    /**
+     * AWS access key ID.
+     */
+    accessKeyId: string;
+    /**
+     * AWS secret access key.
+     */
+    secretAccessKey: string;
+    /**
+     * AWS session token.
+     */
+    sessionToken?: string;
+}
 
 /**
  * Middleware that implements an DynamoDB based storage provider for a bot.
@@ -22,17 +37,19 @@ import { Storage, StoreItems } from 'botbuilder-core';
  * ```
 */
 export class DynamoDBStorage implements Storage {
-    private tableName: string;
-    private region: string;
+    private readonly tableName: string;
+    private readonly region: string;
+    private readonly credentials?: AWSCredentialsOptions;
 
     /**
-	 * Creates a new DynamoDBStorage instance.
-	 * @param region the region the DynamoDB table lives in
-	 * @param tableName the name of the table
-	 */
-    public constructor(tableName: string, region: string) {
+     * Creates a new DynamoDBStorage instance.
+     * @param region the region the DynamoDB table lives in
+     * @param tableName the name of the table
+     */
+    public constructor(tableName: string, region: string, credentials?: AWSCredentialsOptions) {
         this.tableName = tableName;
         this.region = region;
+        this.credentials = credentials
     }
 
     public async read(keys: string[]): Promise<StoreItems> {
@@ -81,7 +98,10 @@ export class DynamoDBStorage implements Storage {
     }
 
     private getDynamoDBDocumentClient(): DocumentClient {
-        awsConfig.update({region: this.region});
+        awsConfig.update({
+            region: this.region,
+            ...(this.credentials ? {credentials: new AWSCredentials(this.credentials)} : {})
+        });
         return new DocumentClient({apiVersion: '2012-08-10'});
     }
 }
