@@ -10,7 +10,8 @@
     "storage"
   ],
   "contributors": [
-    "Bot Builder Community"
+    "Bot Builder Community",
+    "Kayne Barclay <triggerpuss@gmail.com>"
   ],
   "license": "MIT",
   "bugs": {
