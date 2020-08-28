@@ -26,6 +26,7 @@ The following alternative storage implementations are currently available;
 | Name | Description | Sample? | NPM |
 | ---- | ----------- | ------- | --- |
 | [Azure Table storage](libraries/botbuilder-storage-azure-table/README.md) | Use Azure Table Storage in your bot. | | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-azure-table.svg) |
+| [DynamoDB storage](libraries/botbuilder-storage-dynamodb/README.md) | Use DynamoDB storage implementation in your bot. | | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-dynamodb.svg) |
 | [MongoDB storage](libraries/botbuilder-storage-mongodb/README.md) | Use MongoDB storage implementation in your bot. | | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-mongodb.svg) |
 | [MS SQL storage](libraries/botbuilder-storage-mssql/README.md) | Use Microsoft SQL Server storage implementation in your bot. | [Sample](https://github.com/BotBuilderCommunity/botbuilder-community-js/tree/master/samples/storage-mssql) | ![NPM Version](https://img.shields.io/npm/v/@botbuildercommunity/storage-mssql.svg) |
 

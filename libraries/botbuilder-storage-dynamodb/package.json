@@ -1,0 +1,70 @@
+{
+  "name": "@botbuildercommunity/storage-dynamodb",
+  "version": "1.0.0",
+  "description": "DynamoDB storage option for the Microsoft Bot Framework",
+  "keywords": [
+    "botbuilder",
+    "bots",
+    "chatbots",
+    "dynamodb",
+    "storage"
+  ],
+  "contributors": [
+    "Bot Builder Community",
+    "Kayne Barclay <triggerpuss@gmail.com>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "all": true,
+    "check-coverage": true,
+    "lines": 0,
+    "statements": 0,
+    "functions": 0,
+    "branches": 0,
+    "exclude": [
+      "**/*.d.ts",
+      "**/*.test.js"
+    ],
+    "reporter": [
+      "text",
+      "cobertura",
+      "html"
+    ],
+    "report-dir": "./.nyc_output/coverage"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "tsc && nyc mocha",
+    "test-ci": "tsc && nyc mocha --reporter xunit --reporter-options output=./mocha-test-results.xml --reporter-options suiteName=$npm_package_name"
+  },
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "dependencies": {
+    "aws-sdk": "^2.739.0",
+    "botbuilder": "^4.8.0",
+    "botbuilder-core": "^4.8.0"
+  },
+  "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^0.1.3",
+    "@types/mocha": "^7.0.2",
+    "aws-sdk-mock": "^5.1.0",
+    "mocha": "^7.1.1",
+    "nyc": "^15.0.0",
+    "sinon": "^9.0.3",
+    "typescript": "^3.5.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

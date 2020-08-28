@@ -1,0 +1,24 @@
+{
+  "name": "botbuilder-dynamodb-testbot",
+  "version": "0.1.0",
+  "description": "Test bot application for DynamoDB.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "dynamodb",
+    "text",
+    "bot",
+    "framework",
+    "chatbots"
+  ],
+  "author": "Kayne Barclay <triggerpuss@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@botbuildercommunity/storage-dynamodb": "^1.0.0",
+    "botbuilder": "^4.5.3",
+    "botbuilder-dialogs": "^4.5.3",
+    "restify": "^8.4.0"
+  }
+}
