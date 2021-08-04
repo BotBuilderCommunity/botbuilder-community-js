@@ -19,9 +19,19 @@
   "contributors": [
     "Bot Builder Community"
   ],
+  "typings": "./lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "publishConfig": {
     "access": "public"

@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"module": "commonjs",
+		"outDir": "./lib",
+		"target": "ES2015",
+		"sourceMap": true,
+		"rootDir": "./src",
+		"types" : ["node"]
+	},
+	"include": [
+		"src/**/*"
+	]
+}
