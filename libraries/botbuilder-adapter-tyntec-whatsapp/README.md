@@ -6,6 +6,14 @@ connectivity with the WhatsApp channel in tyntec Conversations API.
 It is a TypeScript library that allows your bots to use WhatsApp through the
 tyntec Conversations API.
 
+Look how easy it is to use:
+
+```typescript
+import { TyntecWhatsAppAdapter } from '@botbuildercommunity/adapter-tyntec-whatsapp';
+
+const adapter = new TyntecWhatsAppAdapter();
+```
+
 This is part of the [Bot Builder Community Extensions](https://github.com/BotBuilderCommunity/botbuilder-community-js)
 project which contains various pieces of middleware, recognizers and other
 components for use with the Bot Builder JavaScript SDK v4.
@@ -22,5 +30,5 @@ $ npm install @botbuildercommunity/adapter-tyntec-whatsapp
 
 ## Documentation
 
-* Microsoft Bot Framework SDK documentation: https://docs.microsoft.com/en-us/azure/bot-service/index-bf-sdk
-* tyntec WhatsApp Business documentation: https://www.tyntec.com/docs/docs-center-whatsapp-business-api-overview
+See the API Reference in the [docs/](./docs) directory for more information
+about how to use the library and what are the current limitations.
