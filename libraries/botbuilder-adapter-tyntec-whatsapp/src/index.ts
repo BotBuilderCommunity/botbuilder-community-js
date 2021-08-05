@@ -1,6 +1,6 @@
-import {Activity, ActivityTypes, BotAdapter, ConversationReference, ResourceResponse, TurnContext, WebRequest, WebResponse} from "botbuilder";
+import {Activity, ActivityTypes, BotAdapter, ChannelAccount, ConversationAccount, ConversationReference, ResourceResponse, TurnContext, WebRequest, WebResponse} from "botbuilder";
 import {AxiosInstance} from "axios";
-import {ITyntecWhatsAppMessageRequest} from "./tyntec/messages";
+import {ITyntecMoMessage, ITyntecWhatsAppMessageRequest} from "./tyntec/messages";
 import {composeTyntecSendWhatsAppMessageRequestConfig, parseTyntecSendWhatsAppMessageResponse} from "./tyntec/axios";
 
 export interface ITyntecWhatsAppAdapterSettings {
@@ -123,4 +123,51 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
 			}
 		};
     }
+
+	protected async parseTyntecWhatsAppMessageEvent(req: {body: ITyntecMoMessage, headers: any, params: any, query: any}): Promise<Partial<Activity>> {
+		if (req.body.event !== "MoMessage") {
+			throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.event other than MoMessage not supported: ${req.body.event}`)
+		}
+		if (req.body.content.contentType !== "text") {
+			throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.content.contentType other than text not supported: ${req.body.content.contentType}`)
+		}
+		if (req.body.groupId !== undefined) {
+			throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.groupId not supported: ${req.body.groupId}`)
+		}
+		if (req.body.to === undefined) {
+			throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.to is required: ${req.body.to}`)
+		}
+
+		const tyntecSendWhatsAppMessageRequestConfig = composeTyntecSendWhatsAppMessageRequestConfig(this.tyntecApikey, {from: "example", to: "example", channel: "whatsapp", content: {contentType: "text", text: "example"}});
+
+		const conversation: Partial<ConversationAccount> = {
+			id: req.body.from,
+			isGroup: false,
+			name: req.body.whatsapp?.senderName
+		};
+		const from: Partial<ChannelAccount> = {
+			id: req.body.from,
+			name: req.body.whatsapp?.senderName
+		};
+		const recipient: Partial<ChannelAccount> = {
+			id: req.body.to
+		};
+		const activity: Partial<Activity> = {
+			channelData: {
+				contentType: "text"
+			},
+			channelId: req.body.channel,
+			conversation: conversation as ConversationAccount,
+			from: from as ChannelAccount,
+			id: req.body.messageId,
+			recipient: recipient as ChannelAccount,
+			replyToId: req.body.context?.messageId,
+			serviceUrl: tyntecSendWhatsAppMessageRequestConfig.url,
+			text: req.body.content.text,
+			timestamp: req.body.timestamp !== undefined ? new Date(req.body.timestamp) : undefined,
+			type: ActivityTypes.Message
+		};
+
+		return activity;
+	}
 }

@@ -1,13 +1,41 @@
+export interface ITyntecMoContext {
+	isForwarded?: boolean;
+	isFrequentlyForwarded?: boolean;
+	messageId?: string;
+}
+
+export interface ITyntecMoMessage {
+	channel: string;
+	content: ITyntecTextMoContent;
+	context?: ITyntecMoContext;
+	event: "MoMessage";
+	from: string;
+	groupId?: string;
+	messageId: string;
+	timestamp?: string;
+	to?: string;
+	whatsapp?: ITyntecWhatsapp;
+}
+
 export interface ITyntecQuickReplyButtonComponent {
 	type: "quick_reply";
 	index: number;
 	payload: string;
 }
 
+export interface ITyntecTextMoContent {
+	contentType: "text";
+	text: string;
+}
+
 export interface ITyntecUrlButtonComponent {
 	type: "url";
 	index: number;
 	text: string;
+}
+
+export interface ITyntecWhatsapp {
+	senderName?: string;
 }
 
 export interface ITyntecWhatsAppLocation {
@@ -21,7 +49,7 @@ export interface ITyntecWhatsAppMessageRequest {
 	from: string;
 	to: string;
 	channel: "whatsapp";
-	content: ITyntecWhatsAppTemplateContent;
+	content: ITyntecWhatsAppTemplateContent | ITyntecWhatsAppTextContent;
 }
 
 export interface ITyntecWhatsAppTemplate {
@@ -96,4 +124,9 @@ export interface ITyntecWhatsAppTemplateVideoHeaderComponent {
 	type: "video";
 	video: ITyntecWhatsAppTemplateMediaHeader;
 	example?: ITyntecWhatsAppTemplateMediaHeaderComponentExample;
+}
+
+export interface ITyntecWhatsAppTextContent {
+	contentType: "text";
+	text: string;
 }

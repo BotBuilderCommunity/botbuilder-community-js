@@ -12,6 +12,7 @@ Methods:
 * [`public constructor(settings: ITyntecWhatsAppAdapterSettings)`](#public-constructorsettings-ityntecwhatsappadaptersettings)
 * [`public sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]>`](#public-sendactivitiescontext-turncontext-activities-partialactivity-promiseresourceresponse)
 * [`public use(...middlewares: (MiddlewareHandler | Middleware)[]): TyntecWhatsAppAdapter`](#public-usemiddlewares-middlewarehandler--middleware-tyntecwhatsappadapter)
+* [`protected parseTyntecWhatsAppMessageEvent(req: {body: ITyntecMoMessage, headers: any, params: any, query: any}): Promise<Partial<Activity>>`](#protected-parsetyntecwhatsappmessageeventreq-body-ityntecmomessage-headers-any-params-any-query-any-promisepartialactivity)
 
 If you want more information about bot adapters, see the [Microsoft Bot Framework SDK documentation](https://docs.microsoft.com/en-us/azure/bot-service/index-bf-sdk).
 
@@ -62,3 +63,33 @@ See [Activity.md](./Activity.md) to find out what activities may be passed to
 ## `public use(...middlewares: (MiddlewareHandler | Middleware)[]): TyntecWhatsAppAdapter`
 
 Adds the `middlewares` to the middleware pipeline and returns itself.
+
+
+## `protected parseTyntecWhatsAppMessageEvent(req: {body: ITyntecMoMessage, headers: any, params: any, query: any}): Promise<Partial<Activity>>`
+
+Maps the `req.params`, `req.query`, `req.headers` and `req.body` of a request
+accepted by [`processActivity`](#public-processactivityreq-webrequest-res-webresponse-logic-context-turncontext--promiseany-promisevoid)
+to the corresponding activity object.
+
+It is called by the [`public processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void>`](#public-processactivityreq-webrequest-res-webresponse-logic-context-turncontext--promiseany-promisevoid)
+method.
+
+See [Activity.md](./Activity.md) to find out what activities are allowed to be
+returned.
+
+It may be overridden to add additional checks (like authorization) on the
+incoming requests. For example, the [tyntec inbound message webhook](https://www.tyntec.com/docs/docs-center-whatsapp-business-api-overview)
+can be registered with a custom header containing a user-defined bearer token.
+Then, the overriding method can check this header and throw an error if the
+token is invalid.
+
+```typescript
+class MyAdapter extends TyntecWhatsAppAdapter {
+    protected async parseTyntecWhatsAppMessageEvent(req: {body: ITyntecMoMessage, headers: any, params: any, query: any}): Promise<Partial<Activity>> {
+        if (req.headers['authorization'] !== 'Bearer mF_9.B5f-4.1JqM') {
+            throw new Error('Unauthorized');
+        }
+        return super.parseTyntecWhatsAppMessageEvent(req);
+    }
+}
+```
