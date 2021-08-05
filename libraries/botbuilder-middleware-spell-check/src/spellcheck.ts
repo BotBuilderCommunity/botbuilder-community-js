@@ -56,4 +56,27 @@ export class SpellCheck implements Middleware {
 		}
 		await next();
 	}
+
+	public static transform(context: TurnContext): string {
+		let destText = context.activity.text;
+
+		if (!context.turnState.get('suggestions')) {
+			return destText;
+		}
+
+		const suggestionsLength = context.turnState.get('suggestions').length;
+
+		if (suggestionsLength <= 0) {
+			return context.activity.text;
+		}
+
+		for (let i = 0; i < suggestionsLength; i++) {
+			destText = destText.replace(
+				context.turnState.get('tokens')[i],
+				context.turnState.get('suggestions')[i],
+			);
+		}
+
+		return destText;
+	}
 }
