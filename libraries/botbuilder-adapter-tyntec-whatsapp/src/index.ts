@@ -1,6 +1,7 @@
 import {Activity, ActivityTypes, BotAdapter, ConversationReference, ResourceResponse, TurnContext, WebRequest, WebResponse} from "botbuilder";
 import {AxiosInstance} from "axios";
 import {ITyntecWhatsAppMessageRequest} from "./tyntec/messages";
+import {composeTyntecSendWhatsAppMessageRequestConfig, parseTyntecSendWhatsAppMessageResponse} from "./tyntec/axios";
 
 export interface ITyntecWhatsAppAdapterSettings {
 	axiosInstance: AxiosInstance;
@@ -31,7 +32,18 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
     }
 
     async sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]> {
-        throw Error("Operation sendActivities not supported.");
+		const responses: ResourceResponse[] = [];
+		for (const activity of activities) {
+			const tyntecRequest = this.composeTyntecWhatsAppMessageRequest(activity);
+			const axiosRequest = composeTyntecSendWhatsAppMessageRequestConfig(this.tyntecApikey, tyntecRequest);
+			axiosRequest.validateStatus = () => true;
+
+			const axiosResponse = await this.axiosInstance.request(axiosRequest);
+
+			const messageId = parseTyntecSendWhatsAppMessageResponse(axiosResponse);
+			responses.push({id: messageId});
+		}
+		return responses;
     }
 
     async updateActivity(context: TurnContext, activity: Partial<Activity>): Promise<ResourceResponse | void> {

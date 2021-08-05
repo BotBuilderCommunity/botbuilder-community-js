@@ -1,0 +1,112 @@
+# `interface Activity`
+
+`Activity` is a Microsoft Bot Framework representation of actions made by
+conversation participants.
+
+You can find the full specification of the `Activity` interface in the
+Microsoft Bot Framework SDK documentation at https://docs.microsoft.com/en-us/azure/bot-service/index-bf-sdk
+and in Microsoft Bot Framework SDK specs at https://github.com/microsoft/botframework-sdk/tree/main/specs.
+
+However, at the moment, Tyntec WhatsApp Adapter supports only a limited subset
+of activities. This means, that both activities passed to the adapter and
+adapter created activities have stricter requirements.
+
+The only supported activity type is a [WhatsApp message](#whatsapp-message-activity).
+
+Properties of all supported activities:
+* `type = "message"` (REQUIRED)
+* `channelId = "whatsapp"` (REQUIRED)
+
+
+## WhatsApp Message Activity
+
+Properties of all supported WhatsApp message activities:
+* `from: ChannelAccount` (REQUIRED)
+* `from.id: string` (REQUIRED) - the WhatsApp ID of the sender
+* `conversation: ConversationAccount` (REQUIRED)
+* `conversation.id: string` (REQUIRED) - the WhatsApp ID of the recipient
+* `replyToId?: string` (IGNORED)
+* `entities?: Entity[]` (IGNORED)
+* `textFormat?: TextFormatTypes` (IGNORED)
+* `locale?: string` (IGNORED)
+* `speak = undefined` (DISALLOWED)
+* `inputHint = undefined` (DISALLOWED)
+* `attachmentLayout?: AttachmentLayoutTypes` (IGNORED)
+* `suggestedActions?: SuggestedActions` (IGNORED)
+* `expiration?: Date` (IGNORED)
+* `importance?: ActivityImportance` (IGNORED)
+* `deliveryMode = undefined` (DISALLOWED)
+* `listenFor?: string[]` (IGNORED)
+* `semanticAction?: SemanticAction` (IGNORED)
+
+Additional properties of channel WhatsApp message activities:
+* `from.name?: string` (OPTIONAL) - the display name of the sender
+* `recipient: ChannelAccount` (REQUIRED)
+* `recipient.id: string` (REQUIRED) - the WhatsApp ID of the recipient
+* `conversation.name?: string` (OPTIONAL) - the display name of the sender
+* `conversation.isGroup = false` (REQUIRED)
+
+The supported WhatsApp messages are [template](#whatsapp-template-message-activity)
+messages.
+
+
+### WhatsApp Template Message Activity
+
+Properties of all supported WhatsApp template message activities:
+* `channelData: any` (REQUIRED)
+* `channelData.contentType = "template"` (REQUIRED)
+* `channelData.contacts = undefined` (DISALLOWED)
+* `channelData.interactive = undefined` (DISALLOWED)
+* `channelData.location = undefined` (DISALLOWED)
+* `channelData.template: WhatsAppTemplate` (REQUIRED) - a valid [WhatsAppTemplate](https://api.tyntec.com/reference/conversations/current.html)
+  object
+* `text = undefined` (DISALLOWED)
+* `attachments = undefined` (DISALLOWED)
+
+The template must be up to 1024 characters long.
+
+A WhatsApp template message activity example:
+
+```javascript
+activity === {
+    type: "message",
+    channelId: "whatsapp",
+    id: "77185196-664a-43ec-b14a-fe97036c697e",
+    timestamp: new Date("2019-06-26T09:41:00.000Z"),
+    from: {
+        id: "+1233423454"
+    },
+    recipient: {
+        id: "545345345"
+    },
+    conversation: {
+        id: "+1233423454",
+        isGroup: false,
+        name: "John Doe"
+    },
+    channelData: {
+        contentType: "template",
+        template: {
+            templateId: "template_id",
+            templateLanguage: "en",
+            components: {
+                header: [
+                    {
+                        type: "image",
+                        image: {
+                            url: "https://example.com/image.png"
+                        }
+                    }
+                ],
+                body: [
+                    {
+                        type: "text",
+                        text: "lorem"
+                    }
+                ]
+            }
+        }
+    },
+    serviceUrl: "https://api.tyntec.com/conversations/v3/messages"
+}
+```

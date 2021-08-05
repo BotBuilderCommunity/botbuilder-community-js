@@ -10,6 +10,7 @@ Properties:
 
 Methods:
 * [`public constructor(settings: ITyntecWhatsAppAdapterSettings)`](#public-constructorsettings-ityntecwhatsappadaptersettings)
+* [`public sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]>`](#public-sendactivitiescontext-turncontext-activities-partialactivity-promiseresourceresponse)
 * [`public use(...middlewares: (MiddlewareHandler | Middleware)[]): TyntecWhatsAppAdapter`](#public-usemiddlewares-middlewarehandler--middleware-tyntecwhatsappadapter)
 
 If you want more information about bot adapters, see the [Microsoft Bot Framework SDK documentation](https://docs.microsoft.com/en-us/azure/bot-service/index-bf-sdk).
@@ -39,6 +40,23 @@ used to authenticate requests to the tyntec Conversations API.
 Initializes the adapter. It sets the `axiosInstance` property to the value of
 `settings.axiosInstance` and the `tyntecApikey` property to the value of
 `settings.tyntecApikey`.
+
+
+## `public sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]>`
+
+Asynchronously modifies the turn `context` and sends the set of outgoing
+`activities` as WhatsApp messages.
+
+It is intended to be called through the turn context and not directly from a
+bot.
+
+Returns an array of objects of `ResourceResponse` type containing IDs of the
+delivered messages.
+
+See [Activity.md](./Activity.md) to find out what activities may be passed to
+`sendActivities`. The supported activities are:
+
+* WhatsApp template message activities.
 
 
 ## `public use(...middlewares: (MiddlewareHandler | Middleware)[]): TyntecWhatsAppAdapter`

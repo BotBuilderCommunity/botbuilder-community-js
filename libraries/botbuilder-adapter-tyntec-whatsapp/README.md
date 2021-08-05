@@ -34,7 +34,11 @@ $ npm install @botbuildercommunity/adapter-tyntec-whatsapp
 ```
 
 
-## Documentation
+## Features
+
+At the moment, the adapter supports only:
+
+* sending WhatsApp messages (`sendActivities`).
 
 See the API Reference in the [docs/](./docs) directory for more information
 about how to use the library and what are the current limitations.
