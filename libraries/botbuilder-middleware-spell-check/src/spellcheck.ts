@@ -5,7 +5,7 @@ import * as WebRequest from 'web-request';
  */
 
 function getUrl(text: string): string {
-    return `https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/?text=${ text }&mode=spell`;
+	return `https://api.bing.microsoft.com/v7.0/spellcheck/?text=${text}&mode=spell`;
 }
 
 async function getWebRequest(url: string, key: string): Promise<WebRequest.Response<string>> {
