@@ -31,8 +31,8 @@ export class SpellCheck implements Middleware {
                 const re: WebRequest.Response<string> = await getWebRequest(url, this.key);
                 const obj: any = JSON.parse(re.content);
                 if (obj.flaggedTokens && obj.flaggedTokens.length > 0) {
-                    let tokens: string[];
-                    let suggestions: string[];
+                    const tokens: string[] = [];
+                    const suggestions: string[] = [];
 
                     for (let i = 0; i < obj.flaggedTokens.length; i++) {
                         try {
