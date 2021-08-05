@@ -3,9 +3,23 @@ var { ActivityTypes } = require("botbuilder");
 var { TyntecWhatsAppAdapter } = require("../lib/index");
 
 describe("TyntecWhatsAppAdapter", function() {
+	describe("constructor", function() {
+		it("should initialize #tyntecApikey", function () {
+			const settings = {
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			};
+
+			const adapter = new TyntecWhatsAppAdapter(settings);
+
+			assert.strictEqual(adapter.tyntecApikey, "ABcdefGhI1jKLMNOPQRst2UVWx345yz6");
+		});
+	});
+
 	describe("#composeTyntecWhatsAppMessageRequest", function() {
 		it("should compose a template message request", function () {
-			const adapter = new TyntecWhatsAppAdapter();
+			const adapter = new TyntecWhatsAppAdapter({
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
 			const activity =  {
 				type: ActivityTypes.Message,
 				channelId: "whatsapp",
@@ -69,7 +83,9 @@ describe("TyntecWhatsAppAdapter", function() {
 		});
 
 		it("should throw an error when an activity is not supported", function () {
-			const adapter = new TyntecWhatsAppAdapter();
+			const adapter = new TyntecWhatsAppAdapter({
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
 			const activity = {
 				channelData: {},
 				channelId: "whatsapp",
@@ -86,7 +102,9 @@ describe("TyntecWhatsAppAdapter", function() {
 
 	describe("#onTurnError", function() {
 		it("should return undefined when no error handler is present", function() {
-			const adapter = new TyntecWhatsAppAdapter();
+			const adapter = new TyntecWhatsAppAdapter({
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
 
 			const actualHandler = adapter.onTurnError;
 
@@ -95,7 +113,9 @@ describe("TyntecWhatsAppAdapter", function() {
 
 		it("should return the error handler when present", function() {
 			const handler = async (context, error) => null;
-			const adapter = new TyntecWhatsAppAdapter();
+			const adapter = new TyntecWhatsAppAdapter({
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
 			adapter.onTurnError = handler;
 
 			const actualHandler = adapter.onTurnError;
@@ -105,7 +125,9 @@ describe("TyntecWhatsAppAdapter", function() {
 
 		it("should set an error handler", function() {
 			const handler = async (context, error) => null;
-			const adapter = new TyntecWhatsAppAdapter();
+			const adapter = new TyntecWhatsAppAdapter({
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
 
 			adapter.onTurnError = handler;
 

@@ -5,9 +5,10 @@ bot to WhatsApp through the tyntec Conversations API.
 
 Properties:
 * [`public onTurnError?: (context: TurnContext, error: Error) => Promise<void>`](#public-onturnerror-context-turncontext-error-error--promisevoid)
+* [`public tyntecApikey: string`](#public-tyntecapikey-string)
 
 Methods:
-* [`public constructor()`](#public-constructor)
+* [`public constructor(settings: ITyntecWhatsAppAdapterSettings)`](#public-constructorsettings-ityntecwhatsappadaptersettings)
 * [`public use(...middlewares: (MiddlewareHandler | Middleware)[]): TyntecWhatsAppAdapter`](#public-usemiddlewares-middlewarehandler--middleware-tyntecwhatsappadapter)
 
 If you want more information about bot adapters, see the [Microsoft Bot Framework SDK documentation](https://docs.microsoft.com/en-us/azure/bot-service/index-bf-sdk).
@@ -20,9 +21,16 @@ middleware or application. The handler gets a `context` object for the turn and
 the thrown `error`.
 
 
-## `public constructor()`
+## `public tyntecApikey: string`
 
-Initializes the adapter.
+Is a [tyntec API key](https://www.tyntec.com/docs/faq-whatsapp-business-onboarding-how-can-i-get-api-key-setup-my-whatsapp-business-account)
+used to authenticate requests to the tyntec Conversations API.
+
+
+## `public constructor(settings: ITyntecWhatsAppAdapterSettings)`
+
+Initializes the adapter. It sets the `tyntecApikey` property to the value of
+`settings.tyntecApikey`.
 
 
 ## `public use(...middlewares: (MiddlewareHandler | Middleware)[]): TyntecWhatsAppAdapter`

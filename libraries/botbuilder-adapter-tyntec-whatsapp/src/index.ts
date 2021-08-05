@@ -1,8 +1,20 @@
 import {Activity, ActivityTypes, BotAdapter, ConversationReference, ResourceResponse, TurnContext, WebRequest, WebResponse} from "botbuilder";
 import {ITyntecWhatsAppMessageRequest} from "./tyntec/messages";
 
+export interface ITyntecWhatsAppAdapterSettings {
+	tyntecApikey: string;
+}
+
 export class TyntecWhatsAppAdapter extends BotAdapter {
-    async continueConversation(reference: Partial<ConversationReference>, logic: (revocableContext: TurnContext) => Promise<void>): Promise<void> {
+	public tyntecApikey: string;
+
+	constructor(settings: ITyntecWhatsAppAdapterSettings) {
+		super();
+
+		this.tyntecApikey = settings.tyntecApikey;
+	}
+
+	async continueConversation(reference: Partial<ConversationReference>, logic: (revocableContext: TurnContext) => Promise<void>): Promise<void> {
         throw Error("Operation continueConversation not supported.");
     }
 

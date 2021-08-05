@@ -11,7 +11,9 @@ Look how easy it is to use:
 ```typescript
 import { TyntecWhatsAppAdapter } from '@botbuildercommunity/adapter-tyntec-whatsapp';
 
-const adapter = new TyntecWhatsAppAdapter();
+const adapter = new TyntecWhatsAppAdapter({
+	tyntecApikey: 'API_KEY'
+});
 ```
 
 This is part of the [Bot Builder Community Extensions](https://github.com/BotBuilderCommunity/botbuilder-community-js)
