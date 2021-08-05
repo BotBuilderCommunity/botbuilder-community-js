@@ -47,7 +47,7 @@ Additional properties of channel WhatsApp message activities:
 * `conversation.isGroup = false` (REQUIRED)
 
 The supported WhatsApp messages are [template](#whatsapp-template-message-activity)
-messages.
+and [text](#whatsapp-text-message-activity) messages.
 
 
 ### WhatsApp Template Message Activity
@@ -108,5 +108,47 @@ activity === {
         }
     },
     serviceUrl: "https://api.tyntec.com/conversations/v3/messages"
+}
+```
+
+
+### WhatsApp Text Message Activity
+
+Properties of all supported WhatsApp text message activities:
+* `channelData: any` (REQUIRED)
+* `channelData.contentType = "text"` (REQUIRED)
+* `channelData.contacts = undefined` (DISALLOWED)
+* `channelData.interactive = undefined` (DISALLOWED)
+* `channelData.location = undefined` (DISALLOWED)
+* `channelData.template = undefined` (DISALLOWED)
+* `text: string` (REQUIRED)
+* `attachments = undefined` (DISALLOWED)
+
+The text content (`text`) MUST be up to 4096 characters long.
+
+A WhatsApp text message activity example:
+
+```javascript
+activity === {
+    type: "message",
+    channelId: "whatsapp",
+    id: "77185196-664a-43ec-b14a-fe97036c697e",
+    timestamp: new Date("2019-06-26T09:41:00.000Z"),
+    from: {
+        id: "+1233423454"
+    },
+    recipient: {
+        id: "545345345"
+    },
+    conversation: {
+        id: "+1233423454",
+        isGroup: false,
+        name: "John Doe"
+    },
+    channelData: {
+        contentType: "text"
+    },
+    serviceUrl: "https://api.tyntec.com/conversations/v3/messages",
+    text: "A simple text message"
 }
 ```

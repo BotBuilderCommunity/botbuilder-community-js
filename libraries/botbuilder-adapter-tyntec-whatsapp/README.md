@@ -4,7 +4,8 @@ A [Microsoft Bot Framework](https://www.botframework.com/) adapter for handling
 connectivity with the WhatsApp channel in tyntec Conversations API.
 
 It is a TypeScript library that allows your bots to use WhatsApp through the
-tyntec Conversations API.
+tyntec Conversations API. The adapter supports two-way (incoming and outgoing)
+messaging with templates and free-form.
 
 Look how easy it is to use:
 
@@ -17,6 +18,14 @@ const axiosInstance = axios.create();
 const adapter = new TyntecWhatsAppAdapter({
 	axiosInstance,
 	tyntecApikey: 'API_KEY'
+});
+
+// ... your bot and server initialization ...
+
+server.post('/api/messages', (req, res) => {
+	adapter.processActivity(req, res, async (context) => {
+		await myBot.run(context);
+	});
 });
 ```
 
@@ -38,6 +47,7 @@ $ npm install @botbuildercommunity/adapter-tyntec-whatsapp
 
 At the moment, the adapter supports only:
 
+* receiving WhatsApp messages (`processActivity`) and
 * sending WhatsApp messages (`sendActivities`).
 
 See the API Reference in the [docs/](./docs) directory for more information

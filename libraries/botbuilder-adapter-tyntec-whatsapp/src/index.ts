@@ -33,7 +33,40 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
     }
 
     async processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void> {
-        throw Error("Operation processActivity not supported.");
+		try {
+			const requestBody = await new Promise((resolve: (value: ITyntecMoMessage) => void, reject: (reason?: any) => void) => {
+				if (req.body !== undefined) {
+					return resolve(req.body);
+				}
+
+				let requestJson = '';
+				req.on!('data', (chunk: string) => {
+					if (requestJson.length + chunk.length > this.maxBodySize) {
+						reject(new Error(`Request body too large: > ${this.maxBodySize}`));
+					}
+
+					requestJson += chunk;
+				});
+				req.on!('end', (): void => {
+					try {
+						resolve(JSON.parse(requestJson));
+					} catch (e) {
+						reject(e);
+					}
+				});
+			});
+
+			const activity = await this.parseTyntecWhatsAppMessageEvent({body: requestBody, headers: req.headers, params: req.params, query: req.query});
+			const context = new TurnContext(this as any, activity);
+			await this.runMiddleware(context, logic);
+
+			res.status(200);
+			res.end();
+		} catch (e) {
+			res.status(500);
+			res.send(`Failed to process request: ${e}`);
+			res.end();
+		}
     }
 
     async sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]> {
