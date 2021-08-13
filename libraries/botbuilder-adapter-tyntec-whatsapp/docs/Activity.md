@@ -46,9 +46,63 @@ Additional properties of channel WhatsApp message activities:
 * `conversation.name?: string` (OPTIONAL) - the display name of the sender
 * `conversation.isGroup = false` (REQUIRED)
 
-The supported WhatsApp messages are [image](#whatsapp-image-message-activity),
-[template](#whatsapp-template-message-activity), [text](#whatsapp-text-message-activity)
-and [video](#whatsapp-video-message-activity) messages.
+The supported WhatsApp messages are [document](#whatsapp-document-message-activity),
+[image](#whatsapp-image-message-activity), [template](#whatsapp-template-message-activity),
+[text](#whatsapp-text-message-activity) and [video](#whatsapp-video-message-activity)
+messages.
+
+
+### WhatsApp Document Message Activity
+
+Properties of all supported WhatsApp document message activities:
+* `channelData: any` (REQUIRED)
+* `channelData.contentType = "document"` (REQUIRED)
+* `channelData.contacts = undefined` (DISALLOWED)
+* `channelData.interactive = undefined` (DISALLOWED)
+* `channelData.location = undefined` (DISALLOWED)
+* `channelData.template = undefined` (DISALLOWED)
+* `text?: string` (OPTIONAL) - the document caption
+* `attachments: Attachment[]` (REQUIRED) - exactly one attachment is required
+* `attachments[i].content = undefined` (DISALLOWED)
+* `attachments[i].contentUrl: string` (REQUIRED)
+* `attachments[i].thumbnailUrl = undefined` (DISALLOWED)
+
+The name attachment name (`attachments[i].name`) MUST be up to 240 characters
+long. The size MUST be up to 100 MB.
+
+A WhatsApp document message activity example:
+
+```javascript
+activity === {
+    type: "message",
+    channelId: "whatsapp",
+    id: "77185196-664a-43ec-b14a-fe97036c697e",
+    timestamp: new Date("2019-06-26T09:41:00.000Z"),
+    from: {
+        id: "+1233423454"
+    },
+    recipient: {
+        id: "545345345"
+    },
+    conversation: {
+        id: "+1233423454",
+        isGroup: false,
+        name: "John Doe"
+    },
+    channelData: {
+        contentType: "document"
+    },
+    serviceUrl: "https://api.tyntec.com/conversations/v3/messages",
+    text: "A document caption",
+    attachments: [
+        {
+            contentType: "application/pdf",
+            contentUrl: "https://example.com/document.pdf",
+            name: "document.pdf"
+        }
+    ]
+}
+```
 
 
 ### WhatsApp Image Message Activity
