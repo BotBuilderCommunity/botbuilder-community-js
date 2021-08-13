@@ -54,6 +54,16 @@ export interface ITyntecWhatsapp {
 	senderName?: string;
 }
 
+export interface ITyntecWhatsAppDocument extends ITyntecBaseMedia {
+	caption?: string;
+	filename?: string;
+}
+
+export interface ITyntecWhatsAppDocumentContent {
+	contentType: "document";
+	document: ITyntecWhatsAppDocument;
+}
+
 export interface ITyntecWhatsAppImage extends ITyntecBaseMedia {
 	caption?: string;
 }
@@ -74,7 +84,7 @@ export interface ITyntecWhatsAppMessageRequest {
 	from: string;
 	to: string;
 	channel: "whatsapp";
-	content: ITyntecWhatsAppImageContent | ITyntecWhatsAppTemplateContent | ITyntecWhatsAppTextContent | ITyntecWhatsAppVideoContent;
+	content: ITyntecWhatsAppDocumentContent | ITyntecWhatsAppImageContent | ITyntecWhatsAppTemplateContent | ITyntecWhatsAppTextContent | ITyntecWhatsAppVideoContent;
 }
 
 export interface ITyntecWhatsAppTemplate {
