@@ -5,6 +5,7 @@ bot to WhatsApp through the tyntec Conversations API.
 
 Properties:
 * [`public axiosInstance: AxiosInstance`](#public-axiosinstance-axiosinstance)
+* [`public maxBodySize: number`](#public-maxbodysize-number)
 * [`public onTurnError?: (context: TurnContext, error: Error) => Promise<void>`](#public-onturnerror-context-turncontext-error-error--promisevoid)
 * [`public tyntecApikey: string`](#public-tyntecapikey-string)
 
@@ -23,6 +24,11 @@ Is an [Axios instance](https://github.com/axios/axios) used to send requests to
 the tyntec Conversations API.
 
 
+## `public maxBodySize: number`
+
+Is the maximum size of the request body accepted in `processActivity`.
+
+
 ## `public onTurnError?: (context: TurnContext, error: Error) => Promise<void>`
 
 Is an optional asynchronous error handler that can catch exceptions in the
@@ -39,8 +45,10 @@ used to authenticate requests to the tyntec Conversations API.
 ## `public constructor(settings: ITyntecWhatsAppAdapterSettings)`
 
 Initializes the adapter. It sets the `axiosInstance` property to the value of
-`settings.axiosInstance` and the `tyntecApikey` property to the value of
-`settings.tyntecApikey`.
+`settings.axiosInstance`, the `maxBodySize` property to the value of
+`settings.maxBodySize` and the `tyntecApikey` property to the value of
+`settings.tyntecApikey`. If `settings.maxBodySize` is not provided, the
+`maxBodySize` property is set to `1024` by default.
 
 
 ## `public sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]>`

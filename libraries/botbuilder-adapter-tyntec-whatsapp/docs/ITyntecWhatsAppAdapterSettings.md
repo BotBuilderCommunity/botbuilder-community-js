@@ -5,6 +5,7 @@ instances.
 
 Properties:
 * [`axiosInstance: AxiosInstance`](#axiosinstance-axiosinstance)
+* [`maxBodySize?: number`](#maxbodysize-number)
 * [`tyntecApikey: string`](#tyntecapikey-string)
 
 
@@ -12,6 +13,11 @@ Properties:
 
 Is an [Axios instance](https://github.com/axios/axios) used to send requests to
 the tyntec Conversations API.
+
+
+## `maxBodySize?: number`
+
+Is the maximum size of the request body accepted in `processActivity`.
 
 
 ## `tyntecApikey: string`

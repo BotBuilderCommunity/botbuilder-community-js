@@ -5,17 +5,22 @@ import {composeTyntecSendWhatsAppMessageRequestConfig, parseTyntecSendWhatsAppMe
 
 export interface ITyntecWhatsAppAdapterSettings {
 	axiosInstance: AxiosInstance;
+	maxBodySize?: number;
 	tyntecApikey: string;
 }
 
 export class TyntecWhatsAppAdapter extends BotAdapter {
 	public axiosInstance: AxiosInstance;
+	public maxBodySize = 1024;
 	public tyntecApikey: string;
 
 	constructor(settings: ITyntecWhatsAppAdapterSettings) {
 		super();
 
 		this.axiosInstance = settings.axiosInstance;
+		if (settings.maxBodySize !== undefined) {
+			this.maxBodySize = settings.maxBodySize;
+		}
 		this.tyntecApikey = settings.tyntecApikey;
 	}
 
