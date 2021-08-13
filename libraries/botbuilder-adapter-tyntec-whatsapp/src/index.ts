@@ -174,7 +174,7 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
 				}
 			};
 		}
-		if (activity.channelData!.contentType === "document" || activity.channelData!.contentType === "image" || activity.channelData!.contentType === "video") {
+		if (activity.channelData!.contentType === "audio" || activity.channelData!.contentType === "document" || activity.channelData!.contentType === "image" || activity.channelData!.contentType === "video") {
 			if (activity.attachments === undefined || activity.attachments.length !== 1) {
 				throw Error(`TyntecWhatsAppAdapter: other than exactly one Activity.attachments not supported: ${activity.attachments?.length}`);
 			}
@@ -200,6 +200,23 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
 				throw Error(`TyntecWhatsAppAdapter: both media Activity.channelData.contentType and Activity.channelData.template not supported: ${activity.channelData.contentType} and ${JSON.stringify(activity.channelData.template)}`);
 			}
 
+			if (activity.channelData!.contentType === "audio") {
+				if (activity.text !== undefined) {
+					throw Error(`TyntecWhatsAppAdapter: both audio Activity.channelData.contentType and Activity.text not supported: ${activity.channelData.contentType} and ${activity.text}`);
+				}
+
+				return {
+					from: activity.from.id,
+					to: activity.conversation.id,
+					channel: "whatsapp",
+					content: {
+						audio: {
+							url: activity.attachments[0].contentUrl
+						},
+						contentType: "audio"
+					}
+				};
+			}
 			if (activity.channelData!.contentType === "document") {
 				return {
 					from: activity.from.id,

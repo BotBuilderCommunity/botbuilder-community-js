@@ -80,6 +80,40 @@ describe("TyntecWhatsAppAdapter", function() {
 			});
 		});
 
+		it("should compose an audio message request", function () {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
+			const activity = {
+				type: ActivityTypes.Message,
+				channelId: "whatsapp",
+				from: { id: "+1233423454" },
+				conversation: { id: "545345345" },
+				channelData: { contentType: "audio" },
+				attachments: [
+					{
+						contentType: "audio/ac3",
+						contentUrl: "https://example.com/audio.ac3"
+					}
+				]
+			};
+
+			const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
+
+			assert.deepStrictEqual(messageRequest, {
+				from: "+1233423454",
+				to: "545345345",
+				channel: "whatsapp",
+				content: {
+					contentType: "audio",
+					audio: {
+						url: "https://example.com/audio.ac3"
+					}
+				}
+			});
+		});
+
 		it("should compose a document message request", function () {
 			const adapter = new TyntecWhatsAppAdapter({
 				axiosInstance: axios.create(),
