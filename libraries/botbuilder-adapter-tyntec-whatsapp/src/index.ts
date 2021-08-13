@@ -1,7 +1,7 @@
 import {Activity, ActivityTypes, BotAdapter, ChannelAccount, ConversationAccount, ConversationReference, ResourceResponse, TurnContext, WebRequest, WebResponse} from "botbuilder";
 import {AxiosInstance} from "axios";
 import {ITyntecMoMessage, ITyntecWhatsAppMessageRequest} from "./tyntec/messages";
-import {composeTyntecSendWhatsAppMessageRequestConfig, parseTyntecSendWhatsAppMessageResponse} from "./tyntec/axios";
+import {composeTyntecRequestConfig, composeTyntecSendWhatsAppMessageRequestConfig, parseTyntecSendWhatsAppMessageResponse} from "./tyntec/axios";
 
 export interface ITyntecWhatsAppAdapterSettings {
 	axiosInstance: AxiosInstance;
@@ -250,8 +250,8 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
 		if (req.body.event !== "MoMessage") {
 			throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.event other than MoMessage not supported: ${req.body.event}`)
 		}
-		if (req.body.content.contentType !== "text") {
-			throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.content.contentType other than text not supported: ${req.body.content.contentType}`)
+		if (req.body.content.contentType === "media" && req.body.content.media.type !== "image") {
+			throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.content.media.type other than image not supported: ${req.body.content.media.type}`);
 		}
 		if (req.body.groupId !== undefined) {
 			throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.groupId not supported: ${req.body.groupId}`)
@@ -275,9 +275,7 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
 			id: req.body.to
 		};
 		const activity: Partial<Activity> = {
-			channelData: {
-				contentType: "text"
-			},
+			channelData: {},
 			channelId: req.body.channel,
 			conversation: conversation as ConversationAccount,
 			from: from as ChannelAccount,
@@ -285,11 +283,34 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
 			recipient: recipient as ChannelAccount,
 			replyToId: req.body.context?.messageId,
 			serviceUrl: tyntecSendWhatsAppMessageRequestConfig.url,
-			text: req.body.content.text,
 			timestamp: req.body.timestamp !== undefined ? new Date(req.body.timestamp) : undefined,
 			type: ActivityTypes.Message
 		};
+		if (req.body.content.contentType === "text") {
+			activity.channelData.contentType = "text";
+			activity.text = req.body.content.text;
+			return activity;
+		}
+		if (req.body.content.contentType === "media") {
+			const mediaRequest = composeTyntecRequestConfig("get", req.body.content.media.url, this.tyntecApikey, "*/*");
+			mediaRequest.validateStatus = () => true;
+			let mediaResponse;
+			try{
+				mediaResponse = await this.axiosInstance.request(mediaRequest);
+			} catch (e) {
+				throw new Error(`Failed to download media: ${e.response.status}: ${JSON.stringify(e.response.data)}`);
+			}
 
-		return activity;
+			activity.attachments = [
+				{
+					contentType: mediaResponse.headers["content-type"],
+					contentUrl: req.body.content.media.url
+				}
+			];
+			activity.channelData.contentType = req.body.content.media.type;
+			activity.text = req.body.content.media.caption;
+			return activity;
+		}
+		throw Error(`TyntecWhatsAppAdapter: invalid input: ${JSON.stringify(req.body)}`);
 	}
 }

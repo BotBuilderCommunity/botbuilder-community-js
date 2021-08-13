@@ -294,6 +294,62 @@ describe("TyntecWhatsAppAdapter", function() {
 			});
 		});
 
+		it("should parse an image message event", async function() {
+			const axiosInstance = {
+				request: async (config) => {
+					return {
+						status: 200,
+						statusText: "OK",
+						headers: {
+							"content-length": "590000",
+							"content-type": "image/jpeg",
+							"date": "Mon, 23 Aug 2021 08:35:10 GMT",
+							"server": "nginx"
+						},
+						data: "",
+						config,
+						request: {}
+					};
+				}
+			};
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance,
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
+			const body = {
+				"channel": "whatsapp",
+				"content": {
+					"contentType": "media",
+					"media": {
+						"type": "image",
+						"url": "https://example.com/image.png"
+					}
+				},
+				"event": "MoMessage",
+				"from": "+1233423454",
+				"messageId": "77185196-664a-43ec-b14a-fe97036c697e",
+				"timestamp": "2019-06-26T11:41:00",
+				"to": "545345345"
+			};
+
+			const activity = await adapter.parseTyntecWhatsAppMessageEvent({body, headers: {}, params: {}, query: {}});
+
+			assert.deepStrictEqual(activity, {
+				attachments: [{"contentType": "image/jpeg", "contentUrl": "https://example.com/image.png"}],
+				channelData: { contentType: "image" },
+				channelId: "whatsapp",
+				conversation: { id: "+1233423454", isGroup: false, name: undefined },
+				from: { id: "+1233423454", name: undefined },
+				id: "77185196-664a-43ec-b14a-fe97036c697e",
+				recipient: { id: "545345345" },
+				replyToId: undefined,
+				serviceUrl: "https://api.tyntec.com/conversations/v3/messages",
+				text: undefined,
+				timestamp: new Date("2019-06-26T11:41:00"),
+				type: "message"
+			});
+		});
+
 		it("should throw an error when an event is not supported", async function () {
 			const adapter = new TyntecWhatsAppAdapter({
 				axiosInstance: axios.create(),

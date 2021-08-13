@@ -69,7 +69,8 @@ is supported. These are events that meet the following criteria:
 * The event must be a message (`body.event === "MoMessage"`, not delivery updates).
 * The event must be a WhatsApp message (`body.channel === "whatsapp"`).
 * The event must not be a group message (`body.to !== undefined && body.groupId === undefined`).
-* The event must be a text message (`body.content.contentType === "text"`).
+* The event must be an image message (`body.content.contentType === "media" && body.content.media.type === "image"`)
+  or a text message (`body.content.contentType === "text"`).
 
 Supported events are turned into activities that are passed to the created turn
 contexts. See [Activity.md](./Activity.md) to find out what activities may be

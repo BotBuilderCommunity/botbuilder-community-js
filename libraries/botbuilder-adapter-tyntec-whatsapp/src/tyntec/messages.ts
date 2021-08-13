@@ -2,6 +2,18 @@ export interface ITyntecBaseMedia {
 	url: string;
 }
 
+export interface ITyntecMediaMoContent {
+	contentType: "media";
+	media: ITyntecMoMedia;
+}
+
+export interface ITyntecMoMedia {
+	caption?: string;
+	mediaId?: string;
+	type: "image";
+	url: string;
+}
+
 export interface ITyntecMoContext {
 	isForwarded?: boolean;
 	isFrequentlyForwarded?: boolean;
@@ -10,7 +22,7 @@ export interface ITyntecMoContext {
 
 export interface ITyntecMoMessage {
 	channel: string;
-	content: ITyntecTextMoContent;
+	content: ITyntecMediaMoContent | ITyntecTextMoContent;
 	context?: ITyntecMoContext;
 	event: "MoMessage";
 	from: string;
