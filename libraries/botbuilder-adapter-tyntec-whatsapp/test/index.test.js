@@ -80,6 +80,42 @@ describe("TyntecWhatsAppAdapter", function() {
 			});
 		});
 
+		it("should compose an image message request", function () {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
+			const activity = {
+				type: ActivityTypes.Message,
+				channelId: "whatsapp",
+				from: { id: "+1233423454" },
+				conversation: { id: "545345345" },
+				channelData: { contentType: "image" },
+				text: "An image caption",
+				attachments: [
+					{
+						contentType: "image/png",
+						contentUrl: "https://example.com/image.png"
+					}
+				]
+			};
+
+			const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
+
+			assert.deepStrictEqual(messageRequest, {
+				from: "+1233423454",
+				to: "545345345",
+				channel: "whatsapp",
+				content: {
+					contentType: "image",
+					image: {
+						caption: "An image caption",
+						url: "https://example.com/image.png"
+					}
+				}
+			});
+		});
+
 		it("should compose a template message request", function () {
 			const adapter = new TyntecWhatsAppAdapter({
 				axiosInstance: axios.create(),

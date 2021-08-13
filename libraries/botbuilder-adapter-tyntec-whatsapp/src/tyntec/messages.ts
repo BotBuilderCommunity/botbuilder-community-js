@@ -1,3 +1,7 @@
+export interface ITyntecBaseMedia {
+	url: string;
+}
+
 export interface ITyntecMoContext {
 	isForwarded?: boolean;
 	isFrequentlyForwarded?: boolean;
@@ -38,6 +42,15 @@ export interface ITyntecWhatsapp {
 	senderName?: string;
 }
 
+export interface ITyntecWhatsAppImage extends ITyntecBaseMedia {
+	caption?: string;
+}
+
+export interface ITyntecWhatsAppImageContent {
+	contentType: "image";
+	image: ITyntecWhatsAppImage;
+}
+
 export interface ITyntecWhatsAppLocation {
 	address?: string;
 	latitude: number;
@@ -49,7 +62,7 @@ export interface ITyntecWhatsAppMessageRequest {
 	from: string;
 	to: string;
 	channel: "whatsapp";
-	content: ITyntecWhatsAppTemplateContent | ITyntecWhatsAppTextContent;
+	content: ITyntecWhatsAppImageContent | ITyntecWhatsAppTemplateContent | ITyntecWhatsAppTextContent;
 }
 
 export interface ITyntecWhatsAppTemplate {

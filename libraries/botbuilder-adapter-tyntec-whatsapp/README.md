@@ -5,7 +5,7 @@ connectivity with the WhatsApp channel in tyntec Conversations API.
 
 It is a TypeScript library that allows your bots to use WhatsApp through the
 tyntec Conversations API. The adapter supports two-way (incoming and outgoing)
-messaging with templates and free-form.
+messaging with templates, free-form and rich media.
 
 Look how easy it is to use:
 
