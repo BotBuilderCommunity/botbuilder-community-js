@@ -53,6 +53,33 @@ describe("TyntecWhatsAppAdapter", function() {
 	});
 
 	describe("#composeTyntecWhatsAppMessageRequest", function() {
+		it("should compose a text message request", function () {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
+			const activity = {
+				type: ActivityTypes.Message,
+				channelId: "whatsapp",
+				from: { id: "+1233423454" },
+				conversation: { id: "545345345" },
+				channelData: { contentType: "text" },
+				text: "A simple text message"
+			};
+
+			const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
+
+			assert.deepStrictEqual(messageRequest, {
+				from: "+1233423454",
+				to: "545345345",
+				channel: "whatsapp",
+				content: {
+					contentType: "text",
+					text: "A simple text message"
+				}
+			});
+		});
+
 		it("should compose a template message request", function () {
 			const adapter = new TyntecWhatsAppAdapter({
 				axiosInstance: axios.create(),
@@ -131,6 +158,24 @@ describe("TyntecWhatsAppAdapter", function() {
 				conversation: { id: "545345345" },
 				from: { id: "+1233423454" },
 				type: ActivityTypes.Typing
+			};
+
+			assert.throws(() =>
+				adapter.composeTyntecWhatsAppMessageRequest(activity)
+			)
+		});
+
+		it("should throw an error when a content type is not supported", function () {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
+			const activity = {
+				type: ActivityTypes.Message,
+				channelId: "whatsapp",
+				from: { id: "+1233423454" },
+				conversation: { id: "545345345" },
+				channelData: { contentType: "foo" }
 			};
 
 			assert.throws(() =>
@@ -658,34 +703,23 @@ describe("TyntecWhatsAppAdapter", function() {
 			);
 			const activities = [
 				{
-					type: ActivityTypes.Message,
+					channelData: { contentType: "text" },
 					channelId: "whatsapp",
-					from: { id: "+1233423454" },
-					conversation: { id: "545345345" },
-					channelData: {
-						contentType: "template",
-						template: {
-							templateId: "template_id",
-							templateLanguage: "en",
-							components: { body: [{ type: "text", text: "lorem" }] }
-						}
-					}
+					conversation: { id: context.activity.from.id },
+					from: { id: "545345345" },
+					text: "A simple text message 1",
+					type: ActivityTypes.Message
 				},
 				{
-					type: ActivityTypes.Message,
+					channelData: { contentType: "text" },
 					channelId: "whatsapp",
-					from: { id: "+1233423454" },
-					conversation: { id: "545345345" },
-					channelData: {
-						contentType: "template",
-						template: {
-							templateId: "template_id",
-							templateLanguage: "en",
-							components: { body: [{ type: "text", text: "ipsum" }] }
-						}
-					}
-				},
+					conversation: { id: context.activity.from.id },
+					from: { id: "545345345" },
+					text: "A simple text message 2",
+					type: ActivityTypes.Message
+				}
 			];
+
 
 			const responses = await context.sendActivities(activities);
 
@@ -702,16 +736,12 @@ describe("TyntecWhatsAppAdapter", function() {
 						"accept": "application/json"
 					},
 					data: {
-						to: "+1233423454",
-						from: "545345345",
+						to: '+1233423454',
+						from: '545345345',
 						channel: "whatsapp",
 						content: {
-							contentType: "template",
-							template: {
-								templateId: "template_id",
-								templateLanguage: "en",
-								components: { body: [{ type: "text", text: "lorem" }] }
-							}
+							contentType: 'text',
+							text: 'A simple text message 1'
 						}
 					}
 				},
@@ -728,12 +758,8 @@ describe("TyntecWhatsAppAdapter", function() {
 						from: '545345345',
 						channel: "whatsapp",
 						content: {
-							contentType: "template",
-							template: {
-								templateId: "template_id",
-								templateLanguage: "en",
-								components: { body: [{ type: "text", text: "ipsum" }] }
-							}
+							contentType: 'text',
+							text: 'A simple text message 2'
 						}
 					}
 				}

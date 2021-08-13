@@ -95,7 +95,8 @@ delivered messages.
 See [Activity.md](./Activity.md) to find out what activities may be passed to
 `sendActivities`. The supported activities are:
 
-* WhatsApp template message activities.
+* WhatsApp template message activities and
+* WhatsApp text message activities.
 
 
 ## `public use(...middlewares: (MiddlewareHandler | Middleware)[]): TyntecWhatsAppAdapter`
