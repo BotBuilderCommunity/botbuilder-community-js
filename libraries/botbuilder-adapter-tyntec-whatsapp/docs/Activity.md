@@ -47,8 +47,8 @@ Additional properties of channel WhatsApp message activities:
 * `conversation.isGroup = false` (REQUIRED)
 
 The supported WhatsApp messages are [image](#whatsapp-image-message-activity),
-[template](#whatsapp-template-message-activity) and [text](#whatsapp-text-message-activity)
-messages.
+[template](#whatsapp-template-message-activity), [text](#whatsapp-text-message-activity)
+and [video](#whatsapp-video-message-activity) messages.
 
 
 ### WhatsApp Image Message Activity
@@ -203,5 +203,59 @@ activity === {
     },
     serviceUrl: "https://api.tyntec.com/conversations/v3/messages",
     text: "A simple text message"
+}
+```
+
+
+### WhatsApp Video Message Activity
+
+Properties of all supported WhatsApp video message activities:
+* `channelData: any` (REQUIRED)
+* `channelData.contentType = "video"` (REQUIRED)
+* `channelData.contacts = undefined` (DISALLOWED)
+* `channelData.interactive = undefined` (DISALLOWED)
+* `channelData.location = undefined` (DISALLOWED)
+* `channelData.template = undefined` (DISALLOWED)
+* `text?: string` (OPTIONAL) - the video caption
+* `attachments: Attachment[]` (REQUIRED) - exactly one attachment is required
+* `attachments[i].content = undefined` (DISALLOWED)
+* `attachments[i].contentUrl: string` (REQUIRED)
+* `attachments[i].thumbnailUrl = undefined` (DISALLOWED)
+
+The video caption (`text`) MUST be up to 4096 characters long. The MIME MUST be
+either `video/mp4` or `video/3gpp`. The size MUST be up to 16 MB. The video
+codec MUST be H.264. The audio codec MUST be AAC. The audio stream MUST be only
+one.
+
+A WhatsApp video message activity example:
+
+```javascript
+activity === {
+    type: "message",
+    channelId: "whatsapp",
+    id: "77185196-664a-43ec-b14a-fe97036c697e",
+    timestamp: new Date("2019-06-26T09:41:00.000Z"),
+    from: {
+        id: "+1233423454"
+    },
+    recipient: {
+        id: "545345345"
+    },
+    conversation: {
+        id: "+1233423454",
+        isGroup: false,
+        name: "John Doe"
+    },
+    channelData: {
+        contentType: "video"
+    },
+    serviceUrl: "https://api.tyntec.com/conversations/v3/messages",
+    text: "A video caption",
+    attachments: [
+        {
+            contentType: "video/mp4",
+            contentUrl: "https://example.com/video.mp4"
+        }
+    ]
 }
 ```
