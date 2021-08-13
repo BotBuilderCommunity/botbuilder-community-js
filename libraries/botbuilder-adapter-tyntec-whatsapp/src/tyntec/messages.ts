@@ -74,7 +74,7 @@ export interface ITyntecWhatsAppMessageRequest {
 	from: string;
 	to: string;
 	channel: "whatsapp";
-	content: ITyntecWhatsAppImageContent | ITyntecWhatsAppTemplateContent | ITyntecWhatsAppTextContent;
+	content: ITyntecWhatsAppImageContent | ITyntecWhatsAppTemplateContent | ITyntecWhatsAppTextContent | ITyntecWhatsAppVideoContent;
 }
 
 export interface ITyntecWhatsAppTemplate {
@@ -154,4 +154,13 @@ export interface ITyntecWhatsAppTemplateVideoHeaderComponent {
 export interface ITyntecWhatsAppTextContent {
 	contentType: "text";
 	text: string;
+}
+
+export interface ITyntecWhatsAppVideo extends ITyntecBaseMedia {
+	caption?: string;
+}
+
+export interface ITyntecWhatsAppVideoContent {
+	contentType: "video";
+	video: ITyntecWhatsAppVideo;
 }

@@ -183,6 +183,42 @@ describe("TyntecWhatsAppAdapter", function() {
 			});
 		});
 
+		it("should compose a video message request", function () {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
+			const activity =  {
+				type: ActivityTypes.Message,
+				channelId: "whatsapp",
+				from: { id: "+1233423454" },
+				conversation: { id: "545345345" },
+				channelData: { contentType: "video" },
+				text: "A video caption",
+				attachments: [
+					{
+						contentType: "video/mp4",
+						contentUrl: "https://example.com/video.mp4"
+					}
+				]
+			};
+
+			const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
+
+			assert.deepStrictEqual(messageRequest, {
+				from: "+1233423454",
+				to: "545345345",
+				channel: "whatsapp",
+				content: {
+					contentType: "video",
+					video: {
+						caption: "A video caption",
+						url: "https://example.com/video.mp4"
+					}
+				}
+			});
+		});
+
 		it("should throw an error when an activity is not supported", function () {
 			const adapter = new TyntecWhatsAppAdapter({
 				axiosInstance: axios.create(),

@@ -174,7 +174,7 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
 				}
 			};
 		}
-		if (activity.channelData!.contentType === "image") {
+		if (activity.channelData!.contentType === "image" || activity.channelData!.contentType === "video") {
 			if (activity.attachments === undefined || activity.attachments.length !== 1) {
 				throw Error(`TyntecWhatsAppAdapter: other than exactly one Activity.attachments not supported: ${activity.attachments?.length}`);
 			}
@@ -200,17 +200,33 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
 				throw Error(`TyntecWhatsAppAdapter: both media Activity.channelData.contentType and Activity.channelData.template not supported: ${activity.channelData.contentType} and ${JSON.stringify(activity.channelData.template)}`);
 			}
 
-			return {
-				from: activity.from.id,
-				to: activity.conversation.id,
-				channel: "whatsapp",
-				content: {
-					contentType: "image",
-					image: {
-						caption: activity.text,
-						url: activity.attachments[0].contentUrl
+			if (activity.channelData!.contentType === "image") {
+				return {
+					from: activity.from.id,
+					to: activity.conversation.id,
+					channel: "whatsapp",
+					content: {
+						contentType: "image",
+						image: {
+							caption: activity.text,
+							url: activity.attachments[0].contentUrl
+						}
 					}
-				}
+				};
+			};
+			if (activity.channelData!.contentType === "video") {
+				return {
+					from: activity.from.id,
+					to: activity.conversation.id,
+					channel: "whatsapp",
+					content: {
+						contentType: "video",
+						video: {
+							caption: activity.text,
+							url: activity.attachments[0].contentUrl
+						}
+					}
+				};
 			};
 		}
 		if (activity.channelData!.contentType === "template") {
