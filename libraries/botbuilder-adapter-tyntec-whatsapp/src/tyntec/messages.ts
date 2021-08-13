@@ -10,7 +10,7 @@ export interface ITyntecMediaMoContent {
 export interface ITyntecMoMedia {
 	caption?: string;
 	mediaId?: string;
-	type: "document" | "image" | "video";
+	type: "audio" | "document" | "image" | "video";
 	url: string;
 }
 
