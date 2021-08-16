@@ -72,6 +72,7 @@ is supported. These are events that meet the following criteria:
 * The event must be an audio message (`body.content.contentType === "media" && body.content.media.type === "audio"`),
   a document message (`body.content.contentType === "media" && body.content.media.type === "document"`),
   an image message (`body.content.contentType === "media" && body.content.media.type === "image"`),
+  a sticker message (`body.content.contentType === "media" && body.content.media.type === "sticker"`),
   a text message (`body.content.contentType === "text"`) or
   a video message (`body.content.contentType === "media" && body.content.media.type === "video"`).
 

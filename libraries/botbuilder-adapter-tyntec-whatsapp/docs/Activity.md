@@ -48,8 +48,9 @@ Additional properties of channel WhatsApp message activities:
 
 The supported WhatsApp messages are [audio](#whatsapp-audio-message-activity),
 [document](#whatsapp-document-message-activity), [image](#whatsapp-image-message-activity),
-[template](#whatsapp-template-message-activity), [text](#whatsapp-text-message-activity)
-and [video](#whatsapp-video-message-activity) messages.
+[sticker](#whatsapp-sticker-message-activity), [template](#whatsapp-template-message-activity),
+[text](#whatsapp-text-message-activity) and [video](#whatsapp-video-message-activity)
+messages.
 
 
 ### WhatsApp Audio Message Activity
@@ -202,6 +203,58 @@ activity === {
         {
             contentType: "image/jpeg",
             contentUrl: "https://example.com/image.png"
+        }
+    ]
+}
+```
+
+
+### WhatsApp Sticker Message Activity
+
+Properties of all supported WhatsApp sticker message activities:
+* `channelData: any` (REQUIRED)
+* `channelData.contentType = "sticker"` (REQUIRED)
+* `channelData.contacts = undefined` (DISALLOWED)
+* `channelData.interactive = undefined` (DISALLOWED)
+* `channelData.location = undefined` (DISALLOWED)
+* `channelData.template = undefined` (DISALLOWED)
+* `text = undefined` (DISALLOWED)
+* `attachments: Attachment[]` (REQUIRED) - exactly one attachment is required
+* `attachments[i].content = undefined` (DISALLOWED)
+* `attachments[i].contentUrl: string` (REQUIRED)
+* `attachments[i].thumbnailUrl = undefined` (DISALLOWED)
+
+The MIME MUST be `image/webp`. The size MUST be up to 100 KB. The dimensions
+MUST be 512 px x 512 px. There MUST be a 16 px margin around the sticker. The
+background MUST be transparent.
+
+A WhatsApp sticker message activity example:
+
+```javascript
+activity === {
+    type: "message",
+    channelId: "whatsapp",
+    id: "77185196-664a-43ec-b14a-fe97036c697e",
+    timestamp: new Date("2019-06-26T09:41:00.000Z"),
+    from: {
+        id: "+1233423454"
+    },
+    recipient: {
+        id: "545345345"
+    },
+    conversation: {
+        id: "+1233423454",
+        isGroup: false,
+        name: "John Doe"
+    },
+    channelData: {
+        contentType: "sticker"
+    },
+    serviceUrl: "https://api.tyntec.com/conversations/v3/messages",
+    attachments: [
+        {
+            contentType: "image/webp",
+            contentUrl: "https://example.com/sticker.webp"
         }
     ]
 }
