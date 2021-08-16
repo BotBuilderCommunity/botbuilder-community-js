@@ -188,6 +188,40 @@ describe("TyntecWhatsAppAdapter", function() {
 			});
 		});
 
+		it("should compose a sticker message request", function () {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
+			const activity = {
+				type: ActivityTypes.Message,
+				channelId: "whatsapp",
+				from: { id: "+1233423454" },
+				conversation: { id: "545345345" },
+				channelData: { contentType: "sticker" },
+				attachments: [
+					{
+						contentType: "image/webp",
+						contentUrl: "https://example.com/sticker.webp"
+					}
+				]
+			};
+
+			const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
+
+			assert.deepStrictEqual(messageRequest, {
+				from: "+1233423454",
+				to: "545345345",
+				channel: "whatsapp",
+				content: {
+					contentType: "sticker",
+					sticker: {
+						url: "https://example.com/sticker.webp"
+					}
+				}
+			});
+		});
+
 		it("should compose a template message request", function () {
 			const adapter = new TyntecWhatsAppAdapter({
 				axiosInstance: axios.create(),
