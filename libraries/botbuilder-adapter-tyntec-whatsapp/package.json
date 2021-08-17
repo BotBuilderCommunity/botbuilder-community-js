@@ -1,0 +1,29 @@
+{
+  "name": "@botbuildercommunity/adapter-tyntec-whatsapp",
+  "version": "0.1.0",
+  "description": "A Microsoft Bot Framework adapter for handling connectivity with the WhatsApp channel in tyntec Conversations API.",
+  "keywords": [
+    "chatbots",
+    "bot framework",
+    "bot builder",
+    "whatsapp adapter",
+    "adapters",
+    "whatsapp",
+    "tyntec"
+  ],
+  "homepage": "https://github.com/BotBuilderCommunity/botbuilder-community-js#readme",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "license": "MIT",
+  "contributors": [
+    "Bot Builder Community"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
