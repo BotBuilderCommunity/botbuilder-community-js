@@ -188,6 +188,45 @@ describe("TyntecWhatsAppAdapter", function() {
 			});
 		});
 
+		it("should compose a location message request", function () {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
+			const activity =  {
+				type: ActivityTypes.Message,
+				channelId: "whatsapp",
+				from: { id: "+1233423454" },
+				conversation: { id: "545345345" },
+				channelData: {
+					contentType: "location",
+					location: {
+						address: "tyntec GmbH, Semerteichstraße, Dortmund",
+						latitude: 51.5005765,
+						longitude: 7.4954884,
+						name: "tyntec GmbH"
+					}
+				}
+			};
+
+			const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
+
+			assert.deepStrictEqual(messageRequest, {
+				from: "+1233423454",
+				to: "545345345",
+				channel: "whatsapp",
+				content: {
+					contentType: "location",
+					location: {
+						address: "tyntec GmbH, Semerteichstraße, Dortmund",
+						latitude: 51.5005765,
+						longitude: 7.4954884,
+						name: "tyntec GmbH"
+					}
+				}
+			});
+		});
+
 		it("should compose a sticker message request", function () {
 			const adapter = new TyntecWhatsAppAdapter({
 				axiosInstance: axios.create(),
