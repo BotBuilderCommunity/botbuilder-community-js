@@ -604,6 +604,48 @@ describe("TyntecWhatsAppAdapter", function() {
 			});
 		});
 
+		it("should parse a location message event", async function() {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
+			const body = {
+				"channel": "whatsapp",
+				"content": {
+					"contentType": "location",
+					"location": {
+						"address": "tyntec GmbH, Semerteichstraße, Dortmund",
+						"latitude": 51.5005765,
+						"longitude": 7.4954884,
+						"name": "tyntec GmbH"
+					}
+				},
+				"event": "MoMessage",
+				"from": "+1233423454",
+				"messageId": "77185196-664a-43ec-b14a-fe97036c697e",
+				"timestamp": "2019-06-26T11:41:00",
+				"to": "545345345"
+			};
+
+			const activity = await adapter.parseTyntecWhatsAppMessageEvent({body, headers: {}, params: {}, query: {}});
+
+			assert.deepStrictEqual(activity, {
+				channelData: {
+					contentType: "location",
+					location: { address: "tyntec GmbH, Semerteichstraße, Dortmund", latitude: 51.5005765, longitude: 7.4954884, name: "tyntec GmbH" }
+				},
+				channelId: "whatsapp",
+				conversation: { id: "+1233423454", isGroup: false, name: undefined },
+				from: { id: "+1233423454", name: undefined },
+				id: "77185196-664a-43ec-b14a-fe97036c697e",
+				recipient: { id: "545345345" },
+				replyToId: undefined,
+				serviceUrl: "https://api.tyntec.com/conversations/v3/messages",
+				timestamp: new Date("2019-06-26T11:41:00"),
+				type: "message"
+			});
+		});
+
 		it("should parse a sticker message event", async function() {
 			const axiosInstance = {
 				request: async (config) => {

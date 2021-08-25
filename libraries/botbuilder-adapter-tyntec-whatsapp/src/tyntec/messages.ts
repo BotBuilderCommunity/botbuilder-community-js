@@ -22,7 +22,7 @@ export interface ITyntecMoContext {
 
 export interface ITyntecMoMessage {
 	channel: string;
-	content: ITyntecMediaMoContent | ITyntecTextMoContent;
+	content: ITyntecMediaMoContent | ITyntecTextMoContent | ITyntecWhatsAppLocationContent;
 	context?: ITyntecMoContext;
 	event: "MoMessage";
 	from: string;
@@ -83,6 +83,11 @@ export interface ITyntecWhatsAppLocation {
 	latitude: number;
 	longitude: number;
 	name?: string;
+}
+
+export interface ITyntecWhatsAppLocationContent {
+	contentType: "location",
+	location: ITyntecWhatsAppLocation
 }
 
 export interface ITyntecWhatsAppMessageRequest {

@@ -48,9 +48,9 @@ Additional properties of channel WhatsApp message activities:
 
 The supported WhatsApp messages are [audio](#whatsapp-audio-message-activity),
 [document](#whatsapp-document-message-activity), [image](#whatsapp-image-message-activity),
-[sticker](#whatsapp-sticker-message-activity), [template](#whatsapp-template-message-activity),
-[text](#whatsapp-text-message-activity) and [video](#whatsapp-video-message-activity)
-messages.
+[location](#whatsapp-location-message-activity), [sticker](#whatsapp-sticker-message-activity),
+[template](#whatsapp-template-message-activity), [text](#whatsapp-text-message-activity)
+and [video](#whatsapp-video-message-activity) messages.
 
 
 ### WhatsApp Audio Message Activity
@@ -205,6 +205,52 @@ activity === {
             contentUrl: "https://example.com/image.png"
         }
     ]
+}
+```
+
+
+### WhatsApp Location Message Activity
+
+Properties of all supported WhatsApp location message activities:
+* `channelData: any` (REQUIRED)
+* `channelData.contentType = "location"` (REQUIRED)
+* `channelData.contacts = undefined` (DISALLOWED)
+* `channelData.interactive = undefined` (DISALLOWED)
+* `channelData.location: WhatsAppLocation` (REQUIRED) - a valid [WhatsAppLocation](https://api.tyntec.com/reference/conversations/current.html)
+  object
+* `channelData.template = undefined` (DISALLOWED)
+* `text = undefined` (DISALLOWED)
+* `attachments = undefined` (DISALLOWED)
+
+A WhatsApp location message activity example:
+
+```javascript
+activity === {
+    type: "message",
+    channelId: "whatsapp",
+    id: "77185196-664a-43ec-b14a-fe97036c697e",
+    timestamp: new Date("2019-06-26T09:41:00.000Z"),
+    from: {
+        id: "+1233423454"
+    },
+    recipient: {
+        id: "545345345"
+    },
+    conversation: {
+        id: "+1233423454",
+        isGroup: false,
+        name: "John Doe"
+    },
+    channelData: {
+        contentType: "location",
+        location: {
+            address: "tyntec GmbH, Semerteichstraße, Dortmund",
+            latitude: 51.5005765,
+            longitude: 7.4954884,
+            name: "tyntec GmbH"
+        }
+    },
+    serviceUrl: "https://api.tyntec.com/conversations/v3/messages"
 }
 ```
 

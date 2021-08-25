@@ -356,6 +356,11 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
 			activity.text = req.body.content.text;
 			return activity;
 		}
+		if (req.body.content.contentType === "location") {
+			activity.channelData.contentType = "location";
+			activity.channelData.location = req.body.content.location;
+			return activity;
+		}
 		if (req.body.content.contentType === "media") {
 			const mediaRequest = composeTyntecRequestConfig("get", req.body.content.media.url, this.tyntecApikey, "*/*");
 			mediaRequest.validateStatus = () => true;
