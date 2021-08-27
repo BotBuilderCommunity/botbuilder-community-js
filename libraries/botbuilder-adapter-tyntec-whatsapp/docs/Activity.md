@@ -47,10 +47,11 @@ Additional properties of channel WhatsApp message activities:
 * `conversation.isGroup = false` (REQUIRED)
 
 The supported WhatsApp messages are [audio](#whatsapp-audio-message-activity),
-[document](#whatsapp-document-message-activity), [image](#whatsapp-image-message-activity),
-[location](#whatsapp-location-message-activity), [sticker](#whatsapp-sticker-message-activity),
-[template](#whatsapp-template-message-activity), [text](#whatsapp-text-message-activity)
-and [video](#whatsapp-video-message-activity) messages.
+[contacts](#whatsapp-contacts-message-activity), [document](#whatsapp-document-message-activity),
+[image](#whatsapp-image-message-activity), [location](#whatsapp-location-message-activity),
+[sticker](#whatsapp-sticker-message-activity), [template](#whatsapp-template-message-activity),
+[text](#whatsapp-text-message-activity) and [video](#whatsapp-video-message-activity)
+messages.
 
 
 ### WhatsApp Audio Message Activity
@@ -100,6 +101,55 @@ activity === {
             contentUrl: "https://example.com/audio.ac3"
         }
     ]
+}
+```
+
+
+### WhatsApp Contacts Message Activity
+
+Properties of all supported WhatsApp contacts message activities:
+* `channelData: any` (REQUIRED)
+* `channelData.contentType = "contacts"` (REQUIRED)
+* `channelData.contacts: Contact` (REQUIRED) - a valid [Contact](https://api.tyntec.com/reference/conversations/current.html)
+  object
+* `channelData.interactive = undefined` (DISALLOWED)
+* `channelData.location = undefined` (DISALLOWED)
+* `channelData.template = undefined` (DISALLOWED)
+* `text = undefined` (DISALLOWED)
+* `attachments = undefined` (DISALLOWED)
+
+A WhatsApp contacts message activity example:
+
+```javascript
+activity === {
+    type: "message",
+    channelId: "whatsapp",
+    id: "77185196-664a-43ec-b14a-fe97036c697e",
+    timestamp: new Date("2019-06-26T09:41:00.000Z"),
+    from: {
+        id: "+1233423454"
+    },
+    recipient: {
+        id: "545345345"
+    },
+    conversation: {
+        id: "+1233423454",
+        isGroup: false,
+        name: "John Doe"
+    },
+    channelData: {
+        contentType: "contacts",
+        contacts: [{
+            addresses: [{city: "Dortmund", type: "WORK"}],
+            emails: [{email: "whatsapp@tyntec.com", type: "WORK"}],
+            ims: [],
+            name: {firstName: "Peter", formattedName: "Peter Tyntec", lastName: "Tyntec"},
+            org: {},
+            phones: [{phone: "+49 231 477 90 813", type: "WORK"}],
+            urls: []
+        }]
+    },
+    serviceUrl: "https://api.tyntec.com/conversations/v3/messages"
 }
 ```
 

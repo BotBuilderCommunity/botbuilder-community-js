@@ -70,6 +70,7 @@ is supported. These are events that meet the following criteria:
 * The event must be a WhatsApp message (`body.channel === "whatsapp"`).
 * The event must not be a group message (`body.to !== undefined && body.groupId === undefined`).
 * The event must be an audio message (`body.content.contentType === "media" && body.content.media.type === "audio"`),
+  a contacts message (`body.content.contentType === "contacts"`),
   a document message (`body.content.contentType === "media" && body.content.media.type === "document"`),
   an image message (`body.content.contentType === "media" && body.content.media.type === "image"`),
   a location message (`body.content.contentType === "location"`),
