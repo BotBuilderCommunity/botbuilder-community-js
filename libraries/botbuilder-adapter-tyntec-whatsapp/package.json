@@ -1,6 +1,6 @@
 {
   "name": "@botbuildercommunity/adapter-tyntec-whatsapp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A Microsoft Bot Framework adapter for handling connectivity with the WhatsApp channel in tyntec Conversations API.",
   "keywords": [
     "chatbots",
