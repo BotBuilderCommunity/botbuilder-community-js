@@ -75,8 +75,9 @@ is supported. These are events that meet the following criteria:
   an image message (`body.content.contentType === "media" && body.content.media.type === "image"`),
   a location message (`body.content.contentType === "location"`),
   a sticker message (`body.content.contentType === "media" && body.content.media.type === "sticker"`),
-  a text message (`body.content.contentType === "text"`) or
-  a video message (`body.content.contentType === "media" && body.content.media.type === "video"`).
+  a text message (`body.content.contentType === "text"`),
+  a video message (`body.content.contentType === "media" && body.content.media.type === "video"`) or
+  a voice message (`body.content.contentType === "media" && body.content.media.type === "voice"`).
 
 Supported events are turned into activities that are passed to the created turn
 contexts. See [Activity.md](./Activity.md) to find out what activities may be

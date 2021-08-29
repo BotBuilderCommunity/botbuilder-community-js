@@ -51,7 +51,7 @@ export interface ITyntecMediaMoContent {
 export interface ITyntecMoMedia {
 	caption?: string;
 	mediaId?: string;
-	type: "audio" | "document" | "image" | "sticker" | "video";
+	type: "audio" | "document" | "image" | "sticker" | "video" | "voice";
 	url: string;
 }
 
