@@ -155,7 +155,7 @@ export interface ITyntecWhatsAppMessageRequest {
 	from: string;
 	to: string;
 	channel: "whatsapp";
-	content: ITyntecWhatsAppAudioContent | ITyntecWhatsAppDocumentContent | ITyntecWhatsAppImageContent | ITyntecWhatsAppLocationContent | ITyntecWhatsAppStickerContent | ITyntecWhatsAppTemplateContent | ITyntecWhatsAppTextContent | ITyntecWhatsAppVideoContent;
+	content: ITyntecWhatsAppAudioContent | ITyntecWhatsAppContactsContent | ITyntecWhatsAppDocumentContent | ITyntecWhatsAppImageContent | ITyntecWhatsAppLocationContent | ITyntecWhatsAppStickerContent | ITyntecWhatsAppTemplateContent | ITyntecWhatsAppTextContent | ITyntecWhatsAppVideoContent;
 }
 
 export interface ITyntecWhatsAppStickerContent {

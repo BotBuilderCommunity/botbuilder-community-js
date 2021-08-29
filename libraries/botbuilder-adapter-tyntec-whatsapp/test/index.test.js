@@ -114,6 +114,51 @@ describe("TyntecWhatsAppAdapter", function() {
 			});
 		});
 
+		it("should compose a contacts message request", function () {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
+			const activity =  {
+				type: ActivityTypes.Message,
+				channelId: "whatsapp",
+				from: { id: "+1233423454" },
+				conversation: { id: "545345345" },
+				channelData: {
+					contentType: "contacts",
+					contacts: [{
+						addresses: [{city: "Dortmund", type: "WORK"}],
+						emails: [{email: "whatsapp@tyntec.com", type: "WORK"}],
+						ims: [],
+						name: {firstName: "Peter", formattedName: "Peter Tyntec", lastName: "Tyntec"},
+						org: {},
+						phones: [{phone: "+49 231 477 90 813", type: "WORK"}],
+						urls: []
+					}]
+				}
+			};
+
+			const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
+
+			assert.deepStrictEqual(messageRequest, {
+				from: "+1233423454",
+				to: "545345345",
+				channel: "whatsapp",
+				content: {
+					contentType: "contacts",
+					contacts: [{
+						addresses: [{city: "Dortmund", type: "WORK"}],
+						emails: [{email: "whatsapp@tyntec.com", type: "WORK"}],
+						ims: [],
+						name: {firstName: "Peter", formattedName: "Peter Tyntec", lastName: "Tyntec"},
+						org: {},
+						phones: [{phone: "+49 231 477 90 813", type: "WORK"}],
+						urls: []
+					}]
+				}
+			});
+		});
+
 		it("should compose a document message request", function () {
 			const adapter = new TyntecWhatsAppAdapter({
 				axiosInstance: axios.create(),
