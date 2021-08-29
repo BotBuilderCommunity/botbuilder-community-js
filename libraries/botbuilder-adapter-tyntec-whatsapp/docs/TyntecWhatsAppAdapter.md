@@ -107,6 +107,7 @@ See [Activity.md](./Activity.md) to find out what activities may be passed to
 * WhatsApp contacts message activities,
 * WhatsApp document message activities,
 * WhatsApp image message activities,
+* WhatsApp interactive message activities,
 * WhatsApp location message activities,
 * WhatsApp sticker message activities,
 * WhatsApp template message activities,

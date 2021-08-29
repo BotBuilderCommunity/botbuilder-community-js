@@ -48,10 +48,11 @@ Additional properties of channel WhatsApp message activities:
 
 The supported WhatsApp messages are [audio](#whatsapp-audio-message-activity),
 [contacts](#whatsapp-contacts-message-activity), [document](#whatsapp-document-message-activity),
-[image](#whatsapp-image-message-activity), [location](#whatsapp-location-message-activity),
-[sticker](#whatsapp-sticker-message-activity), [template](#whatsapp-template-message-activity),
-[text](#whatsapp-text-message-activity), [video](#whatsapp-video-message-activity)
-and [voice](#whatsapp-voice-message-activity) messages.
+[image](#whatsapp-image-message-activity), [interactive](#whatsapp-interactive-message-activity),
+[location](#whatsapp-location-message-activity), [sticker](#whatsapp-sticker-message-activity),
+[template](#whatsapp-template-message-activity), [text](#whatsapp-text-message-activity),
+[video](#whatsapp-video-message-activity) and [voice](#whatsapp-voice-message-activity)
+messages.
 
 
 ### WhatsApp Audio Message Activity
@@ -255,6 +256,65 @@ activity === {
             contentUrl: "https://example.com/image.png"
         }
     ]
+}
+```
+
+
+### WhatsApp Interactive Message Activity
+
+Properties of all supported WhatsApp interactive message activities:
+* `channelData: any` (REQUIRED)
+* `channelData.contentType = "interactive"` (REQUIRED)
+* `channelData.contacts = undefined` (DISALLOWED)
+* `channelData.interactive: WhatsAppInteractiveButtonMessage | WhatsAppInteractiveListMessage` (REQUIRED) - a valid [WhatsAppInteractiveButtonMessage](https://api.tyntec.com/reference/conversations/current.html)
+  object or a valid [WhatsAppInteractiveListMessage](https://api.tyntec.com/reference/conversations/current.html)
+  object
+* `channelData.location = undefined` (DISALLOWED)
+* `channelData.template = undefined` (DISALLOWED)
+* `text = undefined` (DISALLOWED)
+* `attachments = undefined` (DISALLOWED)
+
+A WhatsApp interactive message activity example:
+
+```javascript
+activity === {
+    type: "message",
+    channelId: "whatsapp",
+    id: "77185196-664a-43ec-b14a-fe97036c697e",
+    timestamp: new Date("2019-06-26T09:41:00.000Z"),
+    from: {
+        id: "+1233423454"
+    },
+    recipient: {
+        id: "545345345"
+    },
+    conversation: {
+        id: "+1233423454",
+        isGroup: false,
+        name: "John Doe"
+    },
+    channelData: {
+        contentType: "interactive",
+        interactive: {
+            subType: "buttons",
+            components: {
+                body: {
+                    type: "text",
+                    text: "How would you rate your bot experience"
+                },
+                buttons: [
+                    {
+                        type: "reply",
+                        reply: {
+                            payload: "9080923445nlkjß0_gß0923845083245dfg",
+                            title: "Good"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    serviceUrl: "https://api.tyntec.com/conversations/v3/messages"
 }
 ```
 

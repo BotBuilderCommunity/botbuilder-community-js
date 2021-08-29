@@ -139,6 +139,70 @@ export interface ITyntecWhatsAppImageContent {
 	image: ITyntecWhatsAppImage;
 }
 
+export interface ITyntecWhatsAppInteractiveButton {
+	reply: {
+		payload: string;
+		title: string;
+	};
+	type: "reply";
+}
+
+export interface ITyntecWhatsAppInteractiveButtonComponents {
+	body: ITyntecWhatsAppInteractiveTextContent;
+	buttons: ITyntecWhatsAppInteractiveButton[];
+	footer?: ITyntecWhatsAppInteractiveFooterContent;
+	header?: ITyntecWhatsAppTemplateDocumentHeaderComponent | ITyntecWhatsAppTemplateImageHeaderComponent | ITyntecWhatsAppTemplateTextHeaderComponent | ITyntecWhatsAppTemplateVideoHeaderComponent;
+}
+
+export interface ITyntecWhatsAppInteractiveButtonMessage {
+	subType: "buttons";
+	components: ITyntecWhatsAppInteractiveButtonComponents;
+}
+
+export interface ITyntecWhatsAppInteractiveContent {
+	contentType: "interactive";
+	interactive: ITyntecWhatsAppInteractiveButtonMessage | ITyntecWhatsAppInteractiveListMessage;
+}
+
+export interface ITyntecWhatsAppInteractiveFooterContent {
+	type: "text";
+	text: string;
+}
+
+export interface ITyntecWhatsAppInteractiveListComponents {
+	body: ITyntecWhatsAppInteractiveTextContent;
+	footer?: ITyntecWhatsAppInteractiveFooterContent;
+	header?: ITyntecWhatsAppTemplateTextHeaderComponent;
+	list: ITyntecWhatsAppInteractiveListContent;
+}
+
+export interface ITyntecWhatsAppInteractiveListContent {
+	title: string;
+	sections: ITyntecWhatsAppListSection[];
+}
+
+export interface ITyntecWhatsAppInteractiveListMessage {
+	subType: "list";
+	components: ITyntecWhatsAppInteractiveListComponents;
+}
+
+export interface ITyntecWhatsAppInteractiveTextContent {
+	type: "text";
+	text: string;
+	example?: ITyntecWhatsAppTemplateTextHeaderComponentExample;
+}
+
+export interface ITyntecWhatsAppListSection {
+	title?: string;
+	rows: ITyntecWhatsAppListSectionRow[];
+}
+
+export interface ITyntecWhatsAppListSectionRow {
+	description?: string;
+	payload: string;
+	title: string;
+}
+
 export interface ITyntecWhatsAppLocation {
 	address?: string;
 	latitude: number;
@@ -155,7 +219,7 @@ export interface ITyntecWhatsAppMessageRequest {
 	from: string;
 	to: string;
 	channel: "whatsapp";
-	content: ITyntecWhatsAppAudioContent | ITyntecWhatsAppContactsContent | ITyntecWhatsAppDocumentContent | ITyntecWhatsAppImageContent | ITyntecWhatsAppLocationContent | ITyntecWhatsAppStickerContent | ITyntecWhatsAppTemplateContent | ITyntecWhatsAppTextContent | ITyntecWhatsAppVideoContent;
+	content: ITyntecWhatsAppAudioContent | ITyntecWhatsAppContactsContent | ITyntecWhatsAppDocumentContent | ITyntecWhatsAppImageContent | ITyntecWhatsAppInteractiveContent | ITyntecWhatsAppLocationContent | ITyntecWhatsAppStickerContent | ITyntecWhatsAppTemplateContent | ITyntecWhatsAppTextContent | ITyntecWhatsAppVideoContent;
 }
 
 export interface ITyntecWhatsAppStickerContent {

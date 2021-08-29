@@ -233,6 +233,53 @@ describe("TyntecWhatsAppAdapter", function() {
 			});
 		});
 
+		it("should compose an interactive message request", function () {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			});
+			const activity =  {
+				type: ActivityTypes.Message,
+				channelId: "whatsapp",
+				from: { id: "+1233423454" },
+				conversation: { id: "545345345" },
+				channelData: {
+					contentType: "interactive",
+					interactive: {
+						type: "buttons",
+						components: {
+							body: {type: "text", text: "How would you rate your bot experience"},
+							buttons: [{
+								type: "reply",
+								reply: {payload: "9080923445nlkjß0_gß0923845083245dfg", title: "Good"}
+							}]
+						}
+					}
+				}
+			};
+
+			const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
+
+			assert.deepStrictEqual(messageRequest, {
+				from: "+1233423454",
+				to: "545345345",
+				channel: "whatsapp",
+				content: {
+					contentType: "interactive",
+					interactive: {
+						type: "buttons",
+						components: {
+							body: {type: "text", text: "How would you rate your bot experience"},
+							buttons: [{
+								type: "reply",
+								reply: {payload: "9080923445nlkjß0_gß0923845083245dfg", title: "Good"}
+							}]
+						}
+					}
+				}
+			});
+		});
+
 		it("should compose a location message request", function () {
 			const adapter = new TyntecWhatsAppAdapter({
 				axiosInstance: axios.create(),
