@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
+    "axios": "^0.21.1",
     "mocha": "^9.0.3",
     "nyc": "^15.0.0",
     "typescript": "^4.3.5"
@@ -44,6 +45,9 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "mocha": {
+    "recursive": true
   },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-typescript",
