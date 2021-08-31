@@ -4,7 +4,14 @@
 instances.
 
 Properties:
+* [`axiosInstance: AxiosInstance`](#axiosinstance-axiosinstance)
 * [`tyntecApikey: string`](#tyntecapikey-string)
+
+
+## `axiosInstance: AxiosInstance`
+
+Is an [Axios instance](https://github.com/axios/axios) used to send requests to
+the tyntec Conversations API.
 
 
 ## `tyntecApikey: string`

@@ -9,9 +9,13 @@ tyntec Conversations API.
 Look how easy it is to use:
 
 ```typescript
+import axios from 'axios';
 import { TyntecWhatsAppAdapter } from '@botbuildercommunity/adapter-tyntec-whatsapp';
 
+const axiosInstance = axios.create();
+
 const adapter = new TyntecWhatsAppAdapter({
+	axiosInstance,
 	tyntecApikey: 'API_KEY'
 });
 ```

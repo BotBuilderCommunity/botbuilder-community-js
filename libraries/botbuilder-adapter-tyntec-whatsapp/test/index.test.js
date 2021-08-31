@@ -1,9 +1,22 @@
 var assert = require("assert");
+var axios = require("axios");
 var { ActivityTypes } = require("botbuilder");
 var { TyntecWhatsAppAdapter } = require("../lib/index");
 
 describe("TyntecWhatsAppAdapter", function() {
 	describe("constructor", function() {
+		it("should initialize #axiosInstance", function () {
+			const axiosInstance = axios.create();
+			const settings = {
+				axiosInstance,
+				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
+			};
+
+			const adapter = new TyntecWhatsAppAdapter(settings);
+
+			assert.strictEqual(adapter.axiosInstance, axiosInstance);
+		});
+
 		it("should initialize #tyntecApikey", function () {
 			const settings = {
 				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
@@ -18,6 +31,7 @@ describe("TyntecWhatsAppAdapter", function() {
 	describe("#composeTyntecWhatsAppMessageRequest", function() {
 		it("should compose a template message request", function () {
 			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
 				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
 			});
 			const activity =  {
@@ -84,6 +98,7 @@ describe("TyntecWhatsAppAdapter", function() {
 
 		it("should throw an error when an activity is not supported", function () {
 			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
 				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
 			});
 			const activity = {
@@ -103,6 +118,7 @@ describe("TyntecWhatsAppAdapter", function() {
 	describe("#onTurnError", function() {
 		it("should return undefined when no error handler is present", function() {
 			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
 				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
 			});
 
@@ -114,6 +130,7 @@ describe("TyntecWhatsAppAdapter", function() {
 		it("should return the error handler when present", function() {
 			const handler = async (context, error) => null;
 			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
 				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
 			});
 			adapter.onTurnError = handler;
@@ -126,6 +143,7 @@ describe("TyntecWhatsAppAdapter", function() {
 		it("should set an error handler", function() {
 			const handler = async (context, error) => null;
 			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
 				tyntecApikey: "ABcdefGhI1jKLMNOPQRst2UVWx345yz6"
 			});
 

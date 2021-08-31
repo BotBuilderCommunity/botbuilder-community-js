@@ -4,6 +4,7 @@
 bot to WhatsApp through the tyntec Conversations API.
 
 Properties:
+* [`public axiosInstance: AxiosInstance`](#public-axiosinstance-axiosinstance)
 * [`public onTurnError?: (context: TurnContext, error: Error) => Promise<void>`](#public-onturnerror-context-turncontext-error-error--promisevoid)
 * [`public tyntecApikey: string`](#public-tyntecapikey-string)
 
@@ -12,6 +13,12 @@ Methods:
 * [`public use(...middlewares: (MiddlewareHandler | Middleware)[]): TyntecWhatsAppAdapter`](#public-usemiddlewares-middlewarehandler--middleware-tyntecwhatsappadapter)
 
 If you want more information about bot adapters, see the [Microsoft Bot Framework SDK documentation](https://docs.microsoft.com/en-us/azure/bot-service/index-bf-sdk).
+
+
+## `public axiosInstance: AxiosInstance`
+
+Is an [Axios instance](https://github.com/axios/axios) used to send requests to
+the tyntec Conversations API.
 
 
 ## `public onTurnError?: (context: TurnContext, error: Error) => Promise<void>`
@@ -29,7 +36,8 @@ used to authenticate requests to the tyntec Conversations API.
 
 ## `public constructor(settings: ITyntecWhatsAppAdapterSettings)`
 
-Initializes the adapter. It sets the `tyntecApikey` property to the value of
+Initializes the adapter. It sets the `axiosInstance` property to the value of
+`settings.axiosInstance` and the `tyntecApikey` property to the value of
 `settings.tyntecApikey`.
 
 

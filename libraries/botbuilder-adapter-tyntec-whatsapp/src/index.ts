@@ -1,16 +1,20 @@
 import {Activity, ActivityTypes, BotAdapter, ConversationReference, ResourceResponse, TurnContext, WebRequest, WebResponse} from "botbuilder";
+import {AxiosInstance} from "axios";
 import {ITyntecWhatsAppMessageRequest} from "./tyntec/messages";
 
 export interface ITyntecWhatsAppAdapterSettings {
+	axiosInstance: AxiosInstance;
 	tyntecApikey: string;
 }
 
 export class TyntecWhatsAppAdapter extends BotAdapter {
+	public axiosInstance: AxiosInstance;
 	public tyntecApikey: string;
 
 	constructor(settings: ITyntecWhatsAppAdapterSettings) {
 		super();
 
+		this.axiosInstance = settings.axiosInstance;
 		this.tyntecApikey = settings.tyntecApikey;
 	}
 
