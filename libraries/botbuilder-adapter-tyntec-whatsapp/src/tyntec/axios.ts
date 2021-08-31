@@ -1,4 +1,5 @@
 import { AxiosRequestConfig, Method } from "axios";
+import { ITyntecWhatsAppMessageRequest } from "./messages";
 
 export function composeTyntecRequestConfig(method: Method, url: string, apikey: string, accept: string, data?: {content: any, contentType: string}): AxiosRequestConfig {
 	const config: AxiosRequestConfig = {
@@ -14,4 +15,17 @@ export function composeTyntecRequestConfig(method: Method, url: string, apikey: 
 		config.headers["content-type"] = data.contentType;
 	}
 	return config;
+}
+
+export function composeTyntecSendWhatsAppMessageRequestConfig(apikey: string, data: ITyntecWhatsAppMessageRequest): AxiosRequestConfig {
+	return composeTyntecRequestConfig(
+		"post",
+		"/conversations/v3/messages",
+		apikey,
+		"application/json",
+		{
+			contentType: "application/json",
+			content: data
+		}
+	);
 }
