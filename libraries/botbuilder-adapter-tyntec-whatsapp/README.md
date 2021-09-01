@@ -16,16 +16,16 @@ import { TyntecWhatsAppAdapter } from '@botbuildercommunity/adapter-tyntec-whats
 const axiosInstance = axios.create();
 
 const adapter = new TyntecWhatsAppAdapter({
-	axiosInstance,
-	tyntecApikey: 'API_KEY'
+    axiosInstance,
+    tyntecApikey: 'API_KEY'
 });
 
 // ... your bot and server initialization ...
 
 server.post('/api/messages', (req, res) => {
-	adapter.processActivity(req, res, async (context) => {
-		await myBot.run(context);
-	});
+    adapter.processActivity(req, res, async (context) => {
+        await myBot.run(context);
+    });
 });
 ```
 
