@@ -261,8 +261,8 @@ export interface ITyntecWhatsAppTemplateImageHeaderComponent {
 }
 
 export interface ITyntecWhatsAppTemplateLocationHeaderComponent {
-    type: 'document';
-    document: ITyntecWhatsAppLocation;
+    type: 'location';
+	location: ITyntecWhatsAppLocation;
 }
 
 export interface ITyntecWhatsAppTemplateMediaHeaderComponentExample {
