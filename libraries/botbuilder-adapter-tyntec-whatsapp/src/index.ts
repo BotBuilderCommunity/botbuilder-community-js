@@ -402,55 +402,59 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
     }
 
     protected async parseTyntecWhatsAppMessageEvent(req: {body: ITyntecMoMessage; headers: any; params: any; query: any}): Promise<Partial<Activity>> {
-        if (req.body.event !== 'MoMessage') {
-            throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.event other than MoMessage not supported: ${ req.body.event }`);
+        return this.parseTyntecWebhookWhatsAppMoMessage(req.body);
+    }
+
+    protected async parseTyntecWebhookWhatsAppMoMessage(message: ITyntecMoMessage): Promise<Partial<Activity>> {
+        if (message.event !== 'MoMessage') {
+            throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.event other than MoMessage not supported: ${ message.event }`);
         }
-        if (req.body.content.contentType === 'media' && (req.body.content.media.type !== 'audio' && req.body.content.media.type !== 'document' && req.body.content.media.type !== 'image' && req.body.content.media.type !== 'sticker' && req.body.content.media.type !== 'video' && req.body.content.media.type !== 'voice')) {
-            throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.content.media.type other than audio, document, image, sticker, video and voice not supported: ${ req.body.content.media.type }`);
+        if (message.content.contentType === 'media' && (message.content.media.type !== 'audio' && message.content.media.type !== 'document' && message.content.media.type !== 'image' && message.content.media.type !== 'sticker' && message.content.media.type !== 'video' && message.content.media.type !== 'voice')) {
+            throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.content.media.type other than audio, document, image, sticker and video not supported: ${ message.content.media.type }`);
         }
-        if (req.body.groupId !== undefined) {
-            throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.groupId not supported: ${ req.body.groupId }`);
+        if (message.groupId !== undefined) {
+            throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.groupId not supported: ${ message.groupId }`);
         }
-        if (req.body.to === undefined) {
-            throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.to is required: ${ req.body.to }`);
+        if (message.to === undefined) {
+            throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.to is required: ${ message.to }`);
         }
 
         const recipient: Partial<ChannelAccount> = {
-            id: req.body.to
+            id: message.to
         };
         const activity: Partial<Activity> = {
-            ...this.parseTyntecWebhookAPIEvent(req.body),
+            ...this.parseTyntecWebhookAPIEvent(message),
             channelData: {},
-            id: req.body.messageId,
+            id: message.messageId,
             recipient: recipient as ChannelAccount,
-            replyToId: req.body.context?.messageId,
+            replyToId: message.context?.messageId,
             type: ActivityTypes.Message
         };
-        if (req.body.whatsapp?.senderName) {
+        if (message.whatsapp?.senderName) {
             const conversation = activity.conversation as Partial<ConversationAccount>;
-            conversation.name = req.body.whatsapp?.senderName;
+            conversation.name = message.whatsapp?.senderName;
 
             const from = activity.from as Partial<ChannelAccount>;
-            from.name = req.body.whatsapp?.senderName;
+            from.name = message.whatsapp?.senderName;
         }
-        if (req.body.content.contentType === 'text') {
+        if (message.content.contentType === 'text') {
             activity.channelData.contentType = 'text';
-            activity.text = req.body.content.text;
+            activity.text = message.content.text;
             return activity;
         }
-        if (req.body.content.contentType === 'contacts') {
+        if (message.content.contentType === 'contacts') {
             activity.channelData.contentType = 'contacts';
-            activity.channelData.contacts = req.body.content.contacts;
+            activity.channelData.contacts = message.content.contacts;
             return activity;
         }
-        if (req.body.content.contentType === 'location') {
+        if (message.content.contentType === 'location') {
             activity.channelData.contentType = 'location';
-            activity.channelData.location = req.body.content.location;
+            activity.channelData.location = message.content.location;
             return activity;
         }
-        if (req.body.content.contentType === 'media') {
-            const mediaRequest = composeTyntecRequestConfig('get', req.body.content.media.url, this.tyntecApikey, '*/*');
-            mediaRequest.validateStatus = (): boolean => true;
+        if (message.content.contentType === 'media') {
+            const mediaRequest = composeTyntecRequestConfig('get', message.content.media.url, this.tyntecApikey, '*/*');
+            mediaRequest.validateStatus = () => true;
             let mediaResponse;
             try{
                 mediaResponse = await this.axiosInstance.request(mediaRequest);
@@ -461,14 +465,14 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
             activity.attachments = [
                 {
                     contentType: mediaResponse.headers['content-type'],
-                    contentUrl: req.body.content.media.url
+                    contentUrl: message.content.media.url
                 }
             ];
-            activity.channelData.contentType = req.body.content.media.type;
-            activity.text = req.body.content.media.caption;
+            activity.channelData.contentType = message.content.media.type;
+            activity.text = message.content.media.caption;
             return activity;
         }
-        throw Error(`TyntecWhatsAppAdapter: invalid input: ${ JSON.stringify(req.body) }`);
+        throw Error(`TyntecWhatsAppAdapter: invalid input: ${ JSON.stringify(message) }`);
     }
 
     protected parseTyntecWebhookAPIEvent(event: ITyntecAPIEvent): Partial<Activity> {
