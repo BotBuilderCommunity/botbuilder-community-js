@@ -22,10 +22,8 @@ const adapter = new TyntecWhatsAppAdapter({
 
 // ... your bot and server initialization ...
 
-server.post('/api/messages', (req, res) => {
-    adapter.processActivity(req, res, async (context) => {
-        await myBot.run(context);
-    });
+server.post('/api/whatsapp/messages', async (req, res) => {
+	await adapter.processActivity(req, res, (context) => myBot.run(context));
 });
 ```
 
