@@ -531,7 +531,38 @@ describe('TyntecWhatsAppAdapter', function() {
         });
     })
 
-    describe('#parseTyntecWhatsAppMessageEvent', function() {
+	describe('#parseTyntecWebhookAPIEvent', function() {
+		it('should parse an event', async function() {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: 'ABcdefGhI1jKLMNOPQRst2UVWx345yz6'
+			});
+			const event = {
+				'channel': 'whatsapp',
+				'content': {
+					'contentType': 'text',
+					'text': 'A simple text message'
+				},
+				'event': 'MoMessage',
+				'from': '+1233423454',
+				'messageId': '77185196-664a-43ec-b14a-fe97036c697e',
+				'timestamp': '2019-06-26T11:41:00',
+				'to': '545345345'
+			};
+
+			const activity = await adapter.parseTyntecWebhookAPIEvent(event);
+
+			assert.deepStrictEqual(activity, {
+				channelId: 'whatsapp',
+				conversation: { id: '+1233423454', isGroup: false },
+				from: { id: '+1233423454' },
+				serviceUrl: 'https://api.tyntec.com/conversations/v3/messages',
+				timestamp: new Date('2019-06-26T09:41:00.000Z')
+			});
+		});
+	});
+
+	describe('#parseTyntecWhatsAppMessageEvent', function() {
         it('should parse a text message event', async function() {
             const adapter = new TyntecWhatsAppAdapter({
                 axiosInstance: axios.create(),
@@ -555,8 +586,8 @@ describe('TyntecWhatsAppAdapter', function() {
             assert.deepStrictEqual(activity, {
                 channelData: { contentType: 'text' },
                 channelId: 'whatsapp',
-                conversation: { id: '+1233423454', isGroup: false, name: undefined },
-                from: { id: '+1233423454', name: undefined },
+                conversation: { id: '+1233423454', isGroup: false },
+                from: { id: '+1233423454' },
                 id: '77185196-664a-43ec-b14a-fe97036c697e',
                 recipient: { id: '545345345' },
                 replyToId: undefined,
@@ -611,8 +642,8 @@ describe('TyntecWhatsAppAdapter', function() {
                 attachments: [{'contentType': 'audio/aac', 'contentUrl': 'https://example.com/audio.ac3'}],
                 channelData: { contentType: 'audio' },
                 channelId: 'whatsapp',
-                conversation: { id: '+1233423454', isGroup: false, name: undefined },
-                from: { id: '+1233423454', name: undefined },
+                conversation: { id: '+1233423454', isGroup: false },
+                from: { id: '+1233423454' },
                 id: '77185196-664a-43ec-b14a-fe97036c697e',
                 recipient: { id: '545345345' },
                 replyToId: undefined,
@@ -665,8 +696,8 @@ describe('TyntecWhatsAppAdapter', function() {
                     }]
                 },
                 channelId: 'whatsapp',
-                conversation: { id: '+1233423454', isGroup: false, name: undefined },
-                from: { id: '+1233423454', name: undefined },
+                conversation: { id: '+1233423454', isGroup: false },
+                from: { id: '+1233423454' },
                 id: '77185196-664a-43ec-b14a-fe97036c697e',
                 recipient: { id: '545345345' },
                 replyToId: undefined,
@@ -720,8 +751,8 @@ describe('TyntecWhatsAppAdapter', function() {
                 attachments: [{'contentType': 'application/pdf', 'contentUrl': 'https://example.com/document.pdf'}],
                 channelData: { contentType: 'document' },
                 channelId: 'whatsapp',
-                conversation: { id: '+1233423454', isGroup: false, name: undefined },
-                from: { id: '+1233423454', name: undefined },
+                conversation: { id: '+1233423454', isGroup: false },
+                from: { id: '+1233423454' },
                 id: '77185196-664a-43ec-b14a-fe97036c697e',
                 recipient: { id: '545345345' },
                 replyToId: undefined,
@@ -776,8 +807,8 @@ describe('TyntecWhatsAppAdapter', function() {
                 attachments: [{'contentType': 'image/jpeg', 'contentUrl': 'https://example.com/image.png'}],
                 channelData: { contentType: 'image' },
                 channelId: 'whatsapp',
-                conversation: { id: '+1233423454', isGroup: false, name: undefined },
-                from: { id: '+1233423454', name: undefined },
+                conversation: { id: '+1233423454', isGroup: false },
+                from: { id: '+1233423454' },
                 id: '77185196-664a-43ec-b14a-fe97036c697e',
                 recipient: { id: '545345345' },
                 replyToId: undefined,
@@ -819,8 +850,8 @@ describe('TyntecWhatsAppAdapter', function() {
                     location: { address: 'tyntec GmbH, Semerteichstraße, Dortmund', latitude: 51.5005765, longitude: 7.4954884, name: 'tyntec GmbH' }
                 },
                 channelId: 'whatsapp',
-                conversation: { id: '+1233423454', isGroup: false, name: undefined },
-                from: { id: '+1233423454', name: undefined },
+                conversation: { id: '+1233423454', isGroup: false },
+                from: { id: '+1233423454' },
                 id: '77185196-664a-43ec-b14a-fe97036c697e',
                 recipient: { id: '545345345' },
                 replyToId: undefined,
@@ -874,8 +905,8 @@ describe('TyntecWhatsAppAdapter', function() {
                 attachments: [{'contentType': 'image/webp', 'contentUrl': 'https://example.com/sticker.webp'}],
                 channelData: { contentType: 'sticker' },
                 channelId: 'whatsapp',
-                conversation: { id: '+1233423454', isGroup: false, name: undefined },
-                from: { id: '+1233423454', name: undefined },
+                conversation: { id: '+1233423454', isGroup: false },
+                from: { id: '+1233423454' },
                 id: '77185196-664a-43ec-b14a-fe97036c697e',
                 recipient: { id: '545345345' },
                 replyToId: undefined,
@@ -930,8 +961,8 @@ describe('TyntecWhatsAppAdapter', function() {
                 attachments: [{'contentType': 'video/mp4', 'contentUrl': 'https://example.com/video.mp4'}],
                 channelData: { contentType: 'video' },
                 channelId: 'whatsapp',
-                conversation: { id: '+1233423454', isGroup: false, name: undefined },
-                from: { id: '+1233423454', name: undefined },
+                conversation: { id: '+1233423454', isGroup: false },
+                from: { id: '+1233423454' },
                 id: '77185196-664a-43ec-b14a-fe97036c697e',
                 recipient: { id: '545345345' },
                 replyToId: undefined,
@@ -986,8 +1017,8 @@ describe('TyntecWhatsAppAdapter', function() {
                 attachments: [{'contentType': 'audio/ogg; codecs=opus', 'contentUrl': 'https://example.com/voice.ogg'}],
                 channelData: { contentType: 'voice' },
                 channelId: 'whatsapp',
-                conversation: { id: '+1233423454', isGroup: false, name: undefined },
-                from: { id: '+1233423454', name: undefined },
+                conversation: { id: '+1233423454', isGroup: false },
+                from: { id: '+1233423454' },
                 id: '77185196-664a-43ec-b14a-fe97036c697e',
                 recipient: { id: '545345345' },
                 replyToId: undefined,
@@ -1070,8 +1101,8 @@ describe('TyntecWhatsAppAdapter', function() {
             assert.deepStrictEqual(logicContext.activity, {
                 channelData: { contentType: 'text' },
                 channelId: 'whatsapp',
-                conversation: { id: '+1233423454', isGroup: false, name: undefined },
-                from: { id: '+1233423454', name: undefined },
+                conversation: { id: '+1233423454', isGroup: false },
+                from: { id: '+1233423454' },
                 id: '77185196-664a-43ec-b14a-fe97036c697e',
                 recipient: { id: '545345345' },
                 replyToId: undefined,
@@ -1122,8 +1153,8 @@ describe('TyntecWhatsAppAdapter', function() {
             assert.deepStrictEqual(logicContext.activity, {
                 channelData: { contentType: 'text' },
                 channelId: 'whatsapp',
-                conversation: { id: '+1233423454', isGroup: false, name: undefined },
-                from: { id: '+1233423454', name: undefined },
+                conversation: { id: '+1233423454', isGroup: false },
+                from: { id: '+1233423454' },
                 id: '77185196-664a-43ec-b14a-fe97036c697e',
                 recipient: { id: '545345345' },
                 replyToId: undefined,
@@ -1382,8 +1413,8 @@ describe('TyntecWhatsAppAdapter', function() {
             assert.deepStrictEqual(errorHandlerArguments.context.activity, {
                 channelData: { contentType: 'text' },
                 channelId: 'whatsapp',
-                conversation: { id: '+1233423454', isGroup: false, name: undefined },
-                from: { id: '+1233423454', name: undefined },
+                conversation: { id: '+1233423454', isGroup: false },
+                from: { id: '+1233423454' },
                 id: '77185196-664a-43ec-b14a-fe97036c697e',
                 recipient: { id: '545345345' },
                 replyToId: undefined,

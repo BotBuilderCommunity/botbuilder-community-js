@@ -8,6 +8,13 @@ export interface ITyntecAddress {
     zip?: string;
 }
 
+export interface ITyntecAPIEvent {
+    channel: string;
+    event: 'MoMessage';
+    from: string;
+    timestamp?: string;
+}
+
 export interface ITyntecBaseMedia {
     url: string;
 }
@@ -61,15 +68,11 @@ export interface ITyntecMoContext {
     messageId?: string;
 }
 
-export interface ITyntecMoMessage {
-    channel: string;
+export interface ITyntecMoMessage extends ITyntecAPIEvent {
     content: ITyntecMediaMoContent | ITyntecTextMoContent | ITyntecWhatsAppContactsContent | ITyntecWhatsAppLocationContent;
     context?: ITyntecMoContext;
-    event: 'MoMessage';
-    from: string;
     groupId?: string;
     messageId: string;
-    timestamp?: string;
     to?: string;
     whatsapp?: ITyntecWhatsapp;
 }
@@ -262,7 +265,7 @@ export interface ITyntecWhatsAppTemplateImageHeaderComponent {
 
 export interface ITyntecWhatsAppTemplateLocationHeaderComponent {
     type: 'location';
-	location: ITyntecWhatsAppLocation;
+    location: ITyntecWhatsAppLocation;
 }
 
 export interface ITyntecWhatsAppTemplateMediaHeaderComponentExample {

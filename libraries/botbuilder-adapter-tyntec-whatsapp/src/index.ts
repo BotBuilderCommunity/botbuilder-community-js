@@ -1,6 +1,6 @@
 import {Activity, ActivityTypes, BotAdapter, ChannelAccount, ConversationAccount, ConversationReference, ResourceResponse, TurnContext, WebRequest, WebResponse} from 'botbuilder';
 import {AxiosInstance} from 'axios';
-import {ITyntecMoMessage, ITyntecWhatsAppMessageRequest} from './tyntec/messages';
+import {ITyntecAPIEvent, ITyntecMoMessage, ITyntecWhatsAppMessageRequest} from './tyntec/messages';
 import {composeTyntecRequestConfig, composeTyntecSendWhatsAppMessageRequestConfig, parseTyntecSendWhatsAppMessageResponse} from './tyntec/axios';
 
 export interface ITyntecWhatsAppAdapterSettings {
@@ -415,32 +415,24 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
             throw Error(`TyntecWhatsAppAdapter: ITyntecMoMessage.to is required: ${ req.body.to }`);
         }
 
-        const tyntecSendWhatsAppMessageRequestConfig = composeTyntecSendWhatsAppMessageRequestConfig(this.tyntecApikey, {from: 'example', to: 'example', channel: 'whatsapp', content: {contentType: 'text', text: 'example'}});
-
-        const conversation: Partial<ConversationAccount> = {
-            id: req.body.from,
-            isGroup: false,
-            name: req.body.whatsapp?.senderName
-        };
-        const from: Partial<ChannelAccount> = {
-            id: req.body.from,
-            name: req.body.whatsapp?.senderName
-        };
         const recipient: Partial<ChannelAccount> = {
             id: req.body.to
         };
         const activity: Partial<Activity> = {
+            ...this.parseTyntecWebhookAPIEvent(req.body),
             channelData: {},
-            channelId: req.body.channel,
-            conversation: conversation as ConversationAccount,
-            from: from as ChannelAccount,
             id: req.body.messageId,
             recipient: recipient as ChannelAccount,
             replyToId: req.body.context?.messageId,
-            serviceUrl: tyntecSendWhatsAppMessageRequestConfig.url,
-            timestamp: req.body.timestamp !== undefined ? new Date(req.body.timestamp) : undefined,
             type: ActivityTypes.Message
         };
+        if (req.body.whatsapp?.senderName) {
+            const conversation = activity.conversation as Partial<ConversationAccount>;
+            conversation.name = req.body.whatsapp?.senderName;
+
+            const from = activity.from as Partial<ChannelAccount>;
+            from.name = req.body.whatsapp?.senderName;
+        }
         if (req.body.content.contentType === 'text') {
             activity.channelData.contentType = 'text';
             activity.text = req.body.content.text;
@@ -477,5 +469,24 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
             return activity;
         }
         throw Error(`TyntecWhatsAppAdapter: invalid input: ${ JSON.stringify(req.body) }`);
+    }
+
+    protected parseTyntecWebhookAPIEvent(event: ITyntecAPIEvent): Partial<Activity> {
+        const tyntecSendWhatsAppMessageRequestConfig = composeTyntecSendWhatsAppMessageRequestConfig(this.tyntecApikey, {from: 'example', to: 'example', channel: 'whatsapp', content: {contentType: 'text', text: 'example'}});
+
+        const conversation: Partial<ConversationAccount> = {
+            id: event.from,
+            isGroup: false
+        };
+        const from: Partial<ChannelAccount> = {
+            id: event.from
+        };
+        return {
+            channelId: event.channel,
+            conversation: conversation as ConversationAccount,
+            from: from as ChannelAccount,
+            serviceUrl: tyntecSendWhatsAppMessageRequestConfig.url,
+            timestamp: event.timestamp !== undefined ? new Date(event.timestamp) : undefined
+        };
     }
 }
