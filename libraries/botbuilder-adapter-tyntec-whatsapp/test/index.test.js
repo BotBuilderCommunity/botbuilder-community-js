@@ -562,6 +562,43 @@ describe('TyntecWhatsAppAdapter', function() {
 		});
 	});
 
+	describe('#parseTyntecWebhookRequest', function() {
+		it('should parse a message event', async function() {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: 'ABcdefGhI1jKLMNOPQRst2UVWx345yz6'
+			});
+			const body = {
+				'channel': 'whatsapp',
+				'content': {
+					'contentType': 'text',
+					'text': 'A simple text message'
+				},
+				'event': 'MoMessage',
+				'from': '+1233423454',
+				'messageId': '77185196-664a-43ec-b14a-fe97036c697e',
+				'timestamp': '2019-06-26T11:41:00',
+				'to': '545345345'
+			};
+
+			const activity = await adapter.parseTyntecWebhookRequest({body, headers: {}, params: {}, query: {}});
+
+			assert.deepStrictEqual(activity, {
+				channelData: { contentType: 'text' },
+				channelId: 'whatsapp',
+				conversation: { id: '+1233423454', isGroup: false },
+				from: { id: '+1233423454' },
+				id: '77185196-664a-43ec-b14a-fe97036c697e',
+				recipient: { id: '545345345' },
+				replyToId: undefined,
+				serviceUrl: 'https://api.tyntec.com/conversations/v3/messages',
+				text: 'A simple text message',
+				timestamp: new Date('2019-06-26T09:41:00.000Z'),
+				type: 'message'
+			});
+		});
+	});
+
 	describe('#parseTyntecWebhookWhatsAppMoMessage', function() {
         it('should parse a text message event', async function() {
             const adapter = new TyntecWhatsAppAdapter({
@@ -1068,43 +1105,6 @@ describe('TyntecWhatsAppAdapter', function() {
             )
         });
     });
-
-	describe('#parseTyntecWhatsAppMessageEvent', function() {
-		it('should parse a message event', async function() {
-			const adapter = new TyntecWhatsAppAdapter({
-				axiosInstance: axios.create(),
-				tyntecApikey: 'ABcdefGhI1jKLMNOPQRst2UVWx345yz6'
-			});
-			const body = {
-				'channel': 'whatsapp',
-				'content': {
-					'contentType': 'text',
-					'text': 'A simple text message'
-				},
-				'event': 'MoMessage',
-				'from': '+1233423454',
-				'messageId': '77185196-664a-43ec-b14a-fe97036c697e',
-				'timestamp': '2019-06-26T11:41:00',
-				'to': '545345345'
-			};
-
-			const activity = await adapter.parseTyntecWhatsAppMessageEvent({body, headers: {}, params: {}, query: {}});
-
-			assert.deepStrictEqual(activity, {
-				channelData: { contentType: 'text' },
-				channelId: 'whatsapp',
-				conversation: { id: '+1233423454', isGroup: false },
-				from: { id: '+1233423454' },
-				id: '77185196-664a-43ec-b14a-fe97036c697e',
-				recipient: { id: '545345345' },
-				replyToId: undefined,
-				serviceUrl: 'https://api.tyntec.com/conversations/v3/messages',
-				text: 'A simple text message',
-				timestamp: new Date('2019-06-26T09:41:00.000Z'),
-				type: 'message'
-			});
-		});
-	});
 
 	describe('#processActivity', function() {
         it('should process the request when the body is not present', async function () {

@@ -56,7 +56,7 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
                 });
             });
 
-            const activity = await this.parseTyntecWhatsAppMessageEvent({body: requestBody, headers: req.headers, params: req.params, query: req.query});
+            const activity = await this.parseTyntecWebhookRequest({body: requestBody, headers: req.headers, params: req.params, query: req.query});
             const context = new TurnContext(this as any, activity);
             await this.runMiddleware(context, logic);
 
@@ -401,8 +401,8 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
         throw Error(`TyntecWhatsAppAdapter: invalid input: ${ activity }`);
     }
 
-    protected async parseTyntecWhatsAppMessageEvent(req: {body: ITyntecMoMessage; headers: any; params: any; query: any}): Promise<Partial<Activity>> {
-        return this.parseTyntecWebhookWhatsAppMoMessage(req.body);
+    protected async parseTyntecWebhookRequest(req: {body: ITyntecAPIEvent; headers: any; params: any; query: any}): Promise<Partial<Activity>> {
+        return this.parseTyntecWebhookWhatsAppMoMessage(req.body as ITyntecMoMessage);
     }
 
     protected async parseTyntecWebhookWhatsAppMoMessage(message: ITyntecMoMessage): Promise<Partial<Activity>> {

@@ -14,7 +14,7 @@ Methods:
 * [`public processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void>`](#public-processactivityreq-webrequest-res-webresponse-logic-context-turncontext--promiseany-promisevoid)
 * [`public sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]>`](#public-sendactivitiescontext-turncontext-activities-partialactivity-promiseresourceresponse)
 * [`public use(...middlewares: (MiddlewareHandler | Middleware)[]): TyntecWhatsAppAdapter`](#public-usemiddlewares-middlewarehandler--middleware-tyntecwhatsappadapter)
-* [`protected parseTyntecWhatsAppMessageEvent(req: {body: ITyntecMoMessage, headers: any, params: any, query: any}): Promise<Partial<Activity>>`](#protected-parsetyntecwhatsappmessageeventreq-body-ityntecmomessage-headers-any-params-any-query-any-promisepartialactivity)
+* [`protected parseTyntecWebhookRequest(req: {body: ITyntecAPIEvent, headers: any, params: any, query: any}): Promise<Partial<Activity>>`](#protected-parsetyntecwebhookrequestreq-body-ityntecapievent-headers-any-params-any-query-any-promisepartialactivity)
 
 If you want more information about bot adapters, see the [Microsoft Bot Framework SDK documentation](https://docs.microsoft.com/en-us/azure/bot-service/index-bf-sdk).
 
@@ -120,7 +120,7 @@ See [Activity.md](./Activity.md) to find out what activities may be passed to
 Adds the `middlewares` to the middleware pipeline and returns itself.
 
 
-## `protected parseTyntecWhatsAppMessageEvent(req: {body: ITyntecMoMessage, headers: any, params: any, query: any}): Promise<Partial<Activity>>`
+## `protected parseTyntecWebhookRequest(req: {body: ITyntecAPIEvent, headers: any, params: any, query: any}): Promise<Partial<Activity>>`
 
 Maps the `req.params`, `req.query`, `req.headers` and `req.body` of a request
 accepted by [`processActivity`](#public-processactivityreq-webrequest-res-webresponse-logic-context-turncontext--promiseany-promisevoid)
@@ -140,11 +140,11 @@ token is invalid.
 
 ```typescript
 class MyAdapter extends TyntecWhatsAppAdapter {
-    protected async parseTyntecWhatsAppMessageEvent(req: {body: ITyntecMoMessage, headers: any, params: any, query: any}): Promise<Partial<Activity>> {
+    protected async parseTyntecWebhookRequest(req: {body: ITyntecAPIEvent, headers: any, params: any, query: any}): Promise<Partial<Activity>> {
         if (req.headers['authorization'] !== 'Bearer mF_9.B5f-4.1JqM') {
             throw new Error('Unauthorized');
         }
-        return super.parseTyntecWhatsAppMessageEvent(req);
+        return super.parseTyntecWebhookRequest(req);
     }
 }
 ```
