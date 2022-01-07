@@ -66,18 +66,23 @@ At the moment, only a subset of [tyntec Webhook Events](https://api.tyntec.com/r
 is supported. These are events that meet the following criteria:
 
 * The event must be a valid tyntec Webhook event.
-* The event must be a message (`body.event === "MoMessage"`, not delivery updates).
-* The event must be a WhatsApp message (`body.channel === "whatsapp"`).
-* The event must not be a group message (`body.to !== undefined && body.groupId === undefined`).
-* The event must be an audio message (`body.content.contentType === "media" && body.content.media.type === "audio"`),
-  a contacts message (`body.content.contentType === "contacts"`),
-  a document message (`body.content.contentType === "media" && body.content.media.type === "document"`),
-  an image message (`body.content.contentType === "media" && body.content.media.type === "image"`),
-  a location message (`body.content.contentType === "location"`),
-  a sticker message (`body.content.contentType === "media" && body.content.media.type === "sticker"`),
-  a text message (`body.content.contentType === "text"`),
-  a video message (`body.content.contentType === "media" && body.content.media.type === "video"`) or
-  a voice message (`body.content.contentType === "media" && body.content.media.type === "voice"`).
+* The event must be a message (`body.event === "MoMessage"`) or
+  a postback message (`body.event === "MoMessage::Postback"`).
+* In case it is a message:
+    * The message must be a WhatsApp message (`body.channel === "whatsapp"`).
+    * The message must not be a group message (`body.to !== undefined && body.groupId === undefined`).
+  * The message must be an audio message (`body.content.contentType === "media" && body.content.media.type === "audio"`),
+	a contacts message (`body.content.contentType === "contacts"`),
+	a document message (`body.content.contentType === "media" && body.content.media.type === "document"`),
+	an image message (`body.content.contentType === "media" && body.content.media.type === "image"`),
+	a location message (`body.content.contentType === "location"`),
+	a sticker message (`body.content.contentType === "media" && body.content.media.type === "sticker"`),
+	a text message (`body.content.contentType === "text"`),
+	a video message (`body.content.contentType === "media" && body.content.media.type === "video"`) or
+	a voice message (`body.content.contentType === "media" && body.content.media.type === "voice"`).
+* In case it is a postback message:
+  * The postback message must be a WhatsApp postback message (`body.channel === "whatsapp"`).
+  * The postback message must not be a group postback message (`body.to !== undefined && body.groupId === undefined`).
 
 Supported events are turned into activities that are passed to the created turn
 contexts. See [Activity.md](./Activity.md) to find out what activities may be

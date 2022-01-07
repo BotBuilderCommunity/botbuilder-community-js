@@ -562,6 +562,45 @@ describe('TyntecWhatsAppAdapter', function() {
 		});
 	});
 
+	describe('#parseTyntecWebhookMoMessagePostback', function() {
+		it('should parse a postback message event', async function() {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: 'ABcdefGhI1jKLMNOPQRst2UVWx345yz6'
+			});
+			const postback = {
+				'channel': 'whatsapp',
+				'event': 'MoMessage::Postback',
+				'from': '+1233423454',
+				'messageId': '77185196-664a-43ec-b14a-fe97036c697e',
+				'postback': {
+					'data': '9080923445nlkjß0_gß0923845083245dfg'
+				},
+				'timestamp': '2019-06-26T11:41:00',
+				'to': '545345345',
+				'whatsapp': {
+					'text': 'Good text',
+					'title': 'Good title'
+				}
+			};
+
+			const activity = await adapter.parseTyntecWebhookMoMessagePostback(postback);
+
+			assert.deepStrictEqual(activity, {
+				channelData: { contentType: 'postback', postback: { data: '9080923445nlkjß0_gß0923845083245dfg', whatsapp: { description: undefined, text: 'Good text', title: 'Good title' } } },
+				channelId: 'whatsapp',
+				conversation: { id: '+1233423454', isGroup: false },
+				from: { id: '+1233423454' },
+				id: '77185196-664a-43ec-b14a-fe97036c697e',
+				recipient: { id: '545345345' },
+				replyToId: undefined,
+				serviceUrl: 'https://api.tyntec.com/conversations/v3/messages',
+				timestamp: new Date('2019-06-26T09:41:00.000Z'),
+				type: 'message'
+			});
+		});
+	});
+
 	describe('#parseTyntecWebhookRequest', function() {
 		it('should parse a message event', async function() {
 			const adapter = new TyntecWhatsAppAdapter({
@@ -596,6 +635,60 @@ describe('TyntecWhatsAppAdapter', function() {
 				timestamp: new Date('2019-06-26T09:41:00.000Z'),
 				type: 'message'
 			});
+		});
+
+		it('should parse a postback message event', async function() {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: 'ABcdefGhI1jKLMNOPQRst2UVWx345yz6'
+			});
+			const body = {
+				'channel': 'whatsapp',
+				'event': 'MoMessage::Postback',
+				'from': '+1233423454',
+				'messageId': '77185196-664a-43ec-b14a-fe97036c697e',
+				'postback': {
+					'data': '9080923445nlkjß0_gß0923845083245dfg'
+				},
+				'timestamp': '2019-06-26T11:41:00',
+				'to': '545345345',
+				'whatsapp': {
+					'text': 'Good text',
+					'title': 'Good title'
+				}
+			};
+
+			const activity = await adapter.parseTyntecWebhookRequest({body, headers: {}, params: {}, query: {}});
+
+			assert.deepStrictEqual(activity, {
+				channelData: { contentType: 'postback', postback: { data: '9080923445nlkjß0_gß0923845083245dfg', whatsapp: { description: undefined, text: 'Good text', title: 'Good title' } } },
+				channelId: 'whatsapp',
+				conversation: { id: '+1233423454', isGroup: false },
+				from: { id: '+1233423454' },
+				id: '77185196-664a-43ec-b14a-fe97036c697e',
+				recipient: { id: '545345345' },
+				replyToId: undefined,
+				serviceUrl: 'https://api.tyntec.com/conversations/v3/messages',
+				timestamp: new Date('2019-06-26T09:41:00.000Z'),
+				type: 'message'
+			});
+		});
+
+		it('should throw an error when an event is not supported', async function () {
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: 'ABcdefGhI1jKLMNOPQRst2UVWx345yz6'
+			});
+			const body = {
+				'channel': 'whatsapp',
+				'event': 'MessageStatus::unknown',
+				'messageId': '77185196-664a-43ec-b14a-fe97036c697e',
+				'timestamp': '2019-06-26T11:41:00'
+			};
+
+			await assert.rejects(
+				adapter.parseTyntecWebhookRequest({body, headers: {}, params: {}, query: {}})
+			)
 		});
 	});
 
@@ -1064,23 +1157,6 @@ describe('TyntecWhatsAppAdapter', function() {
                 timestamp: new Date('2019-06-26T11:41:00'),
                 type: 'message'
             });
-        });
-
-        it('should throw an error when an event is not supported', async function () {
-            const adapter = new TyntecWhatsAppAdapter({
-                axiosInstance: axios.create(),
-                tyntecApikey: 'ABcdefGhI1jKLMNOPQRst2UVWx345yz6'
-            });
-            const message = {
-                'channel': 'whatsapp',
-                'event': 'MessageStatus::unknown',
-                'messageId': '77185196-664a-43ec-b14a-fe97036c697e',
-                'timestamp': '2019-06-26T11:41:00'
-            };
-
-            await assert.rejects(
-                adapter.parseTyntecWebhookWhatsAppMoMessage(message)
-            )
         });
 
         it('should throw an error when a content type is not supported', async function () {
