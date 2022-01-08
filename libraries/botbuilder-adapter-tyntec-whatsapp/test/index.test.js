@@ -493,6 +493,156 @@ describe('TyntecWhatsAppAdapter', function() {
         });
     });
 
+	describe('#continueConversation', function() {
+		it('should run the callback', async function () {
+			let logicContext = undefined;
+			const reference = {
+				activityId: '77185196-664a-43ec-b14a-fe97036c697e',
+				bot: { id: '545345345' },
+				channelId: 'whatsapp',
+				conversation: { id: '+1233423454', isGroup: false },
+				serviceUrl: 'https://api.tyntec.com/conversations/v3/messages',
+				user: { id: '+1233423454' }
+			};
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: 'ABcdefGhI1jKLMNOPQRst2UVWx345yz6'
+			});
+
+			await adapter.continueConversation(reference, (context) => {
+				logicContext = {
+					activity: context.activity,
+					adapter: context.adapter
+				}
+			});
+
+			assert.deepStrictEqual(logicContext.activity, {
+				channelId: 'whatsapp',
+				conversation: { id: '+1233423454', isGroup: false },
+				from: { id: '+1233423454' },
+				id: '77185196-664a-43ec-b14a-fe97036c697e',
+				locale: undefined,
+				name: 'continueConversation',
+				recipient: { id: '545345345' },
+				serviceUrl: 'https://api.tyntec.com/conversations/v3/messages',
+				type: 'event'
+			});
+			assert.strictEqual(logicContext.adapter, adapter);
+		});
+
+		it('should run the middleware pipeline', async function () {
+			const middlewareCalls = [];
+			const reference = {
+				activityId: '77185196-664a-43ec-b14a-fe97036c697e',
+				bot: { id: '545345345' },
+				channelId: 'whatsapp',
+				conversation: { id: '+1233423454', isGroup: false },
+				serviceUrl: 'https://api.tyntec.com/conversations/v3/messages',
+				user: { id: '+1233423454' }
+			};
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: 'ABcdefGhI1jKLMNOPQRst2UVWx345yz6'
+			});
+			adapter.use(async (context, next) => {
+				middlewareCalls.push('1a');
+				await next();
+				middlewareCalls.push('1b');
+			});
+			adapter.use(async (context, next) => {
+				middlewareCalls.push('2a');
+				await next();
+				middlewareCalls.push('2b');
+			});
+
+			await adapter.continueConversation(reference, () => null);
+
+			assert.deepStrictEqual(middlewareCalls, ['1a', '2a', '2b', '1b']);
+		});
+
+		it('should support short circuits', async function () {
+			let logicContext = undefined;
+			const middlewareCalls = [];
+			const reference = {
+				activityId: '77185196-664a-43ec-b14a-fe97036c697e',
+				bot: { id: '545345345' },
+				channelId: 'whatsapp',
+				conversation: { id: '+1233423454', isGroup: false },
+				serviceUrl: 'https://api.tyntec.com/conversations/v3/messages',
+				user: { id: '+1233423454' }
+			};
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: 'ABcdefGhI1jKLMNOPQRst2UVWx345yz6'
+			});
+			adapter.use(async () => {
+				middlewareCalls.push('1');
+			});
+			adapter.use(async (context, next) => {
+				middlewareCalls.push('2a');
+				await next();
+				middlewareCalls.push('2b');
+			});
+
+			await adapter.continueConversation(reference, (context) => {
+				logicContext = {
+					activity: context.activity,
+					adapter: context.adapter
+				}
+			});
+
+			assert.deepStrictEqual(middlewareCalls, ['1']);
+			assert.strictEqual(logicContext, undefined);
+		});
+
+		it('should call the error handler when present', async function () {
+			let errorHandlerArguments = undefined;
+			const error = new Error();
+			const reference = {
+				activityId: '77185196-664a-43ec-b14a-fe97036c697e',
+				bot: { id: '545345345' },
+				channelId: 'whatsapp',
+				conversation: { id: '+1233423454', isGroup: false },
+				serviceUrl: 'https://api.tyntec.com/conversations/v3/messages',
+				user: { id: '+1233423454' }
+			};
+			const adapter = new TyntecWhatsAppAdapter({
+				axiosInstance: axios.create(),
+				tyntecApikey: 'ABcdefGhI1jKLMNOPQRst2UVWx345yz6'
+			});
+			adapter.onTurnError = async (context, error) => {
+				errorHandlerArguments = {
+					context: {
+						activity: context.activity,
+						adapter: context.adapter
+					},
+					error
+				};
+			};
+			adapter.use(async () => {
+				throw error;
+			});
+
+			await assert.doesNotReject(
+				adapter.continueConversation(reference, () => null)
+			)
+
+			assert.deepStrictEqual(errorHandlerArguments.context.activity, {
+				channelId: 'whatsapp',
+				conversation: { id: '+1233423454', isGroup: false },
+				from: { id: '+1233423454' },
+				id: '77185196-664a-43ec-b14a-fe97036c697e',
+				locale: undefined,
+				name: 'continueConversation',
+				recipient: { id: '545345345' },
+				serviceUrl: 'https://api.tyntec.com/conversations/v3/messages',
+				type: 'event'
+			});
+			assert.strictEqual(errorHandlerArguments.context.adapter, adapter);
+			assert.strictEqual(errorHandlerArguments.error, error);
+		});
+	});
+
     describe('#onTurnError', function() {
         it('should return undefined when no error handler is present', function() {
             const adapter = new TyntecWhatsAppAdapter({

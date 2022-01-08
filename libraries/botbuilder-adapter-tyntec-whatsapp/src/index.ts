@@ -24,8 +24,14 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
         this.tyntecApikey = settings.tyntecApikey;
     }
 
-    public async continueConversation(reference: Partial<ConversationReference>, logic: (revocableContext: TurnContext) => Promise<void>): Promise<void> {
-        throw Error('Operation continueConversation not supported.');
+    public continueConversation(reference: Partial<ConversationReference>, logic: (revocableContext: TurnContext) => Promise<void>): Promise<void> {
+        const activity: Partial<Activity> = TurnContext.applyConversationReference(
+            { type: 'event', name: 'continueConversation' },
+            reference,
+            true
+        );
+        const context = new TurnContext(this as any, activity);
+        return this.runMiddleware(context, logic);
     }
 
     public async deleteActivity(context: TurnContext, reference: Partial<ConversationReference>): Promise<void> {

@@ -11,6 +11,7 @@ Properties:
 
 Methods:
 * [`public constructor(settings: ITyntecWhatsAppAdapterSettings)`](#public-constructorsettings-ityntecwhatsappadaptersettings)
+* [`public continueConversation(reference: Partial<ConversationReference>, logic: (revocableContext: TurnContext) => Promise<void>): Promise<void>`](#public-continueconversationreference-partialconversationreference-logic-revocablecontext-turncontext--promisevoid-promisevoid)
 * [`public processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void>`](#public-processactivityreq-webrequest-res-webresponse-logic-context-turncontext--promiseany-promisevoid)
 * [`public sendActivities(context: TurnContext, activities: Partial<Activity>[]): Promise<ResourceResponse[]>`](#public-sendactivitiescontext-turncontext-activities-partialactivity-promiseresourceresponse)
 * [`public use(...middlewares: (MiddlewareHandler | Middleware)[]): TyntecWhatsAppAdapter`](#public-usemiddlewares-middlewarehandler--middleware-tyntecwhatsappadapter)
@@ -50,6 +51,31 @@ Initializes the adapter. It sets the `axiosInstance` property to the value of
 `settings.maxBodySize` and the `tyntecApikey` property to the value of
 `settings.tyntecApikey`. If `settings.maxBodySize` is not provided, the
 `maxBodySize` property is set to `1024` by default.
+
+
+## `public continueConversation(reference: Partial<ConversationReference>, logic: (revocableContext: TurnContext) => Promise<void>): Promise<void>`
+
+Asynchronously creates a turn context to resume a conversation referred by
+`reference` and passes it through the middleware pipeline to the `logic`
+function.
+
+To copy the reference from any incoming activity in the conversation, use the
+[`TurnContext.getConversationReference` method](https://docs.microsoft.com/en-us/azure/bot-service/index-bf-sdk).
+
+```typescript
+server.post('/api/notifyUser', async (req, res) => {
+    const reference = await findReference(req.body.refId);
+    await adapter.continueConversation(reference, async (context) => {
+        const activity = {
+            type: 'message',
+            channelData: { contentType: "text" },
+            text: req.body.message
+        };
+        await context.sendActivity(activity);
+    });
+    res.send(200);
+});
+```
 
 
 ## `public processActivity(req: WebRequest, res: WebResponse, logic: (context: TurnContext) => Promise<any>): Promise<void>`
