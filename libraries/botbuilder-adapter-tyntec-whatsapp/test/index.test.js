@@ -1,6 +1,6 @@
 var assert = require('assert');
 var axios = require('axios');
-var { ActivityTypes, InputHints, TurnContext } = require('botbuilder');
+var { ActivityTypes, InputHints, MessageFactory, TurnContext } = require('botbuilder');
 var EventEmitter = require('events');
 var { TyntecWhatsAppAdapter } = require('../lib/index');
 
@@ -1746,18 +1746,8 @@ describe('TyntecWhatsAppAdapter', function() {
                 }
             );
             const activities = [
-                {
-                    channelData: { contentType: 'text' },
-                    text: 'A simple text message 1',
-                    type: ActivityTypes.Message,
-					inputHint: InputHints.AcceptingInput
-                },
-                {
-                    channelData: { contentType: 'text' },
-                    text: 'A simple text message 2',
-                    type: ActivityTypes.Message,
-					inputHint: InputHints.AcceptingInput
-                }
+				MessageFactory.text('A simple text message 1'),
+				MessageFactory.text('A simple text message 2')
             ];
 
 
@@ -1893,12 +1883,7 @@ describe('TyntecWhatsAppAdapter', function() {
                     type: 'message'
                 }
             );
-            const activity = {
-                channelData: { contentType: 'text' },
-                text: 'A simple text message 1',
-                type: ActivityTypes.Message,
-				inputHint: InputHints.AcceptingInput
-            };
+			const activity = MessageFactory.text('A simple text message 1');
 
             await assert.rejects(
                 context.sendActivity(activity)

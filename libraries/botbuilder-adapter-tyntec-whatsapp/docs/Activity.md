@@ -541,8 +541,8 @@ activity === {
 ### WhatsApp Text Message Activity
 
 Properties of all supported WhatsApp text message activities:
-* `channelData: any` (REQUIRED)
-* `channelData.contentType = "text"` (REQUIRED)
+* `channelData?: any` (OPTIONAL)
+* `channelData.contentType = "text"` (OPTIONAL)
 * `channelData.contacts = undefined` (DISALLOWED)
 * `channelData.interactive = undefined` (DISALLOWED)
 * `channelData.location = undefined` (DISALLOWED)

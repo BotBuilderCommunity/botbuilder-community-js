@@ -66,12 +66,7 @@ To copy the reference from any incoming activity in the conversation, use the
 server.post('/api/notifyUser', async (req, res) => {
     const reference = await findReference(req.body.refId);
     await adapter.continueConversation(reference, async (context) => {
-        const activity = {
-            type: 'message',
-            channelData: { contentType: "text" },
-            text: req.body.message
-        };
-        await context.sendActivity(activity);
+        await context.sendActivity(req.body.message);
     });
     res.send(200);
 });
