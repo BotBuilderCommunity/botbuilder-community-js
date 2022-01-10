@@ -30,7 +30,7 @@ Properties of all supported WhatsApp message activities:
 * `textFormat?: TextFormatTypes` (IGNORED)
 * `locale?: string` (IGNORED)
 * `speak = undefined` (DISALLOWED)
-* `inputHint = undefined` (DISALLOWED)
+* `inputHint?: string` (IGNORED)
 * `attachmentLayout?: AttachmentLayoutTypes` (IGNORED)
 * `suggestedActions?: SuggestedActions` (IGNORED)
 * `expiration?: Date` (IGNORED)

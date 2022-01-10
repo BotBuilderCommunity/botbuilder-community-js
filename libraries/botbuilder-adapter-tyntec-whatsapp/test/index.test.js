@@ -1,6 +1,6 @@
 var assert = require('assert');
 var axios = require('axios');
-var { ActivityTypes, TurnContext } = require('botbuilder');
+var { ActivityTypes, InputHints, TurnContext } = require('botbuilder');
 var EventEmitter = require('events');
 var { TyntecWhatsAppAdapter } = require('../lib/index');
 
@@ -64,7 +64,8 @@ describe('TyntecWhatsAppAdapter', function() {
                 from: { id: '+1233423454' },
                 conversation: { id: '545345345' },
                 channelData: { contentType: 'text' },
-                text: 'A simple text message'
+                text: 'A simple text message',
+				inputHint: InputHints.AcceptingInput
             };
 
             const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
@@ -96,7 +97,8 @@ describe('TyntecWhatsAppAdapter', function() {
                         contentType: 'audio/ac3',
                         contentUrl: 'https://example.com/audio.ac3'
                     }
-                ]
+                ],
+				inputHint: InputHints.AcceptingInput
             };
 
             const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
@@ -135,7 +137,8 @@ describe('TyntecWhatsAppAdapter', function() {
                         phones: [{phone: '+49 231 477 90 813', type: 'WORK'}],
                         urls: []
                     }]
-                }
+                },
+				inputHint: InputHints.AcceptingInput
             };
 
             const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
@@ -177,7 +180,8 @@ describe('TyntecWhatsAppAdapter', function() {
                         contentUrl: 'https://example.com/document.pdf',
                         name: 'document.pdf'
                     }
-                ]
+                ],
+				inputHint: InputHints.AcceptingInput
             };
 
             const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
@@ -214,7 +218,8 @@ describe('TyntecWhatsAppAdapter', function() {
                         contentType: 'image/png',
                         contentUrl: 'https://example.com/image.png'
                     }
-                ]
+                ],
+				inputHint: InputHints.AcceptingInput
             };
 
             const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
@@ -255,7 +260,8 @@ describe('TyntecWhatsAppAdapter', function() {
                             }]
                         }
                     }
-                }
+                },
+				inputHint: InputHints.AcceptingInput
             };
 
             const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
@@ -298,7 +304,8 @@ describe('TyntecWhatsAppAdapter', function() {
                         longitude: 7.4954884,
                         name: 'tyntec GmbH'
                     }
-                }
+                },
+				inputHint: InputHints.AcceptingInput
             };
 
             const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
@@ -335,7 +342,8 @@ describe('TyntecWhatsAppAdapter', function() {
                         contentType: 'image/webp',
                         contentUrl: 'https://example.com/sticker.webp'
                     }
-                ]
+                ],
+				inputHint: InputHints.AcceptingInput
             };
 
             const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
@@ -385,7 +393,8 @@ describe('TyntecWhatsAppAdapter', function() {
                             ]
                         }
                     }
-                }
+                },
+				inputHint: InputHints.AcceptingInput
             };
 
             const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
@@ -437,7 +446,8 @@ describe('TyntecWhatsAppAdapter', function() {
                         contentType: 'video/mp4',
                         contentUrl: 'https://example.com/video.mp4'
                     }
-                ]
+                ],
+				inputHint: InputHints.AcceptingInput
             };
 
             const messageRequest = adapter.composeTyntecWhatsAppMessageRequest(activity);
@@ -1738,19 +1748,15 @@ describe('TyntecWhatsAppAdapter', function() {
             const activities = [
                 {
                     channelData: { contentType: 'text' },
-                    channelId: 'whatsapp',
-                    conversation: { id: context.activity.from.id },
-                    from: { id: '545345345' },
                     text: 'A simple text message 1',
-                    type: ActivityTypes.Message
+                    type: ActivityTypes.Message,
+					inputHint: InputHints.AcceptingInput
                 },
                 {
                     channelData: { contentType: 'text' },
-                    channelId: 'whatsapp',
-                    conversation: { id: context.activity.from.id },
-                    from: { id: '545345345' },
                     text: 'A simple text message 2',
-                    type: ActivityTypes.Message
+                    type: ActivityTypes.Message,
+					inputHint: InputHints.AcceptingInput
                 }
             ];
 
@@ -1835,10 +1841,8 @@ describe('TyntecWhatsAppAdapter', function() {
             );
             const activity = {
                 channelData: {},
-                channelId: 'whatsapp',
-                conversation: { id: context.activity.from.id },
-                from: { id: '545345345' },
-                type: ActivityTypes.Typing
+                type: ActivityTypes.Typing,
+				inputHint: InputHints.AcceptingInput
             };
 
             await assert.rejects(
@@ -1891,11 +1895,9 @@ describe('TyntecWhatsAppAdapter', function() {
             );
             const activity = {
                 channelData: { contentType: 'text' },
-                channelId: 'whatsapp',
-                conversation: { id: context.activity.from.id },
-                from: { id: '545345345' },
                 text: 'A simple text message 1',
-                type: ActivityTypes.Message
+                type: ActivityTypes.Message,
+				inputHint: InputHints.AcceptingInput
             };
 
             await assert.rejects(

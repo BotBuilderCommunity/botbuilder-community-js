@@ -126,7 +126,7 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
             console.warn(`TyntecWhatsAppAdapter: Activity.importance not supported: ${ activity.importance }`);
         }
         if (activity.inputHint !== undefined) {
-            throw Error(`TyntecWhatsAppAdapter: Activity.inputHint not supported: ${ activity.inputHint }`);
+            console.warn(`TyntecWhatsAppAdapter: Activity.inputHint not supported: ${ activity.inputHint }`);
         }
         if (activity.listenFor !== undefined) {
             console.warn(`TyntecWhatsAppAdapter: Activity.listenFor not supported: ${ activity.listenFor }`);
