@@ -467,7 +467,7 @@ export class TyntecWhatsAppAdapter extends BotAdapter {
             let mediaResponse;
             try{
                 mediaResponse = await this.axiosInstance.request(mediaRequest);
-            } catch (e) {
+            } catch (e: any) {
                 throw new Error(`Failed to download media: ${ e.response.status }: ${ JSON.stringify(e.response.data) }`);
             }
 
