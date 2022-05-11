@@ -31,20 +31,14 @@ export class MongoDbStorage implements Storage {
      * @param connectionUrl Url to connect to your CosmosDB. Ex: 'mongodb://localhost:27017/'
      * @param dbName The name of your database
      * @param collectionName the name of your collection
-     * @param options Optional settings to configure the MongoClient. Defaults with: {
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            }
+     * @param options Optional settings to configure the MongoClient. Defaults with: {}
      */
     public constructor(connectionUrl: string, dbName: string, collectionName: string, options?: MongoClientOptions) {
         this.url = connectionUrl;
         this.db = dbName;
         this.collection = collectionName;
 
-        this.mongoOptions = options ? options : {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        };
+        this.mongoOptions = options ? options : {};
     }
 
     public async read(keys: string[]): Promise<StoreItems> {
@@ -92,26 +86,23 @@ export class MongoDbStorage implements Storage {
     public async delete(keys: string[]): Promise<void> {
         const client = await this.getClient();
         try {
-            const col = await this.getCollection(client);
-
-            await Promise.all(Object.keys(keys).map(async (key: string): Promise<void> => {
-                await col.deleteOne({ _id: key });
-            }));
+            const documents = await this.getCollection(client);
+            await documents.deleteMany({ _id: { $in: keys } });
         } finally {
             client.close();
         }
     }
 
     private async getClient(): Promise<MongoClient> {
-        const client = await MongoClient.connect(this.url, this.mongoOptions)
-            .catch((err): any => { throw err; });
+        try {
+            return await MongoClient.connect(this.url, this.mongoOptions);
 
-        if (!client) throw new Error('Unable to create MongoDB client');
-
-        return client;
+        } catch (error) {
+            throw new Error('Unable to create MongoDB client');
+        }
     }
 
     private async getCollection(client: MongoClient): Promise<Collection> {
-        return await client.db(this.db).collection(this.collection);
+        return client.db(this.db).collection(this.collection);
     }
 }
