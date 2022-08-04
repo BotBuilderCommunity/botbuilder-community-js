@@ -2,7 +2,7 @@
  * @module @botbuildercommunity/storage-dynamodb
  */
 
-import { config as awsConfig, Credentials as AWSCredentials } from 'aws-sdk';
+import { config as awsConfig, Credentials as AWSCredentials, Endpoint as AWSEndpoint } from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { Storage, StoreItems } from 'botbuilder-core';
 
@@ -21,6 +21,25 @@ interface AWSCredentialsOptions {
     sessionToken?: string;
 }
 
+interface DynamoDBStorageOptions {
+    /**
+     * The name of the table to connect to.
+     */
+    tableName: string;
+    /**
+     * The region the table is located in.
+     */
+    region: string;
+    /**
+     * The credentials to use when connecting to the table.
+     */
+    credentials?: AWSCredentialsOptions;
+    /**
+     * The endpoint to interface with.
+     */
+    endpoint?: string;
+}
+
 /**
  * Middleware that implements an DynamoDB based storage provider for a bot.
  *
@@ -30,7 +49,7 @@ interface AWSCredentialsOptions {
  * ```JavaScript
  * import { DynamoDBStorage } from '@botbuildercommunity/storage-dynamodb';
  *
- * const dynamoDBStorage = new DynamoDBStorage('table-name', 'us-east-1');
+ * const dynamoDBStorage = new DynamoDBStorage({tableName: 'table-name', region: 'us-east-1'});
  *
  * const conversationState = new ConversationState(dynamoDBStorage);
  * const userState = new UserState(dynamoDBStorage);
@@ -40,16 +59,19 @@ export class DynamoDBStorage implements Storage {
     private readonly tableName: string;
     private readonly region: string;
     private readonly credentials?: AWSCredentialsOptions;
+    private readonly endpoint?: string;
 
     /**
      * Creates a new DynamoDBStorage instance.
-     * @param region the region the DynamoDB table lives in
+     * @param options the region the DynamoDB table lives in
+     * @param endpoint the endpoint to use for interfacing with DynamoDB
      * @param tableName the name of the table
      */
-    public constructor(tableName: string, region: string, credentials?: AWSCredentialsOptions) {
-        this.tableName = tableName;
-        this.region = region;
-        this.credentials = credentials;
+    public constructor(options: DynamoDBStorageOptions) {
+        this.tableName = options.tableName;
+        this.region = options.region;
+        this.credentials = options.credentials;
+        this.endpoint = options.endpoint
     }
 
     public async read(keys: string[]): Promise<StoreItems> {
@@ -102,6 +124,10 @@ export class DynamoDBStorage implements Storage {
             region: this.region,
             ...(this.credentials ? {credentials: new AWSCredentials(this.credentials)} : {})
         });
-        return new DocumentClient({apiVersion: '2012-08-10'});
+        const documentClientOptions: object = {
+            apiVersion: '2012-08-10',
+            ...(this.endpoint ? {endpoint: new AWSEndpoint(this.endpoint)} : {})
+        }
+        return new DocumentClient(documentClientOptions);
     }
 }
