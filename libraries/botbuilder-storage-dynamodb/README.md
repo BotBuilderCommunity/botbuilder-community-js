@@ -5,15 +5,16 @@ This is a simple storage adapter for storing BotState in DynamoDB. To use:
 ```js
 import { DynamoDBStorage } from '@botbuildercommunity/storage-dynamodb';
 
-const dynamoDBStorage = new DynamoDBStorage(
-    'table-name',
-    'us-east-1',
-    {
+const dynamoDBStorage = new DynamoDBStorage({
+    tableName: 'table-name',
+    region: 'us-east-1',
+    credentials: { // optional
         accessKeyId: 'accessKeyId',
         secretAccessKey: 'secretAccessKey',
         sessionToken: 'sessionToken' // optional
-    }
-);
+    },
+    endpoint: 'http://foo' // optional
+});
 
 const conversationState = new ConversationState(dynamoDBStorage);
 const userState = new UserState(dynamoDBStorage);

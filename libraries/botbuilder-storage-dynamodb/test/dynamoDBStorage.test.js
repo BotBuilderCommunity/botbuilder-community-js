@@ -1,4 +1,6 @@
 const assert = require('assert');
+const { config, Credentials, Endpoint } = require('aws-sdk');
+const dynamodb = require('aws-sdk/clients/dynamodb');
 const AWSMock = require('aws-sdk-mock');
 const sinon = require('sinon');
 const { DynamoDBStorage } = require('../lib/dynamoDBStorage');
@@ -7,23 +9,71 @@ describe('DynamoDB storage tests', () => {
 
     const tableName = 'dummy-table-name';
     const region = 'eu-central-1';
-    const credentialsOptions = {
-        accessKeyId: 'accessKeyId',
-        secretAccessKey: 'secretAccessKey',
-        sessionToken: 'sessionToken'
-    };
 
     let dynamoDBStorage;
-    let updateConfigSpy;
+
+    describe('getDynamoDBDocumentClient', () => {
+        const sandbox = sinon.createSandbox();
+    
+        beforeEach(() => {
+            sandbox.spy(config, 'update')
+            sandbox.spy(dynamodb, 'DocumentClient')
+        });
+
+        afterEach(function() {
+            sandbox.restore();
+        });
+
+        describe('when options have no credentials', () => {
+            it('should not set config with credentials', () => {
+                new DynamoDBStorage({tableName, region}).getDynamoDBDocumentClient();
+                sinon.assert.calledWith(
+                    config.update,
+                    { region }
+                );
+            });
+        })
+
+        describe('when options have no endpoint', () => {
+            it('should not initialize DocumentClient with endpoint', () => {
+                new DynamoDBStorage({tableName, region}).getDynamoDBDocumentClient();
+                sinon.assert.calledWith(
+                    dynamodb.DocumentClient,
+                    // attrValue is being set somewhere under the hood
+                    { attrValue: 'S8', apiVersion: '2012-08-10' }
+                );
+            })
+        })
+
+        describe('when credentials are set in options', () => {
+            it('should set config with credentials', () => {
+                new DynamoDBStorage({
+                    tableName,
+                    region,
+                    credentials: {accessKeyId: 'foo', secretAccessKey: 'bar'}
+                }).getDynamoDBDocumentClient();
+                sinon.assert.calledWith(
+                    config.update,
+                    { region, credentials: new Credentials({accessKeyId: 'foo', secretAccessKey: 'bar'}) }
+                );
+            });
+        });
+
+        describe('when endpoint is set in options', () => {
+            it('should initialize DocumentClient with endpoint', () => {
+                new DynamoDBStorage({tableName, region, endpoint: 'http://foo'}).getDynamoDBDocumentClient();
+                sinon.assert.calledWith(
+                    dynamodb.DocumentClient,
+                    // attrValue is being set somewhere under the hood
+                    { attrValue: 'S8', apiVersion: '2012-08-10', endpoint: new Endpoint('http://foo') }
+                );
+            })
+        })
+    });
 
     beforeEach(() => {
-        dynamoDBStorage = new DynamoDBStorage(tableName, region, credentialsOptions);
+        dynamoDBStorage = new DynamoDBStorage({tableName, region});
     });
-
-    afterEach(() => {
-        AWSMock.restore('config', 'update');
-    });
-
 
     describe('read()', () => {
         const readKeys = ['a', 'b', 'c'];
