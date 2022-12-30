@@ -34,7 +34,7 @@
     "botbuilder": "^4.8.0",
     "botbuilder-azure": "^4.8.0",
     "botbuilder-core": "^4.8.0",
-    "flat": "^4.1.0"
+    "flat": "^5.0.1"
   },
   "devDependencies": {
     "@types/node": "^7.10.6",
