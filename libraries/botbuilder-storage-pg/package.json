@@ -1,0 +1,46 @@
+{
+  "name": "@botbuildercommunity/storage-pg",
+  "version": "1.0.0",
+  "description": "PostgreSQL storage option for the Microsoft Bot Framework",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha"
+  },
+  "keywords": [
+    "botbuilder",
+    "bots",
+    "chatbots",
+    "pg",
+    "postgres",
+    "postgresql",
+    "storage"
+  ],
+  "contributors": [
+    "Bot Builder Community"
+  ],
+  "author": "Himanshu Mamgain",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BotBuilderCommunity/botbuilder-community-js.git"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.7",
+    "@types/pg": "^8.10.7",
+    "mocha": "^10.2.0",
+    "rewire": "^7.0.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "botbuilder-core": "^4.20.1",
+    "pg": "^8.11.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
